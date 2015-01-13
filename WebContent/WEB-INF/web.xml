@@ -26,13 +26,13 @@
 
     <servlet-mapping>
         <servlet-name>  controller-servlet        </servlet-name>
-        <url-pattern>   /test.do                    </url-pattern>
+        <url-pattern>   /todolist.do                    </url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
      	<welcome-file>index.html</welcome-file>
         <welcome-file>index.htm</welcome-file>
         <welcome-file>index.jsp</welcome-file>
-        <welcome-file>   test.do   </welcome-file>
+        <welcome-file>todolist.do</welcome-file>
     </welcome-file-list>
 </web-app>
