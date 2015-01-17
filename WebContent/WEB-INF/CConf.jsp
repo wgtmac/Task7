@@ -10,7 +10,7 @@
                         </h2>
                    </div>
                 </div>
-                <p> Your transaction has been processed correctly...</p>
+                <p> Your request has been processed correctly...</p>
                 Click <a href="viewPortflio.html">here </a>to go back to your portfolio view.
                 <br>
                 
