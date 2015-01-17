@@ -9,19 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import edu.cmu.cs.webapp.task7.databean.UserBean;
+import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.model.Model;
 
 
 public class Controller extends HttpServlet {
-
 	private static final long serialVersionUID = 1L;
 
 	public void init() throws ServletException {
         Model model = new Model(getServletConfig());
 
         Action.add(new LoginAction(model));
-        Action.add(new LogoutAction(model));
+        Action.add(new EmployeeMainAction(model));
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,17 +41,19 @@ public class Controller extends HttpServlet {
     private String performTheAction(HttpServletRequest request) {
         HttpSession session     = request.getSession(true);
         String      servletPath = request.getServletPath();
-        UserBean    user = (UserBean) session.getAttribute("user");
         String      action = getActionName(servletPath);
 
-        if (user == null) {
+        if (session.getAttribute("user") == null) {
         	// If the user hasn't logged in, so login is the only option
 			return Action.perform("login.do",request);
         }
         
         if (action.equals("welcome")) {
         	// User is logged in, but at the root of our web app
-			return Action.perform("todolist.do",request);
+        	if (session.getAttribute("user") instanceof CustomerBean)
+        		return Action.perform("customerMain.do",request);
+        	else 
+        		return Action.perform("employeeMain.do",request);
         }
         
       	// Let the logged in user run his chosen action

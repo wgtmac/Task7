@@ -10,19 +10,23 @@ import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
-import edu.cmu.cs.webapp.task7.databean.UserBean;
+import edu.cmu.cs.webapp.task7.databean.CustomerBean;
+import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
 import edu.cmu.cs.webapp.task7.formbean.LoginForm;
+import edu.cmu.cs.webapp.task7.model.CustomerDAO;
+import edu.cmu.cs.webapp.task7.model.EmployeeDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
-import edu.cmu.cs.webapp.task7.model.UserDAO;
 
 
 public class LoginAction extends Action {
 	private FormBeanFactory<LoginForm> formBeanFactory = FormBeanFactory.getInstance(LoginForm.class);
 
-	private UserDAO userDAO;
+	private EmployeeDAO employeeDAO;
+	private CustomerDAO customerDAO;
 
 	public LoginAction(Model model) {
-		userDAO = model.getUserDAO();
+		employeeDAO = model.getEmployeeDAO();
+		customerDAO = model.getCustomerDAO();
 	}
 
 	public String getName() {
@@ -36,7 +40,12 @@ public class LoginAction extends Action {
 
 		// If user is already logged in, redirect to favorite.do
 		if (session.getAttribute("user") != null) {
-			return "favorite.do";
+			if (session.getAttribute("user") instanceof CustomerBean) {
+				return "customerMain.do";
+			}
+			else {
+				return "employeeMain.do";
+			}
 		}
 
 		try {
@@ -57,24 +66,37 @@ public class LoginAction extends Action {
 			}
 
 			// Look up the user
-			UserBean user = userDAO.read(form.getEmail());
+			if (form.isEmployee()) {
+				EmployeeBean user = employeeDAO.read(form.getUserName());
+				
+				if (user == null) {
+					errors.add("User Name not found");
+					return "login.jsp";
+				}
 
-			if (user == null) {
-				errors.add("User Name (Email) not found");
-				return "login.jsp";
+				if (!user.getPassword().equals(form.getPassword())) {
+					errors.add("Incorrect password");
+					return "login.jsp";
+				}
+				
+				session.setAttribute("user", user);
+				return "employeeMain.do";
+			} else {
+				CustomerBean user = customerDAO.readByUserName(form.getUserName());
+				
+				if (user == null) {
+					errors.add("User Name not found");
+					return "login.jsp";
+				}
+
+				if (!user.getPassword().equals(form.getPassword())) {
+					errors.add("Incorrect password");
+					return "login.jsp";
+				}
+				
+				session.setAttribute("user", user);
+				return "customerMain.do";
 			}
-
-			// Check the password
-			if (!user.getPassword().equals(form.getPassword())) {
-				errors.add("Incorrect password");
-				return "login.jsp";
-			}
-
-			// Attach (this copy of) the user bean to the session
-			session.setAttribute("user", user);
-
-			// If redirectTo is null, redirect to the "favorite" action
-			return "favorite.do";
         } catch (RollbackException e) {
         	errors.add(e.getMessage());
         	return "error.jsp";

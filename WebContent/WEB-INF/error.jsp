@@ -1,26 +1,20 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<html>
-    <head>
-        <title>HW9 -- Error Page</title>
-    </head>
-    
-	<body>
-	
-		<h2>HW9 Error</h2>
+<!--<jsp:include page="template-top.jsp" />-->
 
-		<c:forEach var="error" items="${errors}">
-			<h3 style="color:red"> ${error} </h3>
-		</c:forEach>
-		
-		<c:choose>
-			<c:when test="${ (empty user) }">
+<h2>Error Page</h2>
+
+<c:forEach var="error" items="${errors}">
+	<h3 style="color: red">${error}</h3>
+</c:forEach>
+
+<p>
+	<c:choose>
+		<c:when test="${ (empty user) }">
 				Click <a href="login.do">here</a> to login.
 			</c:when>
-			<c:otherwise>
-				Click <a href="favorite.do">here</a> to return to the To Do List.
-			</c:otherwise>
-		</c:choose>
+	</c:choose>
+</p>
 
-	</body>
-</html>
+<!--<jsp:include page="template-bottom.jsp" />-->
