@@ -1,4 +1,4 @@
-package formbeans;
+package edu.cmu.cs.webapp.task7.formbean;
 
 import java.util.ArrayList;
 import java.util.List;
