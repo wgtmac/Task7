@@ -14,7 +14,7 @@
 			<c:when test="${ (empty msg) }">
 			</c:when>
 			<c:otherwise>
-				<h3 style="color: red">${msg}</h3>
+				<h3 style="color: blue">${msg}</h3>
 			</c:otherwise>
 		</c:choose>
 		

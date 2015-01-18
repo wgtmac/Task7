@@ -1,4 +1,4 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="template-employee-top.jsp" />
@@ -8,17 +8,36 @@
           <h2 class="page-header"> Deposit Check </h2>
         </div>
       </div>
-      <form action="viewCustomerAccount.do">
+      
+          <c:choose>
+			<c:when test="${ (empty msg) }">
+			</c:when>
+			<c:otherwise>
+				<h3 style="color: blue">${msg}</h3>
+			</c:otherwise>
+		</c:choose>
+		
+			<c:forEach var="error" items="${errors}">
+				<h3 style="color: red">${error}</h3>
+			</c:forEach>
+      
+      <form action="depositCheck.do" method="post">
         <div class="col-lg-6">
           <div class="form-group">
-            <label>Choose Customer Account (Username):</label>
-            <select required class="form-control">
-              <option></option>
-              <option>username1</option>
-              <option>username2</option>
-              <option>username3</option>
-              <option>username4</option>
+            <label>Choose Customer User Name:</label>
+            <select  class="form-control" name="userName1">
+              <option></option>            
+              <c:choose>
+					<c:when test="${ (empty customerList) }"></c:when>
+					<c:otherwise>
+						<c:forEach var="u" items="${ customerList }">
+							<option>${ u.getUserName() }</option>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
             </select>
+            <label>OR Search It Here:</label>
+            <input name="userName2" type="text"  class="form-control">
             </div>
             <div class="form-group">
               <label>Amount:</label>
@@ -29,7 +48,7 @@
               <input name="confAmount" type="text" class="form-control" name="userName" placeholder="Only numbers in the format 1000.00">
             </div>
             <div class="form-group">
-              <button type="submit" name="deposit" class="btn btn-primary">Deposit</button>
+              <button type="submit" name="action" value="deposit" class="btn btn-primary">Deposit</button>
             </div>
           </div>
         </form>

@@ -18,4 +18,8 @@ public class CustomerDAO extends GenericDAO<CustomerBean> {
 		if (cb == null || cb.length == 0) return null;
 		return cb[0];
 	}
+	
+	public CustomerBean[] getAllUserName () throws RollbackException {
+		return match();
+	}
 }
