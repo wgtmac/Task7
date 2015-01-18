@@ -4,7 +4,7 @@
 <jsp:include page="template-employee-top.jsp" />
                 
                 <div>
-                 <h3> Hello, John Doe</h3>
+                 <h3> Hello, ${ user.firstName }  ${ user.lastName } !</h3>
                 </div>
                 <img src="bootstrap/img/banner.jpg" alt="CFS Welcome Banner" border: 0;>
                 

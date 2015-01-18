@@ -20,6 +20,7 @@ public class Controller extends HttpServlet {
         Model model = new Model(getServletConfig());
 
         Action.add(new LoginAction(model));
+        Action.add(new LogoutAction(model));
         Action.add(new EmployeeMainAction(model));
         Action.add(new CustomerMainAction(model));
         Action.add(new CreateEmployeeAction(model));
