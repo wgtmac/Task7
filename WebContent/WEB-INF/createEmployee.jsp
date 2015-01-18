@@ -1,4 +1,4 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="template-employee-top.jsp" />
@@ -10,7 +10,19 @@
       </div>
       <p> *Required Field
       
-      <form role="form">
+           <c:choose>
+			<c:when test="${ (empty msg) }">
+			</c:when>
+			<c:otherwise>
+				<h3 style="color: red">${msg}</h3>
+			</c:otherwise>
+		</c:choose>
+		
+			<c:forEach var="error" items="${errors}">
+				<h3 style="color: red">${error}</h3>
+			</c:forEach>
+      
+      <form role="form" method="POST">
         <div class="form-group">
           <label>User Name:*</label>
           <input name="userName" required class="form-control">
@@ -31,10 +43,10 @@
           <label>Confirm Password:*</label>
           <input name="confirmPassword" type="password" required class="form-control" placeholder="Retype Password">
         </div>
-        <input type="checkbox" required>
+        <input type="checkbox" required name="agree">
         I am authorized to create an employee account with full access privileges. <br>
         <br>
-        <button type="submit" name="create" class="btn btn-primary">Create</button>
+        <button type="submit" name="action" value="create" class="btn btn-primary">Create</button>
       </form>
       
 <jsp:include page="template-buttom.jsp" />
