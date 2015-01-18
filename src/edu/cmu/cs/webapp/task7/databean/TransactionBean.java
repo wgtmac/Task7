@@ -33,6 +33,6 @@ public class TransactionBean {
 	public int 		getFundId				() { return fundId; 	}
 	public Date 	getExecuteDate		() { return executeDate; 	}
 	public long 	getShares 				() { return shares;	}
-	public int 		getTranscationType(){ return transactionType; 	}
+	public int 		getTransactionType(){ return transactionType; 	}
 	public long	getAmount			()	{return amount; 	}
 }

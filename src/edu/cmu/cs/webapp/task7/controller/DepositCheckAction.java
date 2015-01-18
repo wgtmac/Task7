@@ -23,11 +23,11 @@ public class DepositCheckAction extends Action {
 			.getInstance(DepositCheckForm.class);
 
 	private CustomerDAO customerDAO;
-	private TransactionDAO transcationDAO;
+	private TransactionDAO transactionDAO;
 
 	public DepositCheckAction(Model model) {
 		customerDAO = model.getCustomerDAO();
-		transcationDAO = model.getTransactionDAO();
+		transactionDAO = model.getTransactionDAO();
 	}
 
 	public String getName() {
@@ -76,7 +76,7 @@ public class DepositCheckAction extends Action {
 				tb.setTransactionType(TransactionBean.DPT_CHECK);
 				tb.setAmount((long) (Double.parseDouble(form.getAmount()) * 100));
 
-				transcationDAO.createAutoIncrement(tb);
+				transactionDAO.createAutoIncrement(tb);
 				
 				request.setAttribute("msg", "Customer check is deposited successfully!");
 

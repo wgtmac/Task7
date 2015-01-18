@@ -57,7 +57,7 @@ public class DepositCheckForm extends FormBean {
             	if (d <= 0 || d > Integer.MAX_VALUE) {
             		throw new NumberFormatException();
             	}
-            } catch (NumberFormatException e) {
+            } catch (Exception e) {
             	 errors.add("Amount should be a positive number");
             }
         }
