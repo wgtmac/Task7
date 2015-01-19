@@ -6,6 +6,7 @@ import org.genericdao.GenericDAO;
 import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 
+
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 
 public class CustomerDAO extends GenericDAO<CustomerBean> {
@@ -17,5 +18,12 @@ public class CustomerDAO extends GenericDAO<CustomerBean> {
 		CustomerBean[] cb = match(MatchArg.equals("userName", username));
 		if (cb == null || cb.length == 0) return null;
 		return cb[0];
+	}
+	
+	public CustomerBean[] getUsers() throws RollbackException {
+		CustomerBean[] users = match();
+		//Arrays.sort(users);  // We want them sorted by last and first names (as per User.compareTo());
+		//createAutoIncrement(users);
+		return users;
 	}
 }
