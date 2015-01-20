@@ -3,12 +3,19 @@ package edu.cmu.cs.webapp.task7.controller;
 
 
 
-import java.text.ParseException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+
+
+//import model.PhotoDAO;
+
+
+
+
 
 
 
@@ -26,24 +33,23 @@ import edu.cmu.cs.webapp.task7.databean.PositionBean;
 import edu.cmu.cs.webapp.task7.model.*;
 import edu.cmu.cs.webapp.task7.formbean.*;
 
-public class SellFundAction  extends Action {
-	private FormBeanFactory<SellFundForm> formBeanFactory = FormBeanFactory.getInstance(SellFundForm.class);
+
+public class BuyFundAction  extends Action {
+	private FormBeanFactory<BuyForm> formBeanFactory = FormBeanFactory.getInstance(BuyForm.class);
 
 	private FundDAO fundDAO;
 	private CustomerDAO  customerDAO;
 	private PositionDAO posDAO;
 	private TransactionDAO transactionDAO;
-	private FundPriceHistoryDAO historyDAO;
 	
-	public SellFundAction(Model model) {
+	public BuyFundAction(Model model) {
 		fundDAO = model.getFundDAO();
     	customerDAO  = model.getCustomerDAO();
     	posDAO=model.getPositionDAO();
     	transactionDAO=model.getTransactionDAO();
-    	historyDAO= model.getFundPriceHistoryDAO();
 	}
 
-	public String getName() { return "sellFund.do"; }
+	public String getName() { return "addFav.do"; }
 
     public String perform(HttpServletRequest request) {
         // Set up the errors list
@@ -51,39 +57,65 @@ public class SellFundAction  extends Action {
         request.setAttribute("errors",errors);
         
 		try {
-            // Set up user list for nav barS
-			//request.setAttribute("customerList",customerDAO.getUsers());
+			if(request.getSession().getAttribute("customer")==null){
+	            errors.add("Please log in as a customer");
+	            return "login.jsp";
+	        }
 			
-			//CHECK FOR THE NUMBER OF SHARES
+            // Set up user list for nav barS
+			request.setAttribute("customerList",customerDAO.getUsers());
+
 			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("customer");
 			
-			PositionBean[] fundList = posDAO.getfunds(user.getUserName());
+			
+			
+			
+        	FundBean[] fundList = fundDAO.getAllFunds();
 	        request.setAttribute("fundList",fundList);
 
-			SellFundForm form = formBeanFactory.create(request);
-			String fund=form.getFund();
-			long shares=form.getShares();
+			BuyForm form = formBeanFactory.create(request);
+	        errors.addAll(form.getValidationErrors());
+	        
+	        //System.out.println(errors);
+	        
+	        
+	        if (errors.size() > 0) return "error.jsp";
+	        
+	        String fund=form.getFund();
+	        
+	        
+			long amount=Long.parseLong(form.getAmount());
 			int id=fundDAO.getFundByName(fund);
-			//posDAO.reduceShares(id, shares,user.getUserName());
+			
+			long availableBalance= (long) transactionDAO.getValidBalance(user.getUserName(), user.getCash()/100);
+			DecimalFormat df2 = new DecimalFormat("#,##0.00");			
+			String availableBalanceString = df2.format(availableBalance).toString();
+			
+			if ((availableBalance - amount) < 0.0) {
+				errors.add("You do not have enough cash balance in your account. You have only $"
+						+ availableBalanceString + " left");
+				return "buyFund.jsp";
+			}
+			else{
+				// write a method in posDAO to increase the number of shares.
+				//posDAO.increaseShares(id, shares,user.getUserName());
+			}
+			amount = Math.round(amount*100);
+			
+			
 			
 			//ALSO ADD TO THE TRANSACTIONS TABLE
 			TransactionBean transbean= new TransactionBean();
 			transbean.setUserName(user.getUserName());
 			transbean.setFundId(id);
-			transbean.setShares(shares);
-			transbean.setTransactionType(transbean.SELL_FUND);
-			//transbean.setAmount(historyDAO.getPriceByFundId(id, historyDAO.getCurrentDate()));
+			//transbean.setShares(shares);
+			transbean.setTransactionType(transbean.BUY_FUND);
+			transbean.setAmount((long) (amount));
 			transbean.setExecuteDate(null);
 			transactionDAO.create(transbean);
-			
-			errors.addAll(form.getValidationErrors());
-	      
-	        if (errors.size() > 0) return "error.jsp";
-	        
-	      
 
-			// Update transactionList (there's now one more on the list)
-        	TransactionBean[] newTransactionList = transactionDAO.getTransactions(user.getUserName());
+			// Update favoriteList (there's now one more on the list)
+			TransactionBean[] newTransactionList = transactionDAO.getTransactions(user.getUserName());
 	        request.setAttribute("transactionList",newTransactionList);
 	        return "history.jsp";
 	 	}

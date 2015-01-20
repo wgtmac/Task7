@@ -12,11 +12,11 @@ public class SellFundForm extends FormBean {
 	
 
 	private String fund;
-	private int shares;
+	private long shares;
 	private PositionBean pb;
 	
 	public String getFund() { return fund; }
-	public int getShares()     { return shares;     }
+	public long getShares()     { return shares;     }
 	
 	public void setFund(String s) { fund = s.trim(); }
 	public void setShares(int s)     { shares     = s; }

@@ -1,11 +1,17 @@
 package edu.cmu.cs.webapp.task7.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
 import org.genericdao.GenericDAO;
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
+
+import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
 
@@ -14,38 +20,30 @@ public class PositionDAO extends GenericDAO<PositionBean> {
 		super(PositionBean.class, tableName, cp);
 	}
 	
-	
-
-	public void reduceShares(int id, int shares, String userName) {
-		// Method to reduce the number of shares when a customer sells them
-		try {
-			Transaction.begin();
-    		PositionBean p = read(id);
-    		 
-
-    		if (p == null) {
-				throw new RollbackException("Fund does not exist: id="+id);
-    		}
-
-    		if (userName !=p.getUserName()) {
-				throw new RollbackException("Favorite not owned by "+userName);        // make sth for displaying the name
-    		}
-
-			delete(id);
-			Transaction.commit();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (Transaction.isActive()) Transaction.rollback();
-		}
+	public PositionBean[] getfunds(String userName) throws RollbackException {
+		PositionBean[] list = match(MatchArg.equals("userName", userName));
+		// Arrays.sort(list);
+		return list;
 	}
-	public int getShares(int fundId){
-		int id=0;
+	
+	public List<PositionBean> getAllPositionByCustomer(CustomerBean c) throws RollbackException{
+		// TODO Auto-generated method stub
+		PositionBean[] list = match(MatchArg.equals("userName", c.getUserName()));
+		if(list.length == 0) return null;
+		List<PositionBean> positionList = new ArrayList<PositionBean>();
+		for(Object o : list) {
+			positionList.add((PositionBean) o);
+		}
+		return positionList;
+	}
+
+	
+	public long getShares(int fundId, String userName){
+		long shares=0;
 		try{
 
 			Transaction.begin();
-			PositionBean p = read(fundId);
+			PositionBean p = read(fundId,userName);
 
 
 
@@ -53,7 +51,7 @@ public class PositionDAO extends GenericDAO<PositionBean> {
 				throw new RollbackException("Fund does not exist: id="+fundId);
 			}
 
-			id= p.getFundId();
+			shares= p.getShares();
 			Transaction.commit();
 		}		
 		catch (RollbackException e) {
@@ -61,7 +59,7 @@ public class PositionDAO extends GenericDAO<PositionBean> {
 			e.printStackTrace();
 		} finally {
 			if (Transaction.isActive()) Transaction.rollback();
-		}	return id;
+		}	return shares;
 	}
 	
 	public int getFundIdByCustomerId(String userName){

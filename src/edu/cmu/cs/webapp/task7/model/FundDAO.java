@@ -15,7 +15,6 @@ import org.genericdao.Transaction;
 
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
-
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 
 public class FundDAO extends GenericDAO<FundBean> {
@@ -23,20 +22,22 @@ public class FundDAO extends GenericDAO<FundBean> {
 		super(FundBean.class, tableName, cp);
 	}
 
-	public int getFundByName(String fundName){
-		int id=0;
+	
+	
+	public String getFundNameById(int fundId){
+		String fundName=null;
 		try{
 
 			Transaction.begin();
-			FundBean p = read(fundName);
+			FundBean p = read(fundId);
 
 
 
 			if (p == null) {
-				throw new RollbackException("Fund does not exist: id="+fundName);
+				throw new RollbackException("Fund does not exist: id="+fundId);
 			}
 
-			id= p.getFundId();
+			fundName= p.getName();
 			Transaction.commit();
 		}		
 		catch (RollbackException e) {
@@ -44,7 +45,7 @@ public class FundDAO extends GenericDAO<FundBean> {
 			e.printStackTrace();
 		} finally {
 			if (Transaction.isActive()) Transaction.rollback();
-		}	return id;
+		}	return fundName;
 	}
 
 	public FundBean[] getfunds(String userName) throws RollbackException {
