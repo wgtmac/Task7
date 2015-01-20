@@ -24,11 +24,9 @@ public class RequestCheckAction extends Action {
 	private FormBeanFactory<RequestCheckForm> formBeanFactory = FormBeanFactory
 			.getInstance(RequestCheckForm.class);
 
-	private CustomerDAO customerDAO;
 	private TransactionDAO transactionDAO;
 
 	public RequestCheckAction(Model model) {
-		customerDAO = model.getCustomerDAO();
 		transactionDAO = model.getTransactionDAO();
 	}
 
@@ -59,18 +57,22 @@ public class RequestCheckAction extends Action {
 				if (errors.size() != 0) {
 					return "requestCheck.jsp";
 				}
+<<<<<<< HEAD
 				// Check if cash available is enough to cover check request customer.getCash();
 				if (Double.parseDouble(form.getCash()) > 500) {
 					errors.add("Amount requested is higher than cash available");
 					return "requestCheck.jsp";
 				}
+=======
+>>>>>>> origin/master
 
 				TransactionBean tb = new TransactionBean();
+				tb.setUserName(((CustomerBean) session.getAttribute("user")).getUserName());
 				//tb.setFundId(0);
 				tb.setExecuteDate(null);
 				//tb.setAmount(0);
 				tb.setTransactionType(TransactionBean.REQ_CHECK);
-				tb.setAmount((long) (Double.parseDouble(form.getAmount()) * -100));
+				tb.setAmount((long) (Double.parseDouble(form.getAmount()) * 100));
 
 				transactionDAO.createAutoIncrement(tb);
 				

@@ -26,43 +26,43 @@
       <form role="form" method="post">
         <div class="form-group">
           <label>User name:*</label>
-          <input name="userName" required class="form-control">
+          <input name="userName" required class="form-control" value="${form.userName}">
         </div>
         <div class="form-group">
           <label>Customer's First Name:*</label>
-          <input name="firstName" required class="form-control">
+          <input name="firstName" required class="form-control" value="${form.firstName}">
         </div>
         <div class="form-group">
           <label>Customer's Last Name:* </label>
-          <input name="lastName" required class="form-control">
+          <input name="lastName" required class="form-control" value="${form.lastName}">
         </div>
         <div class="form-group">
           <label>Password:* </label>
-          <input name="password" type="password" required class="form-control" placeholder="This is a case sensitive field.">
+          <input name="password" type="password" required class="form-control" value="${form.password}" placeholder="This is a case sensitive field.">
         </div>
         <div class="form-group">
           <label>Confirm password:* </label>
-          <input name="confirmPassword" type="password" required class="form-control">
+          <input name="confirmPassword" type="password" required value="${form.confirmPassword}" class="form-control">
         </div>
         <div class="form-group">
           <label>Address line #1: </label>
-          <input class="form-control" name="address1">
+          <input class="form-control" name="address1" value="${form.address1}">
         </div>
         <div class="form-group">
           <label>Address line #2: </label>
-          <input class="form-control" name="address2" paceholder="optional">
+          <input class="form-control" name="address2"  value="${form.address2}" paceholder="optional">
         </div>
         <div class="form-group">
           <label>City: </label>
-          <input class="form-control" name="city">
+          <input class="form-control" name="city" value="${form.city}">
         </div>
         <div class="form-group">
           <label>State: </label>
-          <input name="state" class="form-control" placeholder="Please write only the abbreviation letters. Ex. PA" maxlength="2">
+          <input name="state" class="form-control"  value="${form.state}" placeholder="Please write only the abbreviation letters. Ex. PA" maxlength="2">
         </div>
         <div class="form-group">
           <label>Zip code:</label>
-          <input name="zipcode" class="form-control" placeholder="Use format: 12345" maxlength="5">
+          <input name="zipcode" class="form-control" value="${form.zipcode}" placeholder="Use format: 12345" maxlength="5">
         </div>
         <br>
         <button type="submit" name="action" value="create" class="btn btn-primary">Create Customer</button>
