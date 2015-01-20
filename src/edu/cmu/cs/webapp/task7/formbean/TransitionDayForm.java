@@ -30,7 +30,7 @@ public class TransitionDayForm /* extends FormBean*/ {
 	public List<String> getValidationErrors (HashMap<String, String> map) {
 		List<String> errors = new ArrayList<String>();
 
-		if (date == null || date.length() == 0 || date.equals("mm/dd/yyyy"))
+		if (date == null || date.length() == 0 )
 			errors.add("Date is required");
 		if (action == null) errors.add("Button is required");
 
@@ -38,7 +38,7 @@ public class TransitionDayForm /* extends FormBean*/ {
         if (!action.equals("create")) errors.add("Invalid button");
         
         try {
-        	SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         	dateFormat.setLenient(false);
         	dateFormat.parse(date);
         } catch (Exception e) {

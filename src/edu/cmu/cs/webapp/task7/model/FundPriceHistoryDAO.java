@@ -36,6 +36,7 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 				Transaction.rollback();
 		}
 	}
+<<<<<<< HEAD
 
 	public long getPriceByFundId(int fundId, String priceDate) {
 
@@ -63,17 +64,51 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 	}
 
 	public Date getLatestTradingDay() throws RollbackException, ParseException {
+=======
+	
+	public Date getLatestTradingDayDate () throws RollbackException, ParseException {
+>>>>>>> 3e7245a3d4003b9cfe5800b3a54b614b6f02493b
 		Date date = null;
 		try {
 			Transaction.begin();
 
 			FundPriceHistoryBean[] fb = match();
+<<<<<<< HEAD
 			Arrays.sort(fb);
 
 			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 			dateFormat.setLenient(false);
 			date = dateFormat.parse(fb[fb.length - 1].getPriceDate());
 
+=======
+			if (fb != null && fb.length != 0) {
+				Arrays.sort(fb);
+				
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+				dateFormat.setLenient(false);
+				date = dateFormat.parse(fb[fb.length - 1].getPriceDate());
+			}
+			
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}
+		return date;
+	}
+	
+	public String getLatestTradingDayDateString () throws RollbackException, ParseException {
+		String date = null;
+		try {
+			Transaction.begin();
+			
+			FundPriceHistoryBean[] fb = match();
+			if (fb != null && fb.length != 0) {
+				Arrays.sort(fb);
+				
+				date = fb[fb.length - 1].getPriceDate();
+			}
+			
+>>>>>>> 3e7245a3d4003b9cfe5800b3a54b614b6f02493b
 			Transaction.commit();
 		} finally {
 			if (Transaction.isActive())

@@ -56,7 +56,7 @@
                         <a href="buyFund.do"><i class="fa fa-fw fa-arrows-h"></i> Buy Fund</a>
                     </li>
                     <li>
-                                        <li>
+                    <li>
                         <a href="sellFund.do"><i class="fa fa-fw fa-money"></i> Sell Fund</a>
                     </li>
                     <li>

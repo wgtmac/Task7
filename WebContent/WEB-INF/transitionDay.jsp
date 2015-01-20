@@ -31,25 +31,19 @@
                   <tr>
                     <th>Name</th>
                     <th>Ticker</th>
-                    <th>Price</th>
+                    <th>Price ($)</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Google Inc.</td>
-                    <td> GOOG </td>
-                    <td><input name="fundid1" type="text" required class="form-control" placeholder="Last Price $103.45"></td>
-                  </tr>
-                  <tr>
-                    <td>Alibaba </td>
-                    <td> ALBB </td>
-                    <td><input name="fundid1" type="text" required class="form-control" placeholder="Last Price $89.45"></td>
-                  </tr>
-                  <tr>
-                    <td>Amazon</td>
-                    <td> AMZN </td>
-                    <td><input name="fundid1" type="text" required class="form-control" placeholder="Last Price $33.45"></td>
-                  </tr>
+                                
+             		<c:forEach var="fund" items="${fundList}">
+						 <tr>
+                    		<td>${ fund.getName() }</td>
+                    		<td> ${ fund.getSymbol() } </td>
+                    		<td><input name="fund_${fund.getFundId()}" type="text" required class="form-control" value="${price_map.get(fund.getFundId())}"></td>
+                  			</tr>
+					</c:forEach>
+               
                 </tbody>
               </table>
             </div>
@@ -60,11 +54,12 @@
             <table class="table table-bordered table-hover table-striped">
               <thead>
                 <tr class="success">
-                  <th>Choose Trading Day: (mm/dd/yyyy)</th>
+                  <th>Choose Trading Day: (yyyy-mm-dd)</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
+                
                   <td><input name="date" type="date" required class="form-control"></td>
                 </tr>
               </tbody>
