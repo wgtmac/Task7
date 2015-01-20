@@ -55,15 +55,18 @@ public class SellFundAction  extends Action {
 			//request.setAttribute("customerList",customerDAO.getUsers());
 			
 			//CHECK FOR THE NUMBER OF SHARES
-			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("customer");
+			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("user");
+			System.out.println("The user is"+user.getUserName());
 			
 			PositionBean[] fundList = posDAO.getfunds(user.getUserName());
+			
 	        request.setAttribute("fundList",fundList);
 
 			SellFundForm form = formBeanFactory.create(request);
 			String fund=form.getFund();
+			System.out.println("fund");
 			long shares=form.getShares();
-			int id=fundDAO.getFundByName(fund);
+			int id=fundDAO.getFundIdByName(fund);
 			//posDAO.reduceShares(id, shares,user.getUserName());
 			
 			//ALSO ADD TO THE TRANSACTIONS TABLE
