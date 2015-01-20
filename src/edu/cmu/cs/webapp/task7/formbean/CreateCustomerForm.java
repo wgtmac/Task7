@@ -15,6 +15,7 @@ public class CreateCustomerForm extends FormBean {
 	private String 	address2;
 	private String 	city;
 	private String 	state;
+	private String	zipcode;
 	private long		cash;
 	private String 	action;
 
@@ -27,6 +28,7 @@ public class CreateCustomerForm extends FormBean {
 	public void setAddress2	(String v) 	{ address2 = v.trim(); 	}
 	public void setCity	(String v) 			{ city = v.trim(); 			}
 	public void setState	(String v) 			{ state = v.trim(); 			}
+	public void setZipcode (String v)		{ zipcode = v.trim();		}
 	public void setCash (long v)				{ cash = v;			}
 	public void setAction(String s) 			 { action  = s;  }
 	
@@ -40,6 +42,7 @@ public class CreateCustomerForm extends FormBean {
 	public String 	getAddress2		() { return address2; 	}
 	public String 	getCity				() { return city; 				}
 	public String 	getState				() { return state; 			}
+	public String getZipcode			() { return zipcode; 		}
 	public long	getCash				() { return cash;			}
 	public String getAction		   ()	{ return action;}
 
@@ -78,6 +81,8 @@ public class CreateCustomerForm extends FormBean {
 			errors.add("City may not contain angle brackets or quotes");
 		if (state != null && state.matches(".*[<>\"].*"))
 			errors.add("State may not contain angle brackets or quotes");
+		if (zipcode != null && state.matches(".*[<>\"].*"))
+			errors.add("Zip Code may not contain angle brackets or quotes");
 		
 		if (!action.equals("create"))
 			errors.add("Invalid button");

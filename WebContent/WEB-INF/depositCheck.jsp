@@ -37,15 +37,15 @@
 				</c:choose>
             </select>
             <label>OR Search It Here:</label>
-            <input name="userName2" type="text"  class="form-control">
+            <input name="userName2" type="text"  class="form-control" value="${form.userName2}">
             </div>
             <div class="form-group">
               <label>Amount:</label>
-              <input name="amount" type="text" required class="form-control" placeholder="Only numbers in the format 1000.00">
+              <input name="amount" type="text" required class="form-control" value="${form.amount}" placeholder="Only numbers in the format 1000.00">
             </div>
             <div class="form-group">
               <label>Confirm Amount:</label>
-              <input name="confAmount" type="text" class="form-control" name="userName" placeholder="Only numbers in the format 1000.00">
+              <input name="confAmount" type="text" class="form-control" value="${form.confAmount}"  placeholder="Only numbers in the format 1000.00">
             </div>
             <div class="form-group">
               <button type="submit" name="action" value="deposit" class="btn btn-primary">Deposit</button>

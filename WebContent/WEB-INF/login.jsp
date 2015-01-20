@@ -25,7 +25,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
-                <a href="customerMain.html">
+                <a href="login.do">
                 <img src="bootstrap/img/logo.png" alt="CFS Logo" border: 0; position: relative; top: 5px; left: 10px;>
                 </a>
             </div>
