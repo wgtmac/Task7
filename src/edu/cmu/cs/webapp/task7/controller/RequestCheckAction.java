@@ -88,6 +88,10 @@ public class RequestCheckAction extends Action {
 					
 				request.setAttribute("msg", "A check in the amount of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " has been requested.");
 
+				availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );
+				balance = formatter.format(availableBalance);
+				session.setAttribute("balance", balance);
+				
 				return "requestCheck.jsp";
 			} else {
 				// logout and re-login
