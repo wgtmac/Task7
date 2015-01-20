@@ -58,8 +58,8 @@ public class CreateFundAction extends Action {
 
 				FundBean newFund = new FundBean();
 				
-				newFund.setFundName(form.getFundName());
-				newFund.setTicker(form.getTicker());
+				newFund.setName(form.getFundName());
+				newFund.setSymbol(form.getTicker());
 				
 				fundDAO.createAutoIncrement(newFund);
 				
