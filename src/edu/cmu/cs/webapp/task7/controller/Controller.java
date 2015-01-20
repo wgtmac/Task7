@@ -31,6 +31,7 @@ public class Controller extends HttpServlet {
         Action.add(new TransitionDayAction(model));
         Action.add(new ViewCustomerAction(model));
         Action.add(new RequestCheckAction(model));
+        Action.add(new ChangePwdAction(model));
 }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -22,7 +22,7 @@
     <ul class="nav navbar-right top-nav">
       <li class="dropdown"> <a href="accountManageE.do" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Employee Account<b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li> <a href="employeePSW.do"><i class="fa fa-fw fa-user"></i> Change Password</a> </li>
+          <li> <a href="changePwd.do"><i class="fa fa-fw fa-user"></i> Change Password</a> </li>
           <li class="divider"></li>
           <li>
             <form action="logout.do">
