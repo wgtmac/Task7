@@ -59,7 +59,11 @@ public class RequestCheckAction extends Action {
 				if (errors.size() != 0) {
 					return "requestCheck.jsp";
 				}
-				CustomerBean customer;
+				// Check if cash available is enough to cover check request customer.getCash();
+				if (Double.parseDouble(form.getCash()) > 500) {
+					errors.add("Amount requested is higher than cash available");
+					return "requestCheck.jsp";
+				}
 
 				TransactionBean tb = new TransactionBean();
 				//tb.setFundId(0);
@@ -69,6 +73,8 @@ public class RequestCheckAction extends Action {
 				tb.setAmount((long) (Double.parseDouble(form.getAmount()) * -100));
 
 				transactionDAO.createAutoIncrement(tb);
+				
+				//Set new cash amount
 				
 				NumberFormat formatter = new DecimalFormat("#0.00");     			
 				request.setAttribute("msg", "A check in the amount of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " has been requested.");
