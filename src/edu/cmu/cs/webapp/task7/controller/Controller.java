@@ -29,12 +29,14 @@ public class Controller extends HttpServlet {
         Action.add(new CreateCustomerAction(model));
         Action.add(new DepositCheckAction(model));
         Action.add(new TransitionDayAction(model));
-        Action.add(new ViewCustomerAction(model));
+        Action.add(new ViewCustomerAction(model));    
+        Action.add(new ChangePwdAction(model));
         Action.add(new RequestCheckAction(model));
         Action.add(new ViewCustomerAccountAction(model));
         Action.add(new ResetPwdAction(model));
-        
+        Action.add(new HistoryAction(model));
 }
+
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);

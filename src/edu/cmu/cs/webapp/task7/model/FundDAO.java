@@ -15,7 +15,6 @@ import org.genericdao.Transaction;
 
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
-
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 
 public class FundDAO extends GenericDAO<FundBean> {
@@ -23,12 +22,12 @@ public class FundDAO extends GenericDAO<FundBean> {
 		super(FundBean.class, tableName, cp);
 	}
 
-	public int getFundByName(String fundName){
+	public int getFundIdByName(String fundName){
 		int id=0;
 		try{
 
 			Transaction.begin();
-			FundBean p = read(fundName);
+			FundBean[] p = match(MatchArg.equals("name", fundName));
 
 
 
@@ -36,7 +35,32 @@ public class FundDAO extends GenericDAO<FundBean> {
 				throw new RollbackException("Fund does not exist: id="+fundName);
 			}
 
-			id= p.getFundId();
+			id= p[0].getFundId();
+			Transaction.commit();
+		}		
+		catch (RollbackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}	return id;
+	}
+	
+	public String getFundNameById(int fundId){
+		String fundName=null;
+		try{
+
+			Transaction.begin();
+			FundBean p = read(fundId);
+
+
+
+			if (p == null) {
+				throw new RollbackException("Fund does not exist: id="+fundId);
+			}
+
+			fundName= p.getName();
 			Transaction.commit();
 		}		
 		catch (RollbackException e) {
@@ -44,7 +68,7 @@ public class FundDAO extends GenericDAO<FundBean> {
 			e.printStackTrace();
 		} finally {
 			if (Transaction.isActive()) Transaction.rollback();
-		}	return id;
+		}	return fundName;
 	}
 
 	public FundBean[] getfunds(String userName) throws RollbackException {
