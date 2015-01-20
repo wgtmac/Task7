@@ -12,7 +12,7 @@ public class CustomerBean {
 	private String 	address2;
 	private String 	city;
 	private String 	state;
-	private long		cash;
+	private long	cash;
 
 	public void setUserName(String v) 	{ userName = v; }
 	public void setFirstName(String v)	{ firstName = v;	}
