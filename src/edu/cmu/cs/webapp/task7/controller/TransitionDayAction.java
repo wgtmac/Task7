@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.genericdao.RollbackException;
-import org.mybeans.form.FormBeanException;
-import org.mybeans.form.FormBeanFactory;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
@@ -21,10 +19,8 @@ import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.FundPriceHistoryBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
-import edu.cmu.cs.webapp.task7.formbean.DepositCheckForm;
 import edu.cmu.cs.webapp.task7.formbean.TransitionDayForm;
 import edu.cmu.cs.webapp.task7.model.CustomerDAO;
-import edu.cmu.cs.webapp.task7.model.EmployeeDAO;
 import edu.cmu.cs.webapp.task7.model.FundDAO;
 import edu.cmu.cs.webapp.task7.model.FundPriceHistoryDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
@@ -71,7 +67,7 @@ public class TransitionDayAction extends Action {
 				HashMap<Integer, String> price_map = new HashMap<Integer, String>();
 				String lastTradingDay = fundPriceHistoryDAO.getLatestTradingDayDateString ();
 				for (FundBean fb : fundList) {
-					FundPriceHistoryBean tmp = fundPriceHistoryDAO.read("" + fb.getFundId() + "," + lastTradingDay == null ? "" : lastTradingDay);
+					FundPriceHistoryBean tmp = fundPriceHistoryDAO.read(fb.getFundId() ,lastTradingDay);
 					if (tmp == null) {
 						price_map.put(fb.getFundId(),"N/A");
 					} else {
@@ -139,21 +135,23 @@ public class TransitionDayAction extends Action {
 					
 					switch(tb.getTransactionType()) {
 						case TransactionBean.SELL_FUND:
-							if (positionDAO.read(tb.getUserName() + "," + tb.getFundId()) != null) {
-								PositionBean pb = positionDAO.read(tb.getUserName() + "," + tb.getFundId());
-								pb.setShares( tb.getShares() > pb.getShares() ?  0  : pb.getShares() - tb.getShares());
+							if (positionDAO.read(tb.getUserName(), tb.getFundId()) != null) {
+								PositionBean pb = positionDAO.read(tb.getUserName(), tb.getFundId());
+								pb.setShares(pb.getShares() - tb.getShares());
 								positionDAO.update(pb);
 								
-								double price = fundPriceHistoryDAO.read(tb.getFundId() + ","  + today).getPrice() / 100.0;
+								double price = fundPriceHistoryDAO.read(tb.getFundId() ,  today).getPrice() / 100.0;
 								long amount = (long) (price * tb.getShares() / 1000 * 100);
 								cb.setCash(cb.getCash() +  amount);
 								customerDAO.update(cb);
+								
+								tb.setAmount(amount);
 							}
 							break;
 						case TransactionBean.BUY_FUND:
-							if (positionDAO.read(tb.getUserName() + "," + tb.getFundId()) == null) {
+							if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
 								double amount = tb.getAmount() / 100.00;
-								double price = fundPriceHistoryDAO.read(tb.getFundId() + ","  + today).getPrice() / 100.0;
+								double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.0;
 								long shares = (long) (amount / price * 1000);
 								
 								PositionBean pb = new PositionBean();
@@ -161,12 +159,14 @@ public class TransitionDayAction extends Action {
 								pb.setFundId(tb.getFundId());
 								pb.setShares(shares);
 								positionDAO.create(pb);
+								
+								tb.setShares(shares);
 							} else {
 								double amount = tb.getAmount() / 100.00;
-								double price = fundPriceHistoryDAO.read(tb.getFundId() + ","  + today).getPrice() / 100.00;
+								double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.00;
 								long shares = (long) (amount / price * 1000);
 								
-								PositionBean pb = positionDAO.read(tb.getUserName() + "," + tb.getFundId());
+								PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
 								pb.setShares(shares + pb.getShares());
 								positionDAO.update(pb);
 							}
