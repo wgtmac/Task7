@@ -3,10 +3,14 @@ package edu.cmu.cs.webapp.task7.controller;
 
 
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+
 
 
 
@@ -19,10 +23,8 @@ import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
-
 import edu.cmu.cs.webapp.task7.model.*;
 import edu.cmu.cs.webapp.task7.formbean.*;
-
 
 public class SellFundAction  extends Action {
 	private FormBeanFactory<SellFundForm> formBeanFactory = FormBeanFactory.getInstance(SellFundForm.class);
@@ -30,11 +32,15 @@ public class SellFundAction  extends Action {
 	private FundDAO fundDAO;
 	private CustomerDAO  customerDAO;
 	private PositionDAO posDAO;
+	private TransactionDAO transactionDAO;
+	private FundPriceHistoryDAO historyDAO;
 	
 	public SellFundAction(Model model) {
 		fundDAO = model.getFundDAO();
     	customerDAO  = model.getCustomerDAO();
     	posDAO=model.getPositionDAO();
+    	transactionDAO=model.getTransactionDAO();
+    	historyDAO= model.getFundPriceHistoryDAO();
 	}
 
 	public String getName() { return "sellFund.do"; }
@@ -47,41 +53,52 @@ public class SellFundAction  extends Action {
 		try {
             // Set up user list for nav barS
 			//request.setAttribute("customerList",customerDAO.getUsers());
-
-			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("user");
+			
+			//CHECK FOR THE NUMBER OF SHARES
+			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("customer");
 			
         	FundBean[] fundList = fundDAO.getfunds(user.getUserName());
 	        request.setAttribute("fundList",fundList);
 
-			ItemForm form = formBeanFactory.create(request);
-	        errors.addAll(form.getValidationErrors());
-	        System.out.println(errors);
+			SellFundForm form = formBeanFactory.create(request);
+			String fund=form.getFund();
+			int shares=form.getShares();
+			int id=fundDAO.getFundByName(fund);
+			posDAO.reduceShares(id, shares,user.getUserName());
+			
+			//ALSO ADD TO THE TRANSACTIONS TABLE
+			TransactionBean transbean= new TransactionBean();
+			transbean.setUserName(user.getUserName());
+			transbean.setFundId(id);
+			transbean.setShares(shares);
+			transbean.setTransactionType(4);
+			transbean.setAmount(historyDAO.getPriceByFundId(id, historyDAO.getCurrentDate()));
+			transbean.setExecuteDate(null);
+			transactionDAO.create(transbean);
+			
+			errors.addAll(form.getValidationErrors());
+	      
 	        if (errors.size() > 0) return "error.jsp";
-	        FavoriteBean fav=new FavoriteBean();
-	        //System.out.println(fav.getEmail());
-	        //System.out.println("user id before"+user.getId());
-	        fav.setEmail(user.getId());
-	        //System.out.println("fav email id after adding"+fav.getEmail());
-	        fav.setComment(form.getComment());
-	        fav.setCount(fav.getCount());
-	        fav.setFavorite(form.getFavorite());
-	        System.out.println(form.getFavorite());
+	        
+	      
 
-	        favoriteDAO.create(fav);
-
-			// Update favoriteList (there's now one more on the list)
-        	FavoriteBean[] newFavoriteList = favoriteDAO.getfavorites(user.getId());
-	        request.setAttribute("favoriteList",newFavoriteList);
-	        return "manage.jsp";
+			// Update transactionList (there's now one more on the list)
+        	TransactionBean[] newTransactionList = transactionDAO.getTransactions(user.getUserName());
+	        request.setAttribute("transactionList",newTransactionList);
+	        return "history.jsp";
 	 	}
 		catch (RollbackException e) {
 	 		e.printStackTrace();
 			errors.add(e.getMessage());
-			return "manage.jsp";
+			return "viewAccount.jsp";
 	 	} catch (FormBeanException e) {
 	 		e.printStackTrace();
 			errors.add(e.getMessage());
-			return "manage.jsp";
+			return "viewAccount.jsp";
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "viewAccount.jsp";
 		}
     }
     

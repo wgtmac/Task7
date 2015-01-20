@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
+
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
@@ -28,14 +29,18 @@ import edu.cmu.cs.webapp.task7.formbean.*;
 
 
 public class BuyFundAction  extends Action {
-	private FormBeanFactory<ItemForm> formBeanFactory = FormBeanFactory.getInstance(ItemForm.class);
+	private FormBeanFactory<BuyForm> formBeanFactory = FormBeanFactory.getInstance(BuyForm.class);
 
 	private FundDAO fundDAO;
 	private CustomerDAO  customerDAO;
+	private PositionDAO posDAO;
+	private TransactionDAO transactionDAO;
 	
 	public BuyFundAction(Model model) {
-		favoriteDAO = model.getFavoriteDAO();
-    	userDAO  = model.getUserDAO();
+		fundDAO = model.getFundDAO();
+    	customerDAO  = model.getCustomerDAO();
+    	posDAO=model.getPositionDAO();
+    	transactionDAO=model.getTransactionDAO();
 	}
 
 	public String getName() { return "addFav.do"; }
@@ -46,10 +51,15 @@ public class BuyFundAction  extends Action {
         request.setAttribute("errors",errors);
         
 		try {
+			if(request.getSession().getAttribute("customer")==null){
+	            errors.add("Please log in as a customer");
+	            return "login.jsp";
+	        }
+			
             // Set up user list for nav barS
-			request.setAttribute("userList",userDAO.getUsers());
+			request.setAttribute("customerList",customerDAO.getUsers());
 
-			UserBean user = (UserBean) request.getSession(false).getAttribute("user");
+			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("customer");
 			
         	FavoriteBean[] favoriteList = favoriteDAO.getfavorites(user.getId());
 	        request.setAttribute("favoriteList",favoriteList);

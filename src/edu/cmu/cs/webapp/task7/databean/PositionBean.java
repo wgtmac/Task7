@@ -2,17 +2,17 @@ package edu.cmu.cs.webapp.task7.databean;
 
 import org.genericdao.PrimaryKey;
 
-@PrimaryKey("customerId,fundId")
+@PrimaryKey("userName,fundId")
 public class PositionBean {
-	private int	 	customerId;
-	private int 	fundId;
-	private long 	shares;
+	private String 	userName;
+	private int 		fundId;
+	private long 		shares;
 	
-	public void setCustomerId			(int v)			{ customerId = v;	}
+	public void setUserName			(String v) 	{ userName = v; }
 	public void setFundId					(int v)			{ fundId = v; 	}
 	public void setShares 					(long  v)		{ shares = v;	}
 
-	public int 		getCustomerId		() { return customerId; 	}
-	public int 		getFundId				() { return fundId; 	}
-	public long 	getShares 				() { return shares;	}
+	public String 	getUserName	() { return userName; 	}
+	public int 		getFundId			() { return fundId; 	}
+	public long 	getShares 			() { return shares;	}
 }

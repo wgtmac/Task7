@@ -10,7 +10,20 @@
       </div>
       <p> *Required field
       
-      <form role="form">
+      	<c:choose>
+			<c:when test="${ (empty msg) }">
+			</c:when>
+			<c:otherwise>
+				<h3 style="color: blue">${msg}</h3>
+			</c:otherwise>
+		</c:choose>
+		
+			<c:forEach var="error" items="${errors}">
+				<h3 style="color: red">${error}</h3>
+			</c:forEach>
+		
+      
+      <form role="form" method="post">
         <div class="form-group">
           <label>User name:*</label>
           <input name="userName" required class="form-control">
@@ -29,7 +42,7 @@
         </div>
         <div class="form-group">
           <label>Confirm password:* </label>
-          <input name="confirm" type="password" required class="form-control">
+          <input name="confirmPassword" type="password" required class="form-control">
         </div>
         <div class="form-group">
           <label>Address line #1: </label>
@@ -52,7 +65,7 @@
           <input name="zipcode" class="form-control" placeholder="Use format: 12345" maxlength="5">
         </div>
         <br>
-        <button type="submit" name="create" class="btn btn-primary">Create Customer</button>
+        <button type="submit" name="action" value="create" class="btn btn-primary">Create Customer</button>
       </form>
       </p>
       <p><br>

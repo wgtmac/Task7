@@ -1,4 +1,4 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="template-employee-top.jsp" />
@@ -8,7 +8,20 @@
           <h2 class="page-header"> Transition Day </h2>
         </div>
       </div>
-      <form role="form">
+      
+         <c:choose>
+			<c:when test="${ (empty msg) }">
+			</c:when>
+			<c:otherwise>
+				<h3 style="color: blue">${msg}</h3>
+			</c:otherwise>
+		</c:choose>
+		
+			<c:forEach var="error" items="${errors}">
+				<h3 style="color: red">${error}</h3>
+			</c:forEach>
+      
+      <form role="form" method="POST">
         <div class="row">
           <div class="col-lg-6">
             <h3>Funds to Update</h3>
@@ -59,7 +72,7 @@
           </div>
         </div>
         <br>
-        <button type="submit" name="create" class="btn btn-primary">Submit Transition Day</button>
+        <button type="submit" name="action" value="create" class="btn btn-primary">Submit Transition Day</button>
       </form>
       
 <jsp:include page="template-buttom.jsp" />

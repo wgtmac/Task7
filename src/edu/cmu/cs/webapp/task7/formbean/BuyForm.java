@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.mybeans.form.FormBean;
 
-import edu.cmu.cs.webapp.task7.databean.PositionBean;
-import edu.cmu.cs.webapp.task7.model.PositionDAO;
+import edu.cmu.cs.webapp.task7.databean.*;
+import edu.cmu.cs.webapp.task7.model.*;
 
 
-public class SellFundForm extends FormBean {
+
+public class BuyForm extends FormBean {
 	
 
 	private String fund;
