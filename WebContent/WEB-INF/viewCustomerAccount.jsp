@@ -5,9 +5,10 @@
 
       <div class="row">
         <div class="col-lg-12">
-          <h2 class="page-header"> Jeff Eppinger's Account </h2>
+          <h2 class="page-header"> ${customerName}'s Account </h2>
         </div>
- 		<form action="reset.html">
+ 		<form action="reset.do">
+ 		  <input type="hidden" name="customer" value="${userName} ">
    		&nbsp; <input type="submit" value="Reset Customer Password" name="username">
 		</form>
       </div>
@@ -20,21 +21,21 @@
             <thead>
               <tr>
                 <td>Username:</td>
-                <td>Jeff456</td>
+                <td>${userName}</td>
               </tr>
                 <tr>
                 <td>Name:</td>
-                <td>Jeff Eppinger</td>
+                <td>${customerName}</td>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td>Address:</td>
-                <td>5000 Forbes Ave.</td>
+                <td>${address1 } <br>${address2 }</td>
               </tr>
                 <tr>
                 <td>City, State:</td>
-                <td>Pittsburgh, PA.</td>
+                <td>${city }, ${state}.</td>
               </tr>
               <tr>
                 <td>Last trading date:</td>
@@ -42,11 +43,11 @@
               </tr>
               <tr>
                 <td>Accountable Balance as of Today:</td>
-                <td align="right"><b>$ 90,010.00</b></td>
+                <td align="right"><b>$ ${Acct_cash}</b></td>
                 </tr>
               <tr>
                 <td>Available Cash:</td>
-                <td align="right"><b>$ 14,000.00</b></td>
+                <td align="right"><b>$ ${avai_cash}</b></td>
                 </tr>
               </tbody>
           </table>
