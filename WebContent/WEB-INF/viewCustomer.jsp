@@ -9,18 +9,22 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <form action="viewCustomerAccount.html">
+        <form action="viewCustomer.do">
           <div class="form-group">
           <label>Choose an account by username:</label>
-          <select required class="form-control">
-            <option></option>
-            <option>username1</option>
-            <option>username2</option>
-            <option>username3</option>
-            <option>username4</option>
-          </select>
+          <select  class="form-control" name="userName1">
+              <option></option>            
+              <c:choose>
+					<c:when test="${ (empty customerList) }"></c:when>
+					<c:otherwise>
+						<c:forEach var="u" items="${ customerList }">
+							<option>${ u.getUserName() }</option>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+            </select>
           <br>
-          <button type="submit" name="select" class="btn btn-primary">Select Account</button>
+          <button type="submit" name="action" value="select" class="btn btn-primary">Select Account</button>
         </form>
       </div>
     </div>

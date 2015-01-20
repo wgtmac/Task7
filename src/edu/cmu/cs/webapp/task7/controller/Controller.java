@@ -38,6 +38,8 @@ public class Controller extends HttpServlet {
         Action.add(new ViewCustomerAction(model));    
         Action.add(new ChangePwdAction(model));
         Action.add(new RequestCheckAction(model));
+        Action.add(new ViewCustomerAccountAction(model));
+        Action.add(new ResetPwdAction(model));
         Action.add(new HistoryAction(model));
 }
 >>>>>>> 4162c9ce6ecef0e72aa2a192e31bbecf60c1c938
