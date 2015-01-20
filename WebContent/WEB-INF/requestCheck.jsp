@@ -46,11 +46,11 @@ transaction day.
 					<tr>
 						<td><b>Available Cash:</b></td>
 						<td><fmt:setLocale value="en_US" /> <fmt:formatNumber
-								value="${ user.cash }" type="CURRENCY"></fmt:formatNumber></td>
+								value="${ balance }" type="CURRENCY"></fmt:formatNumber></td>
 					</tr>
 				</tbody>
 			</table>
-			<br> <input name="cash" type="hidden" value="${ user.cash }">
+			<br>
 			<label>Amount Requested:</label>
 			<div class="form-group input-group">
 				<span class="input-group-addon">$</span> <input name="amount"

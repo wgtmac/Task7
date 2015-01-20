@@ -76,19 +76,8 @@ public class RequestCheckForm extends FormBean {
 		if (Double.parseDouble(amount) != Double.parseDouble(confAmount))
 		//if (!amount.equals(confAmount))
 			errors.add("Amounts must be identical");
-		if (errors.size() > 0)
-			return errors;
-		
-		try {
-				double amt = Double.parseDouble(amount);
-				double csh = Double.parseDouble(cash);
-				if (amt > csh) {
-					throw new NumberFormatException();
-				}
-			} catch (Exception e) {
-				errors.add("Amount requested is higher than cash available");
-			}
-		
+
+				
 		return errors;
 		
 	}
