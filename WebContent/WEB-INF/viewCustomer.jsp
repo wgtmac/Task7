@@ -20,7 +20,7 @@
             <option>username4</option>
           </select>
           <br>
-          <button type="submit" class="btn btn-primary">Select Account</button>
+          <button type="submit" name="select" class="btn btn-primary">Select Account</button>
         </form>
       </div>
     </div>

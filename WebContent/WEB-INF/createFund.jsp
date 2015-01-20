@@ -10,8 +10,20 @@
                         </h2>
                    </div>
                 </div>
+                
+                <c:choose>
+			<c:when test="${ (empty msg) }">
+			</c:when>
+			<c:otherwise>
+				<h3 style="color: blue">${msg}</h3>
+			</c:otherwise>
+		</c:choose>
+		
+			<c:forEach var="error" items="${errors}">
+				<h3 style="color: red">${error}</h3>
+			</c:forEach>
 
-                <form role="form">
+                <form role="form" method="POST">
                 	<div class="form-group">
                     	<label>Fund Name:</label>
                         <input name="fundName" required class="form-control" placeholder="Max. 20 characters" maxlength="20">
@@ -22,11 +34,8 @@
                         <input name="ticker" required class="form-control" placeholder="Capital letters ex. GOOG">
                     </div>
                     
-               	  <div class="form-group">
-                   	<label>Initial Price per Share:</label>
-                      <input name="price" required class="form-control" placeholder="Only numbers in format 1000.00">
-                    </div>
-                     <button type="submit" name="create" class="btn btn-primary">Create Fund</button>
+                    
+                     <button type="submit" name="action" value="create" class="btn btn-primary">Create Fund</button>
                </form>
 
                

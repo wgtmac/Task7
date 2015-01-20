@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -39,7 +39,7 @@
         <li> <a href="createCustomer.do"><i class="fa fa-fw fa-user"></i> Create Customer Account</a> </li>
         <li> <a href="viewCustomer.do"><i class="fa fa-fw fa-desktop"></i> View Customer Account</a> </li>
         <li> <a href="depositCheck.do"><i class="fa fa-fw fa-edit"></i> Deposit Check</a> </li>
-        <li> <a href="createFunds.do"><i class="fa fa-fw fa-money"></i> Create Fund</a> </li>
+        <li> <a href="createFund.do"><i class="fa fa-fw fa-money"></i> Create Fund</a> </li>
         <li> <a href="transitionDay.do"><i class="fa fa-fw fa-arrows-v"></i> Transition Day</a> </li>
       </ul>
     </div>
