@@ -23,13 +23,15 @@ public class Controller extends HttpServlet {
         Action.add(new CreateFundAction(model));
         Action.add(new LogoutAction(model));
         Action.add(new EmployeeMainAction(model));
+        Action.add(new SellFundAction(model));
         Action.add(new CustomerMainAction(model));
         Action.add(new CreateEmployeeAction(model));
         Action.add(new CreateCustomerAction(model));
         Action.add(new DepositCheckAction(model));
         Action.add(new TransitionDayAction(model));
         Action.add(new ViewCustomerAction(model));
-    }
+        Action.add(new RequestCheckAction(model));
+}
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);

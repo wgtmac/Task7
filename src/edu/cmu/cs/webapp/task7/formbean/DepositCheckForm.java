@@ -49,7 +49,8 @@ public class DepositCheckForm extends FormBean {
         	errors.add("Invalid button");
         if (userName1.matches(".*[<>\"].*") &&userName2.matches(".*[<>\"].*")) 
         	errors.add("User Name may not contain angle brackets or quotes");
-        if (!amount.equals(confAmount))
+		if (Double.parseDouble(amount) != Double.parseDouble(confAmount))
+		//if (!amount.equals(confAmount))
 			errors.add("Amounts must be identical");
         else {
             try {

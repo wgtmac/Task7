@@ -12,7 +12,8 @@ public class CustomerBean {
 	private String 	address2;
 	private String 	city;
 	private String 	state;
-	private long		cash;
+	private String 	zipcode;
+	private long	cash;
 
 	public void setUserName(String v) 	{ userName = v; }
 	public void setFirstName(String v)	{ firstName = v;	}
@@ -22,6 +23,7 @@ public class CustomerBean {
 	public void setAddress2	(String v) 	{ address2 = v; 	}
 	public void setCity	(String v) 			{ city = v; 			}
 	public void setState	(String v) 			{ state = v; 			}
+	public void setZipcode (String v)		{ zipcode = v;		}
 	public void setCash (long v)				{ cash = v;			}
 	
 	public String 	getUserName	() { return userName; 	}
@@ -32,5 +34,6 @@ public class CustomerBean {
 	public String 	getAddress2		() { return address2; 	}
 	public String 	getCity				() { return city; 				}
 	public String 	getState				() { return state; 			}
+	public String getZipcode			() { return zipcode; 		}
 	public long	getCash				() { return cash;			}
 }
