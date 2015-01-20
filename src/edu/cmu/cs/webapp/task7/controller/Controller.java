@@ -33,11 +33,11 @@ public class Controller extends HttpServlet {
         Action.add(new CreateCustomerAction(model));
         Action.add(new DepositCheckAction(model));
         Action.add(new TransitionDayAction(model));
-<<<<<<< HEAD
+//<<<<<<< HEAD
 //>>>>>>> 5bc8b3596bf5c4afdad54711deed090e1919b5c8
-=======
+//=======
         Action.add(new RequestCheckAction(model));
->>>>>>> 3e7245a3d4003b9cfe5800b3a54b614b6f02493b
+//>>>>>>> 3e7245a3d4003b9cfe5800b3a54b614b6f02493b
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.genericdao.RollbackException;
 
+
 import edu.cmu.cs.webapp.task7.databean.*;
 import edu.cmu.cs.webapp.task7.model.*;
 import edu.cmu.cs.webapp.task7.formbean.*;
-
-
 
 
 public class ViewPortfolioAction extends Action{	
@@ -21,6 +20,7 @@ public class ViewPortfolioAction extends Action{
 	private FundPriceHistoryDAO historyDAO;
 	private PositionDAO positionDAO;
 	private TransactionDAO transactionDAO;
+	private FundDAO fundDAO;
 	
 	/*public ViewPortfolioAction(CustomerDAO customerDaoImpl,FundPriceHistoryDAO fundPriceHistoryDaoImpl, PositionDAO positionDaoImpl, TransactionDAO transactionDaoImpl) {
 		this.customerDaoImpl = customerDaoImpl;
@@ -34,6 +34,8 @@ public class ViewPortfolioAction extends Action{
 		historyDAO = model.getFundPriceHistoryDAO();
 		positionDAO = model.getPositionDAO();
 		transactionDAO = model.getTransactionDAO();
+		fundDAO=model.getFundDAO();
+		
 	}
 	
 	public String getName() {return "viewPortfolio.do";}
@@ -56,17 +58,21 @@ public class ViewPortfolioAction extends Action{
 			String availableBalanceString = df2.format(availableBalanceDouble).toString();
 			//double totalBalanceDouble = ((double)(customer.getTotalBalance())/100);
 			//String totalBalanceString = df2.format(totalBalanceDouble).toString();
-		    CustomerDisplay customerDisplay = new CustomerDisplay (customer,availableBalanceString,totalBalanceString);
+		    CustomerDisplay customerDisplay = new CustomerDisplay (user,availableBalanceString);
 			request.setAttribute("customerDisplay", customerDisplay);
 			
-			List<Position> positionList = positionDaoImpl.getAllPositionByCustomer(customer);
+			PositionBean[] fundList = positionDAO.getfunds(user.getUserName());
+	        request.setAttribute("fundList",fundList);
+	        
+	    	List<PositionBean> positionList = positionDAO.getAllPositionByCustomer(user);
 			if(positionList != null) {
 				List<PositionInfo> positionInfoList = new ArrayList<PositionInfo>();
-				for(Position a: positionList) {
+				for(PositionBean a: positionList) {
 					double shares = ((double)(a.getShares())/1000);
 					
-					double price = ((double)(fundPriceHistoryDaoImpl.getLatestFundPrice(a.getTicker()).getPrice()))/100;
+					double price = ((double)(historyDAO.getLatestFundPrice(a.getFundId()).getPrice()));
 					double value = shares * price;
+					String ticker=fundDAO.getFundNameById(a.getFundId());
 
 					DecimalFormat df1 = new DecimalFormat("#,##0.000");
 				
@@ -74,13 +80,15 @@ public class ViewPortfolioAction extends Action{
 					String priceString = df2.format(price).toString();
 					String valueString = df2.format(value).toString();
 				
-					PositionInfo aInfo = new PositionInfo(a.getTicker(),sharesString,priceString,valueString);
+					PositionInfo aInfo = new PositionInfo(ticker,sharesString,priceString,valueString);
 					positionInfoList.add(aInfo);
 				}
 				request.setAttribute("positionInfoList",positionInfoList);
 				
 			}
-			String transDate = transactionDaoImpl.getLatestDate(customer);
+			
+			
+			String transDate = transactionDAO.getLastDate(user);
 			request.setAttribute("lastTradingDay",transDate);
 			return "CustomerViewAccount.jsp";
         	} catch (RollbackException e) {

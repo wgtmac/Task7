@@ -57,14 +57,14 @@ public class RequestCheckAction extends Action {
 				if (errors.size() != 0) {
 					return "requestCheck.jsp";
 				}
-<<<<<<< HEAD
+//<<<<<<< HEAD
 				// Check if cash available is enough to cover check request customer.getCash();
 				if (Double.parseDouble(form.getCash()) > 500) {
 					errors.add("Amount requested is higher than cash available");
 					return "requestCheck.jsp";
 				}
-=======
->>>>>>> origin/master
+//=======
+//>>>>>>> origin/master
 
 				TransactionBean tb = new TransactionBean();
 				tb.setUserName(((CustomerBean) session.getAttribute("user")).getUserName());

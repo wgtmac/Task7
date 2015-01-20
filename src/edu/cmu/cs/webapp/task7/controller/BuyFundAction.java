@@ -3,6 +3,7 @@ package edu.cmu.cs.webapp.task7.controller;
 
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 
 
 //import model.PhotoDAO;
+
+
+
+
+
 
 
 
@@ -61,38 +67,66 @@ public class BuyFundAction  extends Action {
 
 			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("customer");
 			
-        	FavoriteBean[] favoriteList = favoriteDAO.getfavorites(user.getId());
-	        request.setAttribute("favoriteList",favoriteList);
+			
+			
+			
+        	FundBean[] fundList = fundDAO.getAllFunds();
+	        request.setAttribute("fundList",fundList);
 
-			ItemForm form = formBeanFactory.create(request);
+			BuyForm form = formBeanFactory.create(request);
 	        errors.addAll(form.getValidationErrors());
-	        System.out.println(errors);
+	        
+	        //System.out.println(errors);
+	        
+	        
 	        if (errors.size() > 0) return "error.jsp";
-	        FavoriteBean fav=new FavoriteBean();
-	        //System.out.println(fav.getEmail());
-	        //System.out.println("user id before"+user.getId());
-	        fav.setEmail(user.getId());
-	        //System.out.println("fav email id after adding"+fav.getEmail());
-	        fav.setComment(form.getComment());
-	        fav.setCount(fav.getCount());
-	        fav.setFavorite(form.getFavorite());
-	        System.out.println(form.getFavorite());
-
-	        favoriteDAO.create(fav);
+	        
+	        String fund=form.getFund();
+	        
+	        
+			long amount=Long.parseLong(form.getAmount());
+			int id=fundDAO.getFundByName(fund);
+			
+			long availableBalance= (long) transactionDAO.getValidBalance(user.getUserName(), user.getCash()/100);
+			DecimalFormat df2 = new DecimalFormat("#,##0.00");			
+			String availableBalanceString = df2.format(availableBalance).toString();
+			
+			if ((availableBalance - amount) < 0.0) {
+				errors.add("You do not have enough cash balance in your account. You have only $"
+						+ availableBalanceString + " left");
+				return "buyFund.jsp";
+			}
+			else{
+				// write a method in posDAO to increase the number of shares.
+				//posDAO.increaseShares(id, shares,user.getUserName());
+			}
+			amount = Math.round(amount*100);
+			
+			
+			
+			//ALSO ADD TO THE TRANSACTIONS TABLE
+			TransactionBean transbean= new TransactionBean();
+			transbean.setUserName(user.getUserName());
+			transbean.setFundId(id);
+			//transbean.setShares(shares);
+			transbean.setTransactionType(transbean.BUY_FUND);
+			transbean.setAmount((long) (amount));
+			transbean.setExecuteDate(null);
+			transactionDAO.create(transbean);
 
 			// Update favoriteList (there's now one more on the list)
-        	FavoriteBean[] newFavoriteList = favoriteDAO.getfavorites(user.getId());
-	        request.setAttribute("favoriteList",newFavoriteList);
-	        return "manage.jsp";
+			TransactionBean[] newTransactionList = transactionDAO.getTransactions(user.getUserName());
+	        request.setAttribute("transactionList",newTransactionList);
+	        return "history.jsp";
 	 	}
 		catch (RollbackException e) {
 	 		e.printStackTrace();
 			errors.add(e.getMessage());
-			return "manage.jsp";
+			return "viewAccount.jsp";
 	 	} catch (FormBeanException e) {
 	 		e.printStackTrace();
 			errors.add(e.getMessage());
-			return "manage.jsp";
+			return "viewAccount.jsp";
 		}
     }
     
