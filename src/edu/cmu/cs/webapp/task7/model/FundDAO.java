@@ -22,7 +22,7 @@ public class FundDAO extends GenericDAO<FundBean> {
 		super(FundBean.class, tableName, cp);
 	}
 
-	public int getFundIdByName(String fundName){
+	public int getFundIdByName(String fundName) throws RollbackException{
 		int id=0;
 		try{
 
@@ -38,6 +38,10 @@ public class FundDAO extends GenericDAO<FundBean> {
 			id= p[0].getFundId();
 			Transaction.commit();
 		}		
+		catch(ArrayIndexOutOfBoundsException e){
+			throw new RollbackException("Fund does not exist: id="+fundName);
+		}
+		
 		catch (RollbackException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

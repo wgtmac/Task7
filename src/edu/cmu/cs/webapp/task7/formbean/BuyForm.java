@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import org.mybeans.form.FormBean;
 
 public class BuyForm extends FormBean{
-	private String camount;
+	//private String camount;
 	private String amount;
 	private String fund;
 	private String fund2;
@@ -44,7 +44,10 @@ public class BuyForm extends FormBean{
 		if(amount == null || amount.length() == 0) {
 			errors.add("Please enter an amount.");
 		}
-		if(fund == null || fund.length() == 0) {
+		/*if(amount!=camount){
+			errors.add("Amounts do not match");
+		}*/
+		if((fund == null || fund.length() == 0) && (fund2==null||fund2.length()==0)) {
 			errors.add("Please choose a fund");
 		}
 		if (amount != null && amount.matches(".*[<>\"].*") ) 
@@ -52,14 +55,14 @@ public class BuyForm extends FormBean{
 		if(!checkDecimal(amount)){
 			errors.add("Only numbers with a maximum of 2 decimals places are allowed for amount.");
 		}
-		if(amount!=camount){
-			errors.add("Amounts do not match");
-		}
+		
         if (errors.size() > 0) return errors;
 		try { 
-			double amt = Double.parseDouble(amount);
+			System.out.println("amount is"+amount);
+			long amt = Long.parseLong(amount);
 			amt = Math.round(amt*100);
 			amt=amt/100;
+			System.out.println("amt is"+amt);
 			if(amt< 10) {
 				errors.add("Please enter an amount that is greater than $10");
 			} else if(amt>1000000000) {
@@ -76,13 +79,13 @@ public class BuyForm extends FormBean{
 		return p.matcher(input).matches();
 	}
 
-	public String getCamount() {
+	/*public String getCamount() {
 		return camount;
 	}
 
 	public void setCamount(String camount) {
 		this.camount = camount;
-	}
+	}*/
 
 	public String getFund2() {
 		return fund2;
