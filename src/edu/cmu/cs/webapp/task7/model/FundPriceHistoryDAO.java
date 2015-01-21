@@ -13,7 +13,6 @@ import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
 import edu.cmu.cs.webapp.task7.databean.FundPriceHistoryBean;
-import edu.cmu.cs.webapp.task7.databean.PositionBean;
 
 public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 	public FundPriceHistoryDAO(ConnectionPool cp, String tableName)
@@ -55,7 +54,6 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 			System.out.println(fphb.getPrice());
 			
 			create(fphb);
-			
 
 			Transaction.commit();
 		} finally {
