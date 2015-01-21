@@ -43,9 +43,12 @@ public class ResetPwdAction extends Action {
 				ResetPwdForm form = formBeanFactory.create(request);
 				request.setAttribute("form", form);
 				
-				request.getSession().setAttribute("customer", request.getSession().getAttribute("customer"));
-
+				String user_name = (String) request.getAttribute("customer");
+				
+				request.setAttribute("customer", request.getParameter("customer"));
+				System.out.println(request.getParameter("customer"));
 				if (!form.isActionPresent()) {
+					
 					return "resetPwd.jsp";
 				}
 				
@@ -55,7 +58,8 @@ public class ResetPwdAction extends Action {
 					return "resetPwd.jsp";
 				}
 				
-				CustomerBean user = customerDAO.read(request.getSession().getAttribute("customer"));
+				CustomerBean user = customerDAO.read(request.getParameter("customer"));
+				
 				user.setPassword(form.getNewPwd());
 				customerDAO.update(user);
 				request.setAttribute("msg", "Password is reset successfully!");
