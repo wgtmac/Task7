@@ -57,7 +57,7 @@ public class BuyFundAction  extends Action {
         request.setAttribute("errors",errors);
         
 		try {
-			if(request.getSession().getAttribute("customer")==null){
+			if(request.getSession().getAttribute("user")==null){
 	            errors.add("Please log in as a customer");
 	            return "login.jsp";
 	        }
@@ -65,7 +65,7 @@ public class BuyFundAction  extends Action {
             // Set up user list for nav barS
 			request.setAttribute("customerList",customerDAO.getUsers());
 
-			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("customer");
+			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("user");
 			
 			
 			
@@ -85,7 +85,7 @@ public class BuyFundAction  extends Action {
 	        
 	        if (errors.size() > 0) return "error.jsp";
 	        
-	        String fund=form.getFund();
+	        String fund=form.getFund1();
 	        
 	        
 			long amount=Long.parseLong(form.getAmount());
@@ -121,7 +121,7 @@ public class BuyFundAction  extends Action {
 			// Update favoriteList (there's now one more on the list)
 			TransactionBean[] newTransactionList = transactionDAO.getTransactions(user.getUserName());
 	        request.setAttribute("transactionList",newTransactionList);
-	        return "history.jsp";
+	        return "buyFund.jsp";
 	 	}
 		catch (RollbackException e) {
 	 		e.printStackTrace();
