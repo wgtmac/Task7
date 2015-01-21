@@ -9,17 +9,27 @@
 		<h2 class="page-header">Transaction History</h2>
 	</div>
 </div>
+
+	<c:choose>
+		<c:when test="${ (empty msg) }">
+		</c:when>
+		<c:otherwise>
+			<h3 style="color: blue">${msg}</h3>
+		</c:otherwise>
+	</c:choose>
+
 <div class="table-responsive">
 	<table class="table table-bordered table-hover table-striped">
 		<thead>
 			<tr>
 				<th>Transaction Date</th>
-				<th>Status</th>
 				<th>Operation</th>
+				<th>Type</th>
 				<th>Fund Name</th>
 				<th>Shares</th>
 				<th>Share Price</th>
 				<th>Total Amount</th>
+
 			</tr>
 		</thead>
 		<!-- Create for each loop to fill table -->
@@ -29,22 +39,22 @@
 				<c:otherwise>
 					<c:forEach var="u" items="${ transactionList }">
 						<tr>
-							<td>${ u.getDate() }</td>
-							<td>${ u.getStatus() }</td>
-							<td>${ u.getOperation() }</td>
-							<td>${ u.getFund() }</td>
-							<td align="right">${ u.getShares() }</td>
+							<td>${ u.date }</td>
+							<td>${ u.operation }</td>
+							<td>${ u.type }</td>
+							<td>${ u.fund }</td>
+							<td align="right">${ u.totShares }</td>
 							<td align="right"><fmt:setLocale value="en_US" /> <fmt:formatNumber
-								value="${ u.getSharePrice() }" type="CURRENCY"> </fmt:formatNumber></td>
+								value="${ u.price }" type="CURRENCY"> </fmt:formatNumber></td>
 							<td align="right"><fmt:setLocale value="en_US" /> <fmt:formatNumber
-								value="${ u.getAmount() }" type="CURRENCY"> </fmt:formatNumber></td>
+								value="${ u.total }" type="CURRENCY"> </fmt:formatNumber></td>
 							</tr>
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
 		</tbody>
 	</table>
-	<p align="center">*** End of Transactions ***</p>
+	<p align="center">*** End of Registry ***</p>
 </div>
 
 <jsp:include page="template-buttom.jsp" />
