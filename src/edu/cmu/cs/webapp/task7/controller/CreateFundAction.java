@@ -7,9 +7,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
+
 
 import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
 import edu.cmu.cs.webapp.task7.databean.FundBean;
@@ -55,6 +57,14 @@ public class CreateFundAction extends Action {
 				if (errors.size() != 0) {
 					return "createFund.jsp";
 				}
+				
+				FundBean[] funds1 = fundDAO.match(MatchArg.equals("name",
+						form.getFundName()));
+		        
+		        if(funds1.length!=0){
+		        	errors.add("Fund already exists");
+					return "createFund.jsp";
+		        }
 
 				FundBean newFund = new FundBean();
 				
