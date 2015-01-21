@@ -68,7 +68,7 @@ public class RequestCheckForm extends FormBean {
 				throw new NumberFormatException();
 			}
 		} catch (Exception e) {
-			errors.add("Amount entered is not valid");
+			errors.add("The amount entered is not valid.");
 		}
 		if (errors.size() > 0)
 			return errors;

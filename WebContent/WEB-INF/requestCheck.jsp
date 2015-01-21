@@ -11,7 +11,7 @@
 	</div>
 </div>
 Please notice that your available cash includes all funds purchased and
-checks previusly requested today.
+checks previously requested today.
 <br>
 It does not include recent funds sold that will post by the end of the
 transaction day.

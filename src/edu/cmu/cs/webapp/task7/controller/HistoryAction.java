@@ -4,40 +4,26 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-
+import java.text.DateFormat;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.genericdao.RollbackException;
-import org.mybeans.form.FormBeanException;
-import org.mybeans.form.FormBeanFactory;
-
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
-import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
-import edu.cmu.cs.webapp.task7.databean.FundBean;
-import edu.cmu.cs.webapp.task7.databean.FundPriceHistoryBean;
+import edu.cmu.cs.webapp.task7.databean.HistoryBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
-import edu.cmu.cs.webapp.task7.formbean.DepositCheckForm;
-import edu.cmu.cs.webapp.task7.formbean.TransitionDayForm;
-import edu.cmu.cs.webapp.task7.model.CustomerDAO;
-import edu.cmu.cs.webapp.task7.model.EmployeeDAO;
 import edu.cmu.cs.webapp.task7.model.FundDAO;
-import edu.cmu.cs.webapp.task7.model.FundPriceHistoryDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
-import edu.cmu.cs.webapp.task7.model.PositionDAO;
 import edu.cmu.cs.webapp.task7.model.TransactionDAO;
 
 public class HistoryAction extends Action {
 
-	private CustomerDAO customerDAO;
 	private TransactionDAO transactionDAO;
+	private FundDAO fundDAO;
 
 	public HistoryAction(Model model) {
-		customerDAO = model.getCustomerDAO();
 		transactionDAO = model.getTransactionDAO();
+		fundDAO = model.getFundDAO();
 	}
 
 	public String getName() {
@@ -58,31 +44,102 @@ public class HistoryAction extends Action {
 				CustomerBean customer = (CustomerBean) session
 						.getAttribute("user");
 
-				TransactionBean tb = new TransactionBean();
-				tb.setUserName(((CustomerBean) session.getAttribute("user"))
+				TransactionBean[] tb = transactionDAO.getTransactions(customer
 						.getUserName());
 
-				int type = tb.getTransactionType();
-				String operation;
-				
-				if (type == 8) {
-					operation = "D | Buy Fund";
-				} else if (type == 4) {
-					operation = "C | Sell Fund";
-				} else if (type == 2) {
-					operation = "D | Request Check";
-				} else if (type == 1) {
-					operation = "C | Deposit Check";
-				} else
-					operation = "Invalid Operation";
+				// List of History Beans
+				HistoryBean[] hb = null;
 
-				String date = tb.getExecuteDate();
-				
-			
-				tb.getAmount();
-				tb.getTransactionType();
+				if (tb != null && tb.length != 0) {
 
-				return "history.jsp";
+					hb = new HistoryBean[tb.length];
+
+					for (int i = 0; i < tb.length; i++) {
+
+						hb[i] = new HistoryBean();
+						// Date from Transaction:
+						DateFormat dateFormat = new SimpleDateFormat(
+								"MM/dd/yyyy");
+						String date = tb[i].getExecuteDate();
+						if (date == null || date.length() == 0) {
+							date = "Pending";
+						} else
+							dateFormat.format(date);
+
+						hb[i].setDate(date);
+
+						// Operation
+						int type = tb[i].getTransactionType();
+						String operation;
+						if (type == 8) {
+							operation = "Buy Fund";
+						} else if (type == 4) {
+							operation = "Sell Fund";
+						} else if (type == 2) {
+							operation = "Request Check";
+						} else if (type == 1) {
+							operation = "Deposit Check";
+						} else
+							operation = "Invalid Operation";
+						hb[i].setOperation(operation);
+
+						// Operation Type
+						String transaction;
+						if (type == 8 || type == 2) {
+							transaction = "Debit";
+						} else if (type == 4 || type == 1) {
+							transaction = "Credit";
+						} else
+							transaction = "Invalid Type";
+						hb[i].setType(transaction);
+
+						// Fund Name
+						int fundId;
+						String fund;
+						if (tb[i].getFundId() == 0) {
+							fund = "";
+						} else {
+							fundId = tb[i].getFundId();
+							fund = fundDAO.getFundNameById(fundId);
+						}
+						hb[i].setFund(fund);
+
+						// Total Amount
+						long amount = tb[i].getAmount() / 100;
+						String total;
+						NumberFormat formatter = new DecimalFormat("#.##");
+						if (amount == 0) {
+							total = "";
+						} else
+							total = formatter.format(amount);
+						hb[i].setTotal(total);
+
+						// Get Shares and Calculate Share Price
+						long shares = tb[i].getShares() / 1000;
+						String totShares;
+						NumberFormat formatShare = new DecimalFormat(
+								"###,###.###");
+						if (shares == 0) {
+							totShares = "";
+						} else
+							totShares = formatShare.format(shares);
+						hb[i].setTotShares(totShares);
+
+						String price;
+						if (shares != 0) {
+							long sharePrice = amount / shares;
+							price = formatter.format(sharePrice);
+						} else
+							price = "";
+						hb[i].setPrice(price);
+					}
+					request.setAttribute("transactionList", hb);
+					return "history.jsp";
+					
+				} else {
+					request.setAttribute("msg", "You have not made any transactions yet.");
+					return "history.jsp";
+				}
 
 			} else {
 				// logout and re-login
