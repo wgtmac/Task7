@@ -41,7 +41,7 @@ transaction day.
 				<tbody>
 					<tr>
 						<td><b>Check Payable To:</b></td>
-						<td>${ user.firstName }${ user.lastName }</td>
+						<td>${ user.firstName } ${ user.lastName }</td>
 					</tr>
 					<tr>
 						<td><b>Available Cash:</b></td>
