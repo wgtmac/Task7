@@ -94,11 +94,22 @@ public class TransitionDayAction extends Action {
 	        	} else {
 	        		lastDay = lastFundDay == null ? lastTranDay : lastFundDay;
 	        	}
-	        	request.setAttribute("lastDay", inputDate.format(lastDay));
+	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
 				
 				// If no params were passed, return with no errors so that the
 				// form will be presented (we assume for the first time).
 				if (!form.isPresent()) {
+					return "transitionDay.jsp";
+				}
+				
+				// Any validation errors?
+				HashMap<String, String> map = new HashMap<String, String>();
+				for (FundBean fb : fundList) {
+					map.put("fund_" + fb.getFundId(), request.getParameter("fund_" + fb.getFundId()));
+				}
+				errors.addAll(form.getValidationErrors(map));
+
+				if (errors.size() != 0) {
 					return "transitionDay.jsp";
 				}
 				
@@ -112,18 +123,7 @@ public class TransitionDayAction extends Action {
 					return "transitionDay.jsp";
 				}
 				
-				
-				HashMap<String, String> map = new HashMap<String, String>();
-				for (FundBean fb : fundList) {
-					map.put("fund_" + fb.getFundId(), request.getParameter("fund_" + fb.getFundId()));
-				}
-				// Any validation errors?
-				errors.addAll(form.getValidationErrors(map));
-
-				if (errors.size() != 0) {
-					return "transitionDay.jsp";
-				}
-				
+		
 				String today = dateFormat.format(date);
 				
 				// update prices
@@ -166,10 +166,11 @@ public class TransitionDayAction extends Action {
 							}
 							break;
 						case TransactionBean.BUY_FUND:
+							long shares = 0;
 							if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
 								double amount = tb.getAmount() / 100.00;
 								double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.0;
-								long shares = (long) (amount / price * 1000);
+								shares = (long) (amount / price * 1000);
 								
 								PositionBean pb = new PositionBean();
 								pb.setUserName(tb.getUserName());
@@ -177,16 +178,17 @@ public class TransitionDayAction extends Action {
 								pb.setShares(shares);
 								positionDAO.create(pb);
 								
-								tb.setShares(shares);
 							} else {
 								double amount = tb.getAmount() / 100.00;
 								double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.00;
-								long shares = (long) (amount / price * 1000);
+								shares = (long) (amount / price * 1000);
 								
 								PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
 								pb.setShares(shares + pb.getShares());
 								positionDAO.update(pb);
 							}
+							
+							tb.setShares(shares);
 									
 							cb.setCash(cb.getCash() -  tb.getAmount());
 							customerDAO.update(cb);
@@ -232,7 +234,7 @@ public class TransitionDayAction extends Action {
 	        		lastDay = lastFundDay == null ? lastTranDay : lastFundDay;
 	        	}
 				
-	        	request.setAttribute("lastDay", inputDate.format(lastDay));
+	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
 				request.setAttribute("msg", "Transition day is set successfully!");
 
 				return "transitionDay.jsp";
