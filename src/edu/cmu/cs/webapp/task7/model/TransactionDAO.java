@@ -105,6 +105,7 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 	public String getLastDate(CustomerBean c) throws RollbackException{
 		TransactionBean[] transaction = match(MatchArg.equals("userName", c.getUserName()));
 		if(transaction.length == 0) return null;
+		Arrays.sort(transaction);
 		return transaction[transaction.length-1].getExecuteDate();
 	}
 	

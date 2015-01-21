@@ -44,10 +44,8 @@
 							<td>${ u.type }</td>
 							<td>${ u.fund }</td>
 							<td align="right">${ u.totShares }</td>
-							<td align="right"><fmt:setLocale value="en_US" /> <fmt:formatNumber
-								value="${ u.price }" type="CURRENCY"> </fmt:formatNumber></td>
-							<td align="right"><fmt:setLocale value="en_US" /> <fmt:formatNumber
-								value="${ u.total }" type="CURRENCY"> </fmt:formatNumber></td>
+							<td align="right">${ u.price }</td>
+							<td align="right">${ u.total }</td>
 							</tr>
 					</c:forEach>
 				</c:otherwise>

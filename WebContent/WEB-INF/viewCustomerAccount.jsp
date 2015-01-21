@@ -39,11 +39,11 @@
 				</tr>
 				<tr>
 					<td>Last trading date:</td>
-					<td>1/15/2015</td>
+					<td>${lastDay}</td>
 				</tr>
 				<tr>
 					<td>Accountable Balance as of Today:</td>
-					<td align="right"><b>$ ${Acct_cash}</b></td>
+					<td align="right"><b>$ ${cash}</b></td>
 				</tr>
 				<tr>
 					<td>Available Cash:</td>

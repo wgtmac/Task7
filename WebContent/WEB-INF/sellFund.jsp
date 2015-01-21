@@ -35,22 +35,25 @@
 						<th>Ticker</th>
 						<th>Shares held</th>
 						<th>Shares to sell</th>
+						<th>Operation</th>
 
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="fund" items="${fundList}">
 						
-						<form action="depositCheck.do" method="post">
+						<form action="sellFund.do" method="post">
 							<tr>
-								<td>${ fund.getName() }</td>
+								<td>${ fund.getFundName() }</td>
 								<td>${ fund.getTicker() }</td>
 								<td>${ fund.getShares() }</td>
 								<td>
 									 <input name="shares"  value="0"  class="form-control" >
-									 <input name="fundId"  type="hidden" value="${ fund.getFundId() }"  class="form-control" >
-							 		<button type="submit" name="action" value="sell" 	class="btn btn-primary">Sell</button>
+									 <input style="width=30px" name="fundId"  type="hidden" value="${ fund.getFundId() }"  class="form-control" >
 								</td>
+								<td>
+									<button type="submit" name="action" value="sell" 	class="btn btn-primary">Sell</button>
+								 </td>
 								</tr>
 							</form>
 						

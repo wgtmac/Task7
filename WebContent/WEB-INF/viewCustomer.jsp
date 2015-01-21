@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="col-lg-6">
-        <form action="viewCustomer.do">
+        <form action="viewCustomer.do" method="POST">
           <div class="form-group">
           <label>Choose an account by username:</label>
           <select  class="form-control" name="userName1">

@@ -21,7 +21,7 @@
 		<h3 style="color: red">${error}</h3>
 	</c:forEach>
 
-<form>
+<form method="POST">
 	<label>Select the fund you want to buy:</label>
 	<div class="form-group">
 		<!-- Add the account stocks below -->

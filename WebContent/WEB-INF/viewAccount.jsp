@@ -42,10 +42,10 @@
 	<tbody>
 	             	<c:forEach var="fund" items="${fundList}">
 						 <tr>
-                    		<td>${ fund.getName() }</td>
+                    		<td>${ fund.getFundName() }</td>
                     		<td> ${ fund.getTicker() } </td>
                     		<td> ${ fund.getShares() } </td>
-                    		<td> $( fund.getTotal()) } </td>
+                    		<td> ${ fund.getTotal() } </td>
                   			</tr>
 					</c:forEach>
 	</tbody>

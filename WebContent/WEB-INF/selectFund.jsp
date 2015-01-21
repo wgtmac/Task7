@@ -1,4 +1,4 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="template-customer-top.jsp" />
@@ -14,7 +14,7 @@
           </div>
           <div class="panel-body"> </div>
         </div>
-        <form action="buyFund.do">
+        <form action="buyFund.do" method="POST">
         <button type="submit" class="btn btn-primary">Buy This Fund</button>
         </form><br>
         <a href="researchFund.do">Go Back To Search</button>

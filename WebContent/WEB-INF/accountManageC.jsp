@@ -1,4 +1,4 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="template-customer-top.jsp" />
@@ -8,11 +8,11 @@
           <h2 class="page-header"> Account Options </h2>
         </div>
       </div>
-      <form action="customerPSW.do">
+      <form action="customerPSW.do" method="POST">
         <input type="submit" value="Change Password" class="btn btn-default">
       </form>
       <br>
-      <form action="logout.do">
+      <form action="logout.do" method="POST">
         <input type="submit" value="Log Out" class="btn btn-default">
       </form>
       

@@ -3,6 +3,7 @@ package edu.cmu.cs.webapp.task7.controller;
 
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import edu.cmu.cs.webapp.task7.model.FundDAO;
 import edu.cmu.cs.webapp.task7.model.FundPriceHistoryDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
 import edu.cmu.cs.webapp.task7.model.PositionDAO;
+import edu.cmu.cs.webapp.task7.model.TransactionDAO;
 
 
 public class ViewCustomerAction extends Action {
@@ -39,11 +41,14 @@ public class ViewCustomerAction extends Action {
 	private PositionDAO positionDAO;
 	private FundPriceHistoryDAO historyDAO;
 	private FundDAO fundDAO;
+	private TransactionDAO transactionDAO;
 
 	public ViewCustomerAction(Model model) {
 		customerDAO = model.getCustomerDAO();
 		positionDAO = model.getPositionDAO();
 		fundDAO=model.getFundDAO();
+		transactionDAO = model.getTransactionDAO();
+		historyDAO = model.getFundPriceHistoryDAO();
 	}
 
 	public String getName() {
@@ -64,6 +69,9 @@ public class ViewCustomerAction extends Action {
 				
 				// read all customers into list
 				request.setAttribute("customerList", customerDAO.getAllUserName());
+				
+				DecimalFormat df3 = new DecimalFormat("#,##0.000");
+				DecimalFormat df2 = new DecimalFormat(	"###,###.00");
 				
 				// If no params were passed, return with no errors so that the
 				// form
@@ -91,7 +99,12 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("address2",customer.getAddress2());
 				request.setAttribute("state",customer.getState());
 				request.setAttribute("city",customer.getCity());
-				request.setAttribute("avai_cash",customer.getCash());
+				
+				String lastDay = transactionDAO.getLastDate(customer);
+				request.setAttribute("lastDay", lastDay == null ? "No recent transaction" : lastDay);
+				
+				request.setAttribute("cash",df2.format(customer.getCash() / 100.0));
+				request.setAttribute("avai_cash",df2.format(transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0)));
 				
 				PositionBean[] fundList = positionDAO.getFunds(form.getUserName1());
 		        request.setAttribute("fundList",fundList);
@@ -100,18 +113,15 @@ public class ViewCustomerAction extends Action {
 				if(positionList != null) {
 					List<PositionInfo> positionInfoList = new ArrayList<PositionInfo>();
 					for(PositionBean a: positionList) {
-						double shares = ((double)(a.getShares())/1000);
+						double shares = ((double)(a.getShares())/1000.0);
 						
-						double price = ((double)(historyDAO.getLatestFundPrice(a.getFundId()).getPrice()));
+						double price = ((double)(historyDAO.getLatestFundPrice(a.getFundId()).getPrice() / 100.0));
 						double value = shares * price;
 						String ticker=fundDAO.getFundNameById(a.getFundId());
-
-						DecimalFormat df1 = new DecimalFormat("#,##0.000");
-						
 					
-						String sharesString = df1.format(shares).toString();
-						String priceString = df1.format(price).toString();
-						String valueString = df1.format(value).toString();
+						String sharesString = df3.format(shares);
+						String priceString = df2.format(price);
+						String valueString = df2.format(value);
 					
 						PositionInfo aInfo = new PositionInfo(ticker,sharesString,priceString,valueString);
 						positionInfoList.add(aInfo);

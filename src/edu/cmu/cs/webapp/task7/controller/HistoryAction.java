@@ -38,14 +38,12 @@ public class HistoryAction extends Action {
 
 		try {
 			// If user is already logged in, redirect to todolist.do
-			if (session.getAttribute("user") != null
-					&& session.getAttribute("user") instanceof CustomerBean) {
+			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof CustomerBean) {
 
 				CustomerBean customer = (CustomerBean) session
 						.getAttribute("user");
 
-				TransactionBean[] tb = transactionDAO.getTransactions(customer
-						.getUserName());
+				TransactionBean[] tb = transactionDAO.getTransactions(customer.getUserName());
 
 				// List of History Beans
 				HistoryBean[] hb = null;
@@ -58,13 +56,11 @@ public class HistoryAction extends Action {
 
 						hb[i] = new HistoryBean();
 						// Date from Transaction:
-						DateFormat dateFormat = new SimpleDateFormat(
-								"MM/dd/yyyy");
+
 						String date = tb[i].getExecuteDate();
 						if (date == null || date.length() == 0) {
 							date = "Pending";
-						} else
-							dateFormat.format(date);
+						}
 
 						hb[i].setDate(date);
 
@@ -105,20 +101,20 @@ public class HistoryAction extends Action {
 						hb[i].setFund(fund);
 
 						// Total Amount
-						long amount = tb[i].getAmount() / 100;
+						double amount = tb[i].getAmount() / 100.0;
 						String total;
-						NumberFormat formatter = new DecimalFormat("#.##");
+						NumberFormat formatter = new DecimalFormat("#,###.00");
 						if (amount == 0) {
 							total = "";
 						} else
-							total = formatter.format(amount);
+							total = "$" + formatter.format(amount);
 						hb[i].setTotal(total);
 
 						// Get Shares and Calculate Share Price
-						long shares = tb[i].getShares() / 1000;
+						double shares = tb[i].getShares() / 1000.0;
 						String totShares;
 						NumberFormat formatShare = new DecimalFormat(
-								"###,###.###");
+								"#,###.000");
 						if (shares == 0) {
 							totShares = "";
 						} else
@@ -127,8 +123,8 @@ public class HistoryAction extends Action {
 
 						String price;
 						if (shares != 0) {
-							long sharePrice = amount / shares;
-							price = formatter.format(sharePrice);
+							double sharePrice = amount / shares;
+							price = "$" + formatter.format(sharePrice);
 						} else
 							price = "";
 						hb[i].setPrice(price);

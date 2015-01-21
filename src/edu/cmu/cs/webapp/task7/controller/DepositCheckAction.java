@@ -79,6 +79,7 @@ public class DepositCheckAction extends Action {
 				transactionDAO.createAutoIncrement(tb);
 				
 				request.setAttribute("msg", "Customer check is deposited successfully!");
+				request.removeAttribute("form");
 
 				return "depositCheck.jsp";
 			} else {

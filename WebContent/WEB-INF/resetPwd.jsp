@@ -14,7 +14,7 @@
 <c:forEach var="error" items="${errors}">
 	<h3 style="color: red">${error}</h3>
 </c:forEach>
-<form role="form" action="reset.do">
+<form role="form" action="reset.do" method="POST">
 	<div class="form-group">
 		<h3>
 			Reset password for: <font color="blue">${customer} </font>

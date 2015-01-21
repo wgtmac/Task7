@@ -17,6 +17,7 @@ import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanFactory;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
+import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.FundDisplay;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
@@ -60,8 +61,12 @@ public class SellFundAction  extends Action {
 				
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
+					
+					fundList = new FundDisplay[positionList.length];
 
 					for (int i = 0; i < positionList.length; i++) {
+						fundList[i] = new FundDisplay();
+						
 						fundList[i].setFundId(positionList[i].getFundId());
 						fundList[i].setFundName(fundDAO.read(positionList[i].getFundId()).getName());
 						fundList[i].setTicker(fundDAO.read(positionList[i].getFundId()).getSymbol());
@@ -97,6 +102,29 @@ public class SellFundAction  extends Action {
 		        transbean.setTransactionType(TransactionBean.SELL_FUND);
 		        transbean.setExecuteDate(null);
 		        transactionDAO.create(transbean);
+		        
+		        request.removeAttribute("form");
+		        
+		        request.setAttribute("msg", "Funds Sold successfully!");
+		        
+		        positionList = positionDAO.getFunds(customer.getUserName());
+				
+				if (positionList != null && positionList.length > 0) {
+					fundList = new FundDisplay[positionList.length];
+					
+					fundList = new FundDisplay[positionList.length];
+
+					for (int i = 0; i < positionList.length; i++) {
+						fundList[i] = new FundDisplay();
+						
+						fundList[i].setFundId(positionList[i].getFundId());
+						fundList[i].setFundName(fundDAO.read(positionList[i].getFundId()).getName());
+						fundList[i].setTicker(fundDAO.read(positionList[i].getFundId()).getSymbol());
+						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0)));
+					}
+				}
+				
+				request.setAttribute("fundList",fundList);
 
 		        return "sellFund.jsp";	
 			} else {
