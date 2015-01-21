@@ -16,12 +16,12 @@ public class ResetPwdForm extends FormBean {
 	public void setCustomer(String s)     { customer     = s.trim(); }
 	public void setNewPwd(String s)     { newPwd     = s.trim(); }
 	public void setConfPwd(String s) { confPwd = s.trim(); }
-	public void setAction(String s) { action2 = s; }
+	public void setAction2(String s) { action2 = s; }
 	
 	public String getNewPwd()     { return newPwd;     }
 	public String getConfPwd()     { return confPwd;     }
 	public String getCustomer()     { return customer;     }
-	public String getAciton()		{ return action2; }
+	public String getAciton2()		{ return action2; }
 	
 	public boolean isActionPresent() { return action2 != null; }
 

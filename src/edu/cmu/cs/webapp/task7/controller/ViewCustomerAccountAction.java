@@ -49,6 +49,7 @@ public class ViewCustomerAccountAction extends Action {
 			if (session.getAttribute("user") != null
 					&& session.getAttribute("user") instanceof EmployeeBean) {
 				
+				
 				return "viewCustomerAccount.jsp";
 			} else {
 				// logout and re-login

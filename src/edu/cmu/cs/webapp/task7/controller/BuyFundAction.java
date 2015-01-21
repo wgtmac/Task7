@@ -91,7 +91,7 @@ public class BuyFundAction  extends Action {
 			long amount=Long.parseLong(form.getAmount());
 			int id=fundDAO.getFundIdByName(fund);
 			
-			long availableBalance= (long) transactionDAO.getValidBalance(user.getUserName(), user.getCash()/100);
+			double  availableBalance= transactionDAO.getValidBalance(user.getUserName(), user.getCash()/100.0);
 			DecimalFormat df2 = new DecimalFormat("#,##0.00");			
 			String availableBalanceString = df2.format(availableBalance).toString();
 			

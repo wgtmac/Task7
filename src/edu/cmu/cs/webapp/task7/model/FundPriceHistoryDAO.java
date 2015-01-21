@@ -26,6 +26,21 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 		if(fundPriceHistory.length == 0) return null;
 		return fundPriceHistory[fundPriceHistory.length-1];
 	}
+	
+	public long getLatestPrice (int id) throws RollbackException, ParseException {
+		long price = 0;
+		try {
+			Transaction.begin();
+
+			price = read(id, getLatestTradingDayDateString()).getPrice();
+
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive())
+				Transaction.rollback();
+		}
+		return price;
+	}
 
 	public void create(FundPriceHistoryBean fphb) throws RollbackException {
 		try {
@@ -75,6 +90,27 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 			Transaction.begin();
 			
 			FundPriceHistoryBean[] fb = match();
+			if (fb != null && fb.length != 0) {
+				Arrays.sort(fb);
+				
+				date = fb[fb.length - 1].getPriceDate();
+			}
+			
+
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive())
+				Transaction.rollback();
+		}
+		return date;
+	}
+	
+	public String getLatestTradingDayByCustomer (String userName) throws RollbackException, ParseException {
+		String date = null;
+		try {
+			Transaction.begin();
+			
+			FundPriceHistoryBean[] fb = match(MatchArg.equals("userName", userName));
 			if (fb != null && fb.length != 0) {
 				Arrays.sort(fb);
 				

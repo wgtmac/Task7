@@ -27,17 +27,17 @@
                 <form role="form" method="POST">
                 	<div class="form-group">
                     	<label>Current password</label>
-                        <input class="form-control" name="currPwd">
+                        <input class="form-control" name="currPwd" value=" ${ form.currPwd } ">
                     </div>
                     
                     <div class="form-group">
                     	<label>New password </label>
-                        <input class="form-control" name="newPwd">
+                        <input class="form-control" name="newPwd" value=" ${ form.newPwd } ">
                     </div>
                     
                     <div class="form-group">
                     	<label>Confirm new password: </label>
-                        <input class="form-control" name="confPwd">
+                        <input class="form-control" name="confPwd" value=" ${ form.confPwd } ">
                     </div>
 
                     <button type="submit" name="action" value="change" class="btn btn-default">Submit</button>

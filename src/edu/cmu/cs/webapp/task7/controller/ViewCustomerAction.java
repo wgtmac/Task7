@@ -2,6 +2,7 @@
 package edu.cmu.cs.webapp.task7.controller;
 
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +15,18 @@ import org.mybeans.form.FormBeanFactory;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
+import edu.cmu.cs.webapp.task7.databean.PositionBean;
+import edu.cmu.cs.webapp.task7.databean.PositionInfo;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 import edu.cmu.cs.webapp.task7.formbean.CreateFundForm;
 import edu.cmu.cs.webapp.task7.formbean.DepositCheckForm;
 import edu.cmu.cs.webapp.task7.formbean.ViewCustomerForm;
 import edu.cmu.cs.webapp.task7.model.CustomerDAO;
 import edu.cmu.cs.webapp.task7.model.EmployeeDAO;
+import edu.cmu.cs.webapp.task7.model.FundDAO;
+import edu.cmu.cs.webapp.task7.model.FundPriceHistoryDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
+import edu.cmu.cs.webapp.task7.model.PositionDAO;
 
 
 public class ViewCustomerAction extends Action {
@@ -30,9 +36,14 @@ public class ViewCustomerAction extends Action {
 	
 
 	private CustomerDAO customerDAO;
+	private PositionDAO positionDAO;
+	private FundPriceHistoryDAO historyDAO;
+	private FundDAO fundDAO;
 
 	public ViewCustomerAction(Model model) {
 		customerDAO = model.getCustomerDAO();
+		positionDAO = model.getPositionDAO();
+		fundDAO=model.getFundDAO();
 	}
 
 	public String getName() {
@@ -81,6 +92,33 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("state",customer.getState());
 				request.setAttribute("city",customer.getCity());
 				request.setAttribute("avai_cash",customer.getCash());
+				
+				PositionBean[] fundList = positionDAO.getfunds(form.getUserName1());
+		        request.setAttribute("fundList",fundList);
+		        
+		    	List<PositionBean> positionList = positionDAO.getAllPositionByCustomer(customer);
+				if(positionList != null) {
+					List<PositionInfo> positionInfoList = new ArrayList<PositionInfo>();
+					for(PositionBean a: positionList) {
+						double shares = ((double)(a.getShares())/1000);
+						
+						double price = ((double)(historyDAO.getLatestFundPrice(a.getFundId()).getPrice()));
+						double value = shares * price;
+						String ticker=fundDAO.getFundNameById(a.getFundId());
+
+						DecimalFormat df1 = new DecimalFormat("#,##0.000");
+						
+					
+						String sharesString = df1.format(shares).toString();
+						String priceString = df1.format(price).toString();
+						String valueString = df1.format(value).toString();
+					
+						PositionInfo aInfo = new PositionInfo(ticker,sharesString,priceString,valueString);
+						positionInfoList.add(aInfo);
+					}
+					request.setAttribute("positionInfoList",positionInfoList);
+					
+				}
 				
 				
 				return "viewCustomerAccount.jsp";

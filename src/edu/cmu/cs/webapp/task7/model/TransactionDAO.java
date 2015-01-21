@@ -14,14 +14,13 @@ import org.genericdao.Transaction;
 
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
-import edu.cmu.cs.webapp.task7.databean.FundBean;
-import edu.cmu.cs.webapp.task7.databean.PositionBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 
 public class TransactionDAO extends GenericDAO<TransactionBean> {
 	public TransactionDAO(ConnectionPool cp, String tableName) throws DAOException {
 		super(TransactionBean.class, tableName, cp);
 	}
+	
 	public double getValidBalance (String userName, double amount) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
@@ -58,7 +57,8 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return amount;
 	}
 	
-	/*public double getValidBalance (String userName, double amount) throws RollbackException {
+	
+	public double getValidShares (String userName, double shares) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
 			Transaction.begin();
@@ -70,16 +70,8 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 				for (TransactionBean t : tbs) {
 					switch(t.getTransactionType()) {
 					case TransactionBean.SELL_FUND:
+						shares -= t.getShares() / 1000.0;
 						break;
-					case TransactionBean.BUY_FUND:
-						amount -= t.getAmount() / 100.00;
-						break;
-					case TransactionBean.REQ_CHECK:
-						amount -= t.getAmount() / 100.00;
-						break;
-					case TransactionBean.DPT_CHECK:
-						amount += t.getAmount() / 100.00;
-						break;	
 					default:
 						break;
 					}
@@ -91,9 +83,9 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 			if (Transaction.isActive()) Transaction.rollback();
 		}
 		
-		return amount;
+		return shares;
 	}
-	*/
+	
 	public TransactionBean[] getAllPendingTrans () throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
@@ -109,6 +101,7 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		
 		return tbs;
 	}
+	
 	public String getLastDate(CustomerBean c) throws RollbackException{
 		TransactionBean[] transaction = match(MatchArg.equals("userName", c.getUserName()));
 		if(transaction.length == 0) return null;
