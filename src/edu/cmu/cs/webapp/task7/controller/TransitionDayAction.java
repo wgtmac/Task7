@@ -67,6 +67,10 @@ public class TransitionDayAction extends Action {
 				HashMap<Integer, String> price_map = new HashMap<Integer, String>();
 				String lastTradingDay = fundPriceHistoryDAO.getLatestTradingDayDateString ();
 				for (FundBean fb : fundList) {
+					if (lastTradingDay == null) {
+						price_map.put(fb.getFundId(),"N/A");
+						continue;
+					}
 					FundPriceHistoryBean tmp = fundPriceHistoryDAO.read(fb.getFundId() ,lastTradingDay);
 					if (tmp == null) {
 						price_map.put(fb.getFundId(),"N/A");
@@ -118,18 +122,19 @@ public class TransitionDayAction extends Action {
 					return "transitionDay.jsp";
 				}
 				
+				String today = dateFormat.format(date);
+				
 				// update prices
 				for (FundBean fb : fundList) {			
 					FundPriceHistoryBean fphb = new FundPriceHistoryBean();
 					fphb.setFundId(fb.getFundId());
-					fphb.setPriceDate(form.getDate());
+					fphb.setPriceDate(today);
 					fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
-					
+										
 					fundPriceHistoryDAO.create(fphb);
 				}
-				
+								
 				// process pending transactions
-				String today = dateFormat.format(date);
 				for (TransactionBean tb : transactionDAO.getAllPendingTrans()){
 					CustomerBean cb = customerDAO.read(tb.getUserName());
 					

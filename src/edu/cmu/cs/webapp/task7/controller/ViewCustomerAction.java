@@ -93,7 +93,7 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("city",customer.getCity());
 				request.setAttribute("avai_cash",customer.getCash());
 				
-				PositionBean[] fundList = positionDAO.getfunds(form.getUserName1());
+				PositionBean[] fundList = positionDAO.getFunds(form.getUserName1());
 		        request.setAttribute("fundList",fundList);
 		        
 		    	List<PositionBean> positionList = positionDAO.getAllPositionByCustomer(customer);

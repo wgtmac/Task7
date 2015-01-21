@@ -16,7 +16,6 @@ import edu.cmu.cs.webapp.task7.model.*;
 import edu.cmu.cs.webapp.task7.formbean.*;
 
 public class ViewPortfolioAction extends Action {
-	private CustomerDAO customerDAO;
 	private FundPriceHistoryDAO historyDAO;
 	private PositionDAO positionDAO;
 	private TransactionDAO transactionDAO;
@@ -24,7 +23,6 @@ public class ViewPortfolioAction extends Action {
 
 	public ViewPortfolioAction(Model model) {
 		// TODO Auto-generated constructor stub
-		customerDAO = model.getCustomerDAO();
 		historyDAO = model.getFundPriceHistoryDAO();
 		positionDAO = model.getPositionDAO();
 		transactionDAO = model.getTransactionDAO();
@@ -32,7 +30,7 @@ public class ViewPortfolioAction extends Action {
 	}
 
 	public String getName() {
-		return "viewPortfolio.do";
+		return "viewAccount.do";
 	}
 
 	public String perform(HttpServletRequest request) {

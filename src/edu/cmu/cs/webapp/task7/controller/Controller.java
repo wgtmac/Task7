@@ -35,6 +35,7 @@ public class Controller extends HttpServlet {
         Action.add(new ViewCustomerAccountAction(model));
         Action.add(new ResetPwdAction(model));
         Action.add(new HistoryAction(model));
+        Action.add(new ViewPortfolioAction(model));
 }
 
 

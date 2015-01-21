@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 import org.genericdao.PrimaryKey;
 
-@PrimaryKey("fundId,priceDate")
+@PrimaryKey("priceDate,fundId")
 public class FundPriceHistoryBean implements Comparable<FundPriceHistoryBean> {
 	private int 		fundId;
 	private String 	priceDate;

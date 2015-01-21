@@ -50,7 +50,12 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 				throw new RollbackException(
 						"Price of fund has alreadly been updated today");
 
+			System.out.println(fphb.getFundId());
+			System.out.println(fphb.getPriceDate());
+			System.out.println(fphb.getPrice());
+			
 			create(fphb);
+			
 
 			Transaction.commit();
 		} finally {
