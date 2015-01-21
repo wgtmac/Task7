@@ -20,25 +20,28 @@ public class Controller extends HttpServlet {
         Model model = new Model(getServletConfig());
 
         Action.add(new LoginAction(model));
+        Action.add(new CreateFundAction(model));
         Action.add(new LogoutAction(model));
         Action.add(new EmployeeMainAction(model));
-//<<<<<<< HEAD
         Action.add(new SellFundAction(model));
-        Action.add(new BuyFundAction(model));
-        Action.add(new ViewPortfolioAction(model));
-        
-//=======
         Action.add(new CustomerMainAction(model));
         Action.add(new CreateEmployeeAction(model));
         Action.add(new CreateCustomerAction(model));
         Action.add(new DepositCheckAction(model));
         Action.add(new TransitionDayAction(model));
+<<<<<<< HEAD
 //<<<<<<< HEAD
 //>>>>>>> 5bc8b3596bf5c4afdad54711deed090e1919b5c8
 //=======
         Action.add(new RequestCheckAction(model));
 //>>>>>>> 3e7245a3d4003b9cfe5800b3a54b614b6f02493b
     }
+=======
+        Action.add(new ViewCustomerAction(model));
+        Action.add(new RequestCheckAction(model));
+        Action.add(new ChangePwdAction(model));
+}
+>>>>>>> ddc022e2b40cc21eed0c969b10c72b8befcbf4c8
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request,response);

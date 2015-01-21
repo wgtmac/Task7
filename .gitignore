@@ -13,5 +13,6 @@ hs_err_pid*
 /build/
 
 # project setting files
-.classpath
-.settings/org.eclipse.wst.common.project.facet.core.xml
+*.classpath
+*.xml
+/.settings/

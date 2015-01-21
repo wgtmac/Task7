@@ -4,7 +4,7 @@ import org.genericdao.PrimaryKey;
 
 @PrimaryKey("fundId")
 public class FundBean {
-	private int 		fundId;
+	private int 	fundId;
 	private String 	name;
 	private String 	symbol;
 	

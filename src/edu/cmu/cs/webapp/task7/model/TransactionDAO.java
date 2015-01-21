@@ -15,12 +15,49 @@ import org.genericdao.Transaction;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.FundBean;
+import edu.cmu.cs.webapp.task7.databean.PositionBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 
 public class TransactionDAO extends GenericDAO<TransactionBean> {
 	public TransactionDAO(ConnectionPool cp, String tableName) throws DAOException {
 		super(TransactionBean.class, tableName, cp);
 	}
+	public double getValidBalance (String userName, double amount) throws RollbackException {
+		TransactionBean[] tbs = null;
+		try {
+			Transaction.begin();
+			
+			// How to execute select * from table where transactionType IS NULL
+			tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
+			
+			if (tbs != null) {
+				for (TransactionBean t : tbs) {
+					switch(t.getTransactionType()) {
+					case TransactionBean.SELL_FUND:
+						break;
+					case TransactionBean.BUY_FUND:
+						amount -= t.getAmount() / 100.00;
+						break;
+					case TransactionBean.REQ_CHECK:
+						amount -= t.getAmount() / 100.00;
+						break;
+					case TransactionBean.DPT_CHECK:
+						amount += t.getAmount() / 100.00;
+						break;	
+					default:
+						break;
+					}
+				}
+			}
+			
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}
+		
+		return amount;
+	}
+	
 	public double getValidBalance (String userName, double amount) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {

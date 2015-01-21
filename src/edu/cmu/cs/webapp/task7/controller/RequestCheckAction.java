@@ -45,6 +45,14 @@ public class RequestCheckAction extends Action {
 			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof CustomerBean) {
 				RequestCheckForm form = formBeanFactory.create(request);
 				request.setAttribute("form", form);
+				
+				CustomerBean customer = (CustomerBean) session.getAttribute("user");
+				double availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );
+				
+				NumberFormat formatter = new DecimalFormat("#0.00"); 
+				
+				String balance = formatter.format(availableBalance);
+				session.setAttribute("balance", balance);
 					
 				// If no params were passed, return with no errors so that the
 				// form will be presented (we assume for the first time).
@@ -57,14 +65,22 @@ public class RequestCheckAction extends Action {
 				if (errors.size() != 0) {
 					return "requestCheck.jsp";
 				}
+<<<<<<< HEAD
 //<<<<<<< HEAD
+=======
+				
+			
+>>>>>>> ddc022e2b40cc21eed0c969b10c72b8befcbf4c8
 				// Check if cash available is enough to cover check request customer.getCash();
-				if (Double.parseDouble(form.getCash()) > 500) {
+				if (Double.parseDouble(form.getCash()) > availableBalance) {
 					errors.add("Amount requested is higher than cash available");
 					return "requestCheck.jsp";
 				}
+<<<<<<< HEAD
 //=======
 //>>>>>>> origin/master
+=======
+>>>>>>> ddc022e2b40cc21eed0c969b10c72b8befcbf4c8
 
 				TransactionBean tb = new TransactionBean();
 				tb.setUserName(((CustomerBean) session.getAttribute("user")).getUserName());
@@ -78,9 +94,13 @@ public class RequestCheckAction extends Action {
 				
 				//Set new cash amount
 				
-				NumberFormat formatter = new DecimalFormat("#0.00");     			
+					
 				request.setAttribute("msg", "A check in the amount of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " has been requested.");
 
+				availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );
+				balance = formatter.format(availableBalance);
+				session.setAttribute("balance", balance);
+				
 				return "requestCheck.jsp";
 			} else {
 				// logout and re-login

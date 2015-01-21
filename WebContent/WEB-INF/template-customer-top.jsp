@@ -33,7 +33,7 @@
                     <a href="accountManageC.do" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Customer Account<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="customerPSW.do"><i class="fa fa-fw fa-user"></i> Change Password</a>
+                            <a href="changePwd.do"><i class="fa fa-fw fa-user"></i> Change Password</a>
                         </li>
                       <li class="divider"></li>
                         <li>
