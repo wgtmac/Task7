@@ -123,7 +123,7 @@ public class ViewCustomerAction extends Action {
 						String priceString = df2.format(price);
 						String valueString = df2.format(value);
 					
-						PositionInfo aInfo = new PositionInfo(ticker,sharesString,priceString,valueString);
+						PositionInfo aInfo = new PositionInfo(ticker,sharesString,priceString,"$" + valueString);
 						positionInfoList.add(aInfo);
 					}
 					request.setAttribute("positionInfoList",positionInfoList);

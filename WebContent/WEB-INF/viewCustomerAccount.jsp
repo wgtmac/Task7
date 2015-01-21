@@ -43,11 +43,11 @@
 				</tr>
 				<tr>
 					<td>Accountable Balance as of Today:</td>
-					<td align="right"><b>$ ${cash}</b></td>
+					<td><b>$ ${cash}</b></td>
 				</tr>
 				<tr>
 					<td>Available Cash:</td>
-					<td align="right"><b>$ ${avai_cash}</b></td>
+					<td><b>$ ${avai_cash}</b></td>
 				</tr>
 			</tbody>
 		</table>
@@ -59,7 +59,6 @@
 				<tr>
 					<th>Fund Name</th>
 					<th>Shares</th>
-					<th></th>
 					<th>Value</th>
 				</tr>
 			</thead>
@@ -70,12 +69,10 @@
 					<c:when test="${(empty positionInfoList)}"></c:when>
 					<c:otherwise>
 						<c:forEach var="u" items="${positionInfoList}">
-						
 							<tr>
-								<td>${u.get(0)}</td>
-								<td align="right">${u.get(1)}</td>
-								<td align="right">$</td>
-								<td align="right">${u.get(3)}</td>
+								<td >${ u.getName() }</td>
+								<td >${ u.getShares() }</td>
+								<td >${u.getTotal()}</td>
 							</tr>
 						</c:forEach>
 					</c:otherwise>
