@@ -60,7 +60,7 @@
               <tbody>
                 <tr>
                 
-                  <td><input name="date" type="date" required class="form-control"></td>
+                  <td><input name="date" type="date" required class="form-control" value="${ lastDay }"></td>
                 </tr>
               </tbody>
             </table>
