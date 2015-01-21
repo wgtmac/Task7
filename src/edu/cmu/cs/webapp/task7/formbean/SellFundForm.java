@@ -4,42 +4,40 @@ import java.util.List;
 
 import org.mybeans.form.FormBean;
 
-import edu.cmu.cs.webapp.task7.databean.PositionBean;
-import edu.cmu.cs.webapp.task7.model.PositionDAO;
-
 
 public class SellFundForm extends FormBean {
+	private String action;
+	private String fundId;
+	private String shares;
 	
 
-	private String fund;
-	private long shares;
-	private PositionBean pb;
+	public void setShares(String s)				{ shares = s; }
+	public String getAction ()			{ return action;}
+	public String getShares ()			{return shares; }
 	
-	public String getFund() { return fund; }
-	public long getShares()     { return shares;     }
-	
-	public void setFund(String s) { fund = s.trim(); }
-	public void setShares(int s)     { shares     = s; }
+	public void setAction(String s) 			 { action  = s;  }
+	public void setFundId(String s)				{ fundId = s; }
+	public String getFundId ()			{return fundId; }
 
-	public List<String> getValidationErrors() {
+	public List<String> getValidationErrors () {
 		List<String> errors = new ArrayList<String>();
 
-		if (fund == null || shares == 0) {
-			errors.add("Select a fund and Enter the number of Shares");
-		}
-		
-		//get the number of shares for a particular funds and see if the customer has enough to sell
-		/*if(shares<pb.getShares()){
-			errors.add("You do not have enough shares");
-		}*/
-		
-		
-		if (errors.size() > 0) {
-			return errors;
-		}
-		
-		
+		if (shares == null || shares.length() == 0)
+			errors.add("Shares to sell is required");
+		if (action == null) errors.add("Button is required");
 
+		if (errors.size() > 0) 	return errors;
+        if (!action.equals("sell")) errors.add("Invalid button");
+        
+    	try {
+        	double d = Double.parseDouble(shares);
+        	if (d <= 0 || d > Integer.MAX_VALUE) {
+        		throw new Exception();
+        	}
+        } catch (Exception e) {
+        	 errors.add("Shares should be a non-negative number");
+        }
+    
 		return errors;
 	}
 

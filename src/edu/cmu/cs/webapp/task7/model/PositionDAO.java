@@ -20,10 +20,8 @@ public class PositionDAO extends GenericDAO<PositionBean> {
 		super(PositionBean.class, tableName, cp);
 	}
 	
-	public PositionBean[] getfunds(String userName) throws RollbackException {
-		PositionBean[] list = match(MatchArg.equals("userName", userName));
-		// Arrays.sort(list);
-		return list;
+	public PositionBean[] getFunds(String userName) throws RollbackException {
+		return match(MatchArg.equals("userName", userName));
 	}
 	
 	public List<PositionBean> getAllPositionByCustomer(CustomerBean c) throws RollbackException{
