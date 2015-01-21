@@ -41,7 +41,8 @@ public class FundDAO extends GenericDAO<FundBean> {
 		catch (RollbackException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
+		} 
+		finally {
 			if (Transaction.isActive()) Transaction.rollback();
 		}	return id;
 	}

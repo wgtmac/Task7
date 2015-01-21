@@ -64,7 +64,7 @@ public class SellFundAction  extends Action {
 
 			SellFundForm form = formBeanFactory.create(request);
 			String fund=form.getFund();
-			System.out.println();
+			System.out.println("fund");
 			long shares=form.getShares();
 			int id=fundDAO.getFundIdByName(fund);
 			//posDAO.reduceShares(id, shares,user.getUserName());
