@@ -31,7 +31,7 @@ public class Model {
 			fundDAO   = new FundDAO(pool, "fund");
 			transactionDAO   = new TransactionDAO(pool, "transaction");
 			fundPriceHistoryDAO   = new FundPriceHistoryDAO(pool, "fund_price_history");
-			
+					
 			EmployeeBean eb = employeeDAO.read( "root");
 			if (eb == null) {
 				eb = new EmployeeBean();

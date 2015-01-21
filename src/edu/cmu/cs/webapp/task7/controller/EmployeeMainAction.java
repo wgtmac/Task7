@@ -3,6 +3,8 @@ package edu.cmu.cs.webapp.task7.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.genericdao.RollbackException;
+
 import edu.cmu.cs.webapp.task7.model.EmployeeDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
 
