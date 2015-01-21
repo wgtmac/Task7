@@ -69,6 +69,7 @@ public class CreateCustomerAction extends Action {
 				newUser.setAddress2(form.getAddress2());
 				newUser.setCity(form.getCity());
 				newUser.setState(form.getState());
+				newUser.setZipcode(form.getZipcode());
 				newUser.setCash(0);
 
 				customerDAO.create(newUser);
