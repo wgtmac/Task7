@@ -22,7 +22,29 @@ public class FundDAO extends GenericDAO<FundBean> {
 		super(FundBean.class, tableName, cp);
 	}
 
-	
+	public int getFundIdByName(String fundName){
+		int id=0;
+		try{
+
+			Transaction.begin();
+			FundBean[] p = match(MatchArg.equals("name", fundName));
+
+
+
+			if (p == null) {
+				throw new RollbackException("Fund does not exist: id="+fundName);
+			}
+
+			id= p[0].getFundId();
+			Transaction.commit();
+		}		
+		catch (RollbackException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}	return id;
+	}
 	
 	public String getFundNameById(int fundId){
 		String fundName=null;

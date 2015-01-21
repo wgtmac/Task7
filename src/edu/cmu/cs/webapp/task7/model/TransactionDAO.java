@@ -58,7 +58,7 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return amount;
 	}
 	
-	public double getValidBalance (String userName, double amount) throws RollbackException {
+	/*public double getValidBalance (String userName, double amount) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
 			Transaction.begin();
@@ -93,7 +93,7 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		
 		return amount;
 	}
-	
+	*/
 	public TransactionBean[] getAllPendingTrans () throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {

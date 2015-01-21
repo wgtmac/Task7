@@ -49,7 +49,7 @@ public class BuyFundAction  extends Action {
     	transactionDAO=model.getTransactionDAO();
 	}
 
-	public String getName() { return "addFav.do"; }
+	public String getName() { return "buyFund.do"; }
 
     public String perform(HttpServletRequest request) {
         // Set up the errors list
@@ -74,6 +74,10 @@ public class BuyFundAction  extends Action {
 	        request.setAttribute("fundList",fundList);
 
 			BuyForm form = formBeanFactory.create(request);
+			
+			if (!form.isPresent()) {
+				return "buyFund.jsp";
+			}
 	        errors.addAll(form.getValidationErrors());
 	        
 	        //System.out.println(errors);
@@ -85,7 +89,7 @@ public class BuyFundAction  extends Action {
 	        
 	        
 			long amount=Long.parseLong(form.getAmount());
-			int id=fundDAO.getFundByName(fund);
+			int id=fundDAO.getFundIdByName(fund);
 			
 			long availableBalance= (long) transactionDAO.getValidBalance(user.getUserName(), user.getCash()/100);
 			DecimalFormat df2 = new DecimalFormat("#,##0.00");			
@@ -122,11 +126,11 @@ public class BuyFundAction  extends Action {
 		catch (RollbackException e) {
 	 		e.printStackTrace();
 			errors.add(e.getMessage());
-			return "viewAccount.jsp";
+			return "error.jsp";
 	 	} catch (FormBeanException e) {
 	 		e.printStackTrace();
 			errors.add(e.getMessage());
-			return "viewAccount.jsp";
+			return "error.jsp";
 		}
     }
     
