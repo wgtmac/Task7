@@ -62,14 +62,14 @@ public class SellFundAction  extends Action {
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
 					
-					fundList = new FundDisplay[positionList.length];
-
 					for (int i = 0; i < positionList.length; i++) {
 						fundList[i] = new FundDisplay();
 						
+						FundBean fund = fundDAO.read(positionList[i].getFundId());
+						
 						fundList[i].setFundId(positionList[i].getFundId());
-						fundList[i].setFundName(fundDAO.read(positionList[i].getFundId()).getName());
-						fundList[i].setTicker(fundDAO.read(positionList[i].getFundId()).getSymbol());
+						fundList[i].setFundName(fund.getName());
+						fundList[i].setTicker(fund.getSymbol());
 						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0)));
 					}
 				}
