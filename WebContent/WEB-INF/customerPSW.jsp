@@ -11,11 +11,11 @@
       <form action="customerPSW.do" method="post">
       <div class="form-group">
         <label>New Password</label>
-        <input class="form-control" type="password" placeholder="New Password">
+        <input required class="form-control" type="password" placeholder="New Password">
       </div>
       <div class="form-group">
         <label>Confirm Password</label>
-        <input class="form-control" type="password" placeholder="Confirm new Password">
+        <input required class="form-control" type="password" placeholder="Confirm new Password">
       </div>
       <button type="submit" class="btn btn-default">Change Password</button>
       </form>

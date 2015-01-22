@@ -20,11 +20,11 @@
 		<table class="table table-hover table-striped">
 			<thead>
 				<tr>
-					<td>Username:</td>
+					<td>Account User Name:</td>
 					<td>${userName}</td>
 				</tr>
 				<tr>
-					<td>Name:</td>
+					<td>Customer Name:</td>
 					<td>${customerName}</td>
 				</tr>
 			</thead>
@@ -35,19 +35,19 @@
 				</tr>
 				<tr>
 					<td>City, State:</td>
-					<td>${city },${state}.</td>
+					<td>${city }, ${state}.</td>
 				</tr>
 				<tr>
 					<td>Last trading date:</td>
 					<td>${lastDay}</td>
 				</tr>
 				<tr>
-					<td>Accountable Balance as of Today:</td>
-					<td><b>$ ${cash}</b></td>
+					<td>Last Posted Balance:</td>
+					<td align="right"><b>$ ${cash}</b></td>
 				</tr>
 				<tr>
 					<td>Available Cash:</td>
-					<td><b>$ ${avai_cash}</b></td>
+					<td align="right"><b>$ ${avai_cash}</b></td>
 				</tr>
 			</tbody>
 		</table>
@@ -58,8 +58,8 @@
 			<thead>
 				<tr>
 					<th>Fund Name</th>
-					<th>Shares</th>
-					<th>Value</th>
+					<th align="center">Shares</th>
+					<th align="center">Value</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -71,41 +71,14 @@
 						<c:forEach var="u" items="${positionInfoList}">
 							<tr>
 								<td >${ u.getName() }</td>
-								<td >${ u.getShares() }</td>
-								<td >${u.getTotal()}</td>
+								<td align="right">${ u.getShares() }</td>
+								<td align="right">${u.getTotal()}</td>
 							</tr>
 						</c:forEach>
 					</c:otherwise>
 				</c:choose>
-
-				<!-- <tr>
-					<td>Google Inc</td>
-					<td align="right">5000.522</td>
-					<td align="right">$</td>
-					<td align="right">80,000.00</td>
-				</tr>
-				<tr>
-					<td>Alibaba Corp</td>
-					<td align="right">46.830</td>
-					<td align="right">$</td>
-					<td align="right">8,000.00</td>
-				</tr>
-				<tr>
-					<td>Apple Inc</td>
-					<td align="right">0.500</td>
-					<td align="right">$</td>
-					<td align="right">10.00</td>
-				</tr>
-				<tr>
-					<td>Exxon Mobile</td>
-					<td align="right">130.043</td>
-					<td align="right">$</td>
-					<td align="right">1,990.10</td> -->
 			</tbody>
 		</table>
 	</div>
-</div>
-</div>
-</div>
 
 <jsp:include page="template-buttom.jsp" />

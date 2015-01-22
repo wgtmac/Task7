@@ -55,7 +55,7 @@ public class CreateEmployeeAction extends Action {
 				}
 
 				if (employeeDAO.read(form.getUserName()) != null) {
-					errors.add("A user with this name already exists");
+					errors.add("The employee user name already exists.");
 					return "createEmployee.jsp";
 				}
 
@@ -67,7 +67,7 @@ public class CreateEmployeeAction extends Action {
 
 				employeeDAO.create(newUser);
 				
-				request.setAttribute("msg", "Create employee account successfully!");
+				request.setAttribute("msg", "Employee account " +form.getUserName()+ " was created successfully.");
 				request.removeAttribute("form");
 				
 				return "createEmployee.jsp";

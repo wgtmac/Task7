@@ -25,7 +25,7 @@ public class ChangePwdForm extends FormBean {
 		List<String> errors = new ArrayList<String>();
 
 		if (currPwd == null || currPwd.length() == 0) {
-			errors.add("Original Password is required");
+			errors.add("Original password is required");
 		}
 		
 		if (newPwd == null || newPwd.length() == 0) {
@@ -33,7 +33,7 @@ public class ChangePwdForm extends FormBean {
 		}
 		
 		if (confPwd == null || confPwd.length() == 0) {
-			errors.add("Confirm Password is required");
+			errors.add("Confirm password is required");
 		}
 		
 		if (action == null)

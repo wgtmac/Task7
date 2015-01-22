@@ -101,7 +101,7 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("city",customer.getCity());
 				
 				String lastDay = transactionDAO.getLastDate(customer);
-				request.setAttribute("lastDay", lastDay == null ? "No recent transaction" : lastDay);
+				request.setAttribute("lastDay", lastDay == null ? "No recent transactions" : lastDay);
 				
 				request.setAttribute("cash",df2.format(customer.getCash() / 100.0));
 				request.setAttribute("avai_cash",df2.format(transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0)));

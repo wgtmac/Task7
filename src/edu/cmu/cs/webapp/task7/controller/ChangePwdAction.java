@@ -59,7 +59,7 @@ public class ChangePwdAction extends Action {
 				}
 				
 				if (!form.getCurrPwd().equals(customerDAO.read(user.getUserName()).getPassword())) {
-					errors.add("Incorrect original password");
+					errors.add("Original password is incorrect");
 				}
 				if (errors.size() > 0) {
 					return "customerPSW.jsp";
@@ -68,7 +68,7 @@ public class ChangePwdAction extends Action {
 				user.setPassword(form.getNewPwd());
 				customerDAO.update(user);
 				
-				request.setAttribute("msg", "Password is changed successfully!");
+				request.setAttribute("msg", "Password was changed successfully.");
 
 				return "customerPSW.jsp";
 				
@@ -99,7 +99,7 @@ public class ChangePwdAction extends Action {
 				user.setPassword(form.getNewPwd());
 				employeeDAO.update(user);
 				
-				request.setAttribute("msg", "Password is changed successfully!");
+				request.setAttribute("msg", "Password was changed successfully.");
 
 				return "employeePSW.jsp";
 			}
