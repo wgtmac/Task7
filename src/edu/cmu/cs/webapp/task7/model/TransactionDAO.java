@@ -58,23 +58,18 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 	}
 	
 	
-	public double getValidShares (String userName, double shares) throws RollbackException {
+	public double getValidShares (String userName, double shares, int fundId) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
 			Transaction.begin();
 			
 			// How to execute select * from table where transactionType IS NULL
-			tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
+			tbs =  match(MatchArg.equals("fundId", fundId), MatchArg.equals("transactionType", TransactionBean.SELL_FUND), 
+					MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
 			
 			if (tbs != null) {
 				for (TransactionBean t : tbs) {
-					switch(t.getTransactionType()) {
-					case TransactionBean.SELL_FUND:
-						shares -= t.getShares() / 1000.0;
-						break;
-					default:
-						break;
-					}
+					shares -= t.getShares() / 1000.0;
 				}
 			}
 			
