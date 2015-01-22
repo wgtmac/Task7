@@ -44,7 +44,7 @@
 		<span class="input-group-addon">$</span>
 		<!-- Add the account amount below -->
 		<input type="text" class="form-control" name="amount"
-			placeholder="Type only numbers in format 1000.00">
+			placeholder="Enter Amount above $10">
 	</div>
 	<!-- 		<label>Confirm Amount:</label> -->
 	<!-- 		<div class="form-group input-group"> -->

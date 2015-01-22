@@ -72,16 +72,17 @@ public class BuyFundAction extends Action {
 			// System.out.println(errors);
 
 			if (errors.size() > 0)
-				return "error.jsp";
+				return "buyFund.jsp";
 
 			String fund = form.getFund1();
-			// System.out.println("fund name 1st"+fund);
+			
 
-			long amount = Long.parseLong(form.getAmount());
-			// System.out.println("amount on action is"+amount);
+			//long amount = Long.parseLong(form.getAmount());
+			double amount = Double.parseDouble(form.getAmount());
+			
 			int id = fundDAO.getFundIdByName(fund);
 
-			long availableBalance = (long) transactionDAO.getValidBalance(
+			double availableBalance = transactionDAO.getValidBalance(
 					user.getUserName(), user.getCash() / 100.0);
 			DecimalFormat df2 = new DecimalFormat("#,##0.00");
 			String availableBalanceString = df2.format(availableBalance)
