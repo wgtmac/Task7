@@ -46,7 +46,8 @@ public class BuyFundAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			if (request.getSession().getAttribute("user") == null) {
+			if (request.getSession().getAttribute("user") == null || 
+					request.getSession().getAttribute("user") instanceof EmployeeBean) {
 				errors.add("Please log in as a customer");
 				return "login.jsp";
 			}
