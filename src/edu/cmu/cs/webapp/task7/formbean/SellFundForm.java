@@ -35,7 +35,7 @@ public class SellFundForm extends FormBean {
         		throw new Exception();
         	}
         } catch (Exception e) {
-        	 errors.add("Shares should be a non-negative number");
+        	 errors.add("Shares should be a positive number");
         }
     
 		return errors;
