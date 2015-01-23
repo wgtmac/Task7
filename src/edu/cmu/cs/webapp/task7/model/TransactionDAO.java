@@ -13,6 +13,8 @@ import org.genericdao.RollbackException;
 import org.genericdao.Transaction;
 
 
+
+
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 
@@ -56,6 +58,50 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 	}
 	
 	
+	public boolean requestCheck (String userName, double balance, double amount) throws RollbackException {
+		boolean isSucceeded = false;
+		try {
+			Transaction.begin();
+			
+			TransactionBean[] tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
+			
+			if (tbs != null) {
+				for (TransactionBean t : tbs) {
+					switch(t.getTransactionType()) {
+					case TransactionBean.BUY_FUND:
+						balance -= t.getAmount() / 100.00;
+						break;
+					case TransactionBean.REQ_CHECK:
+						balance -= t.getAmount() / 100.00;
+						break;
+					case TransactionBean.DPT_CHECK:
+						balance += t.getAmount() / 100.00;
+						break;	
+					default:
+						break;
+					}
+				}
+			}
+			
+			if (balance >= amount) {
+				TransactionBean tb = new TransactionBean();
+				tb.setUserName(userName);
+				tb.setExecuteDate(null);
+				tb.setTransactionType(TransactionBean.REQ_CHECK);
+				tb.setAmount((long)(amount * 100));
+				createAutoIncrement(tb);
+				isSucceeded = true;
+			}
+			
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}
+		
+		return isSucceeded;
+	}
+	
+	
 	public double getValidShares (String userName, double shares, int fundId) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
@@ -78,6 +124,41 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return shares;
 	}
 	
+	
+	public boolean sellShares (String userName, double shares, int fundId, double shares_sell) throws RollbackException {
+		boolean isSucceeded = false;
+		try {
+			Transaction.begin();
+			
+			TransactionBean[] tbs  =  match(MatchArg.equals("fundId", fundId), MatchArg.equals("transactionType", TransactionBean.SELL_FUND), 
+					MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
+			
+			if (tbs != null) {
+				for (TransactionBean t : tbs) {
+					shares -= t.getShares() / 1000.0;
+				}
+			}
+			
+			if (shares >= shares_sell) {
+				
+		        TransactionBean transbean= new TransactionBean();
+		        transbean.setUserName(userName);
+		        transbean.setFundId(fundId);
+		        transbean.setShares((long)(shares_sell * 1000.0));
+		        transbean.setTransactionType(TransactionBean.SELL_FUND);
+		        transbean.setExecuteDate(null);
+		        create(transbean);
+		        
+				isSucceeded = true;
+			}
+			
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}
+		
+		return isSucceeded;
+	}
 	
 	public String getLastDate(CustomerBean c) throws RollbackException{
 		String date = null;

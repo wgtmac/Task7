@@ -42,13 +42,10 @@ public class ResetPwdAction extends Action {
 				
 				ResetPwdForm form = formBeanFactory.create(request);
 				request.setAttribute("form", form);
-				
-				String user_name = (String) request.getAttribute("customer");
-				
+								
 				request.setAttribute("customer", request.getParameter("customer"));
-				System.out.println(request.getParameter("customer"));
+
 				if (!form.isActionPresent()) {
-					
 					return "resetPwd.jsp";
 				}
 				

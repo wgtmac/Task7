@@ -7,16 +7,13 @@ import java.text.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
-import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
-import edu.cmu.cs.webapp.task7.databean.TransactionBean;
-import edu.cmu.cs.webapp.task7.formbean.DepositCheckForm;
 import edu.cmu.cs.webapp.task7.formbean.RequestCheckForm;
-import edu.cmu.cs.webapp.task7.model.CustomerDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
 import edu.cmu.cs.webapp.task7.model.TransactionDAO;
 
@@ -65,26 +62,12 @@ public class RequestCheckAction extends Action {
 				if (errors.size() != 0) {
 					return "requestCheck.jsp";
 				}
-				// Check if cash available is enough to cover check request customer.getCash();
-				if (Double.parseDouble(form.getCash()) > availableBalance) {
+				
+				if (!transactionDAO.requestCheck(customer.getUserName(), customer.getCash(), Double.parseDouble(form.getAmount()))) {
 					errors.add("Amount requested is higher than cash available");
 					return "requestCheck.jsp";
-				}
-
-
-				TransactionBean tb = new TransactionBean();
-				tb.setUserName(((CustomerBean) session.getAttribute("user")).getUserName());
-				//tb.setFundId(0);
-				tb.setExecuteDate(null);
-				//tb.setAmount(0);
-				tb.setTransactionType(TransactionBean.REQ_CHECK);
-				tb.setAmount((long) (Double.parseDouble(form.getAmount()) * 100));
-
-				transactionDAO.createAutoIncrement(tb);
+				} 
 				
-				//Set new cash amount
-				
-					
 				request.setAttribute("msg", "A check in the amount of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " has been requested.");
 
 				availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );

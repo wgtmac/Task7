@@ -6,14 +6,9 @@ import java.util.List;
 import org.mybeans.form.FormBean;
 
 public class RequestCheckForm extends FormBean {
-	private String cash;
 	private String amount;
 	private String confAmount;
 	private String action;
-
-	public void setCash(String s) {
-		cash = s.trim();
-	}
 	
 	public void setAmount(String s) {
 		amount = s.trim();
@@ -27,9 +22,6 @@ public class RequestCheckForm extends FormBean {
 		action = s;
 	}
 
-	public String getCash() {
-		return amount;
-	}
 	
 	public String getAmount() {
 		return amount;

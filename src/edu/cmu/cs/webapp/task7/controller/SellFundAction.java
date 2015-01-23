@@ -1,8 +1,5 @@
 package edu.cmu.cs.webapp.task7.controller;
 
-
-
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,6 @@ import org.mybeans.form.FormBeanFactory;
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.FundBean;
 import edu.cmu.cs.webapp.task7.databean.FundDisplay;
-import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
 import edu.cmu.cs.webapp.task7.model.*;
 import edu.cmu.cs.webapp.task7.formbean.*;
@@ -29,13 +25,11 @@ public class SellFundAction  extends Action {
 	private FormBeanFactory<SellFundForm> formBeanFactory = FormBeanFactory.getInstance(SellFundForm.class);
 
 	private FundDAO fundDAO;
-	private CustomerDAO  customerDAO;
 	private PositionDAO positionDAO;
 	private TransactionDAO transactionDAO;
 	
 	public SellFundAction(Model model) {
 		fundDAO = model.getFundDAO();
-    	customerDAO  = model.getCustomerDAO();
     	positionDAO=model.getPositionDAO();
     	transactionDAO=model.getTransactionDAO();
 	}
@@ -88,36 +82,23 @@ public class SellFundAction  extends Action {
 		        Double sharesToSell = Double.parseDouble(form.getShares());
 		        Double sharesHeld =  transactionDAO.getValidShares(customer.getUserName() , 
 		        		positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0, Integer.parseInt(form.getFundId()));
-		        		
-			
-		        if (sharesToSell > sharesHeld) {
-		        	errors.add("The shares to sell exceeds the shares held!");
-		        }
-		      			      
-		        if (errors.size() > 0) return "sellFund.jsp";	        	
+		        			
 		        
-		        TransactionBean transbean= new TransactionBean();
-		        transbean.setUserName(customer.getUserName());
-		        transbean.setFundId(Integer.parseInt(form.getFundId()));
-		        transbean.setShares((long)(sharesToSell * 1000.0));
-		        transbean.setTransactionType(TransactionBean.SELL_FUND);
-		        transbean.setExecuteDate(null);
-		        transactionDAO.create(transbean);
+		       if (! transactionDAO.sellShares(customer.getUserName(), sharesHeld, Integer.parseInt(form.getFundId()), sharesToSell) ){
+		    	   errors.add("The shares to sell exceeds the shares held!");
+		    	   return "sellFund.jsp";	
+		       }
 		        
 		        request.removeAttribute("form");
-		        
-		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");
-		        
+		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");		        
 		        positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 				
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
 					
 					for (int i = 0; i < positionList.length; i++) {
-						fundList[i] = new FundDisplay();
-						
-						FundBean fund = fundDAO.read(positionList[i].getFundId());
-						
+						fundList[i] = new FundDisplay();						
+						FundBean fund = fundDAO.read(positionList[i].getFundId());						
 						fundList[i].setFundId(positionList[i].getFundId());
 						fundList[i].setFundName(fundDAO.read(positionList[i].getFundId()).getName());
 						fundList[i].setTicker(fundDAO.read(positionList[i].getFundId()).getSymbol());
@@ -130,8 +111,7 @@ public class SellFundAction  extends Action {
 		        return "sellFund.jsp";	
 			} else {
 				// logout and re-login
-				if (session.getAttribute("user") != null)
-					session.removeAttribute("user");
+				if (session.getAttribute("user") != null)	session.removeAttribute("user");
 
 				return "login.do";
 			}
