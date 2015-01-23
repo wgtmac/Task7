@@ -87,12 +87,12 @@ public class ViewCustomerAction extends Action {
 					return "viewCustomer.jsp";
 				}
 
-				if (customerDAO.read(form.getUserName1()) == null) {
+				if (customerDAO.read(form.getUserName()) == null) {
 					errors.add("Customer does not exist");
 					return "viewCustomer.jsp";
 				}
 				
-				CustomerBean customer=customerDAO.read(form.getUserName1());
+				CustomerBean customer=customerDAO.read(form.getUserName());
 
 				request.setAttribute("customerName",customer.getFirstName()+" "+customer.getLastName() );
 				request.setAttribute("userName",customer.getUserName());
@@ -107,7 +107,7 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("cash",df2.format(customer.getCash() / 100.0));
 				request.setAttribute("avai_cash",df2.format(transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0)));
 				
-				PositionBean[] fundList = positionDAO.match(MatchArg.equals("userName",form.getUserName1()));
+				PositionBean[] fundList = positionDAO.match(MatchArg.equals("userName",form.getUserName()));
 		        request.setAttribute("fundList",fundList);
 		        
 		    	PositionBean[] positionList = positionDAO.match(MatchArg.equals("userName", customer.getUserName()));

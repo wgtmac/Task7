@@ -86,9 +86,10 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		
 			TransactionBean[] transaction  = match(MatchArg.notEquals("executeDate", null), MatchArg.equals("userName", c.getUserName()));
 			if( transaction == null || transaction.length == 0) date = null;
-			Arrays.sort(transaction);
-			date = transaction[transaction.length-1].getExecuteDate();
-			
+			else {
+				Arrays.sort(transaction);
+				date = transaction[transaction.length-1].getExecuteDate();
+			}
 			Transaction.commit();
 		} finally {
 			if (Transaction.isActive()) Transaction.rollback();
