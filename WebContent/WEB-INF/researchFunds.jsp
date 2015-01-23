@@ -8,63 +8,19 @@
 	</div>
 </div>
 
-<div class="container1">
-	<c:choose>
-		<c:when test="${ (empty msg) }">
-		</c:when>
-		<c:otherwise>
-			<h3 style="color: blue">${msg}</h3>
-		</c:otherwise>
-	</c:choose>
 
-	<c:forEach var="error" items="${errors}">
-		<h3 style="color: red">${error}</h3>
-	</c:forEach>
-	<form name="researchFundForm" id="researchFundForm" method="post"
-		action="researchFund.do">
-		<input type="hidden" name="fundId" id="fundId" />
-		<c:if test="${not empty  funds}">
-			<br>
-			<br>
-			<h3>Select a Fund</h3>
-			<table>
-				<tr>
-					<td><label>Select the fund you want to search:</label>
-						<div class="form-group">
-							<!-- Add the account stocks below -->
-							<select class="form-control" name="fundName">
-								<option></option>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 
-								<c:choose>
-									<c:when test="${ (empty funds) }"></c:when>
-									<c:otherwise>
-										<c:forEach var="u" items="${ funds }">
-											<option>${ u.getName() }</option>
-										</c:forEach>
-									</c:otherwise>
-								</c:choose>
-							</select> <label>OR Search It Here:</label> <input name="fund2"
-								type="text" class="form-control" value="${form.fund2}">
-						</div>
-<!-- onClick="setValues()"  -->
-						
-				</tr>
-				<tr>
-					<td align="right"><input type="submit" name="button"
-						class="button" value="Fund History" /></td>
-				</tr>
-			</table>
-		</c:if>
-		<c:if test="${empty  funds}">
-			<h4 align="center">No Funds to Display</h4>
-		</c:if>
-		
-		
-		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+
 <!-- IE Fix for HTML5 Tags -->
+
 <!--[if lt IE 9]>
+
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+
 <![endif]-->
+
 
 <script type="text/javascript">
 	google.load("visualization", "1", {
@@ -134,10 +90,71 @@
 
         chart.draw(data, options);
       }
-</script>
-		
-		
+    </script>
+ 
+ 
+    
+ 
+     
+
+
+<div class="container1">
+	<c:choose>
+		<c:when test="${ (empty msg) }">
+		</c:when>
+		<c:otherwise>
+			<h3 style="color: blue">${msg}</h3>
+		</c:otherwise>
+	</c:choose>
+
+	<c:forEach var="error" items="${errors}">
+		<h3 style="color: red">${error}</h3>
+	</c:forEach>
+	<form name="researchFundForm" id="researchFundForm" method="post"
+		action="researchFund.do">
+		<input type="hidden" name="fundId" id="fundId" />
+		<c:if test="${not empty  funds}">
+			<br>
+			<br>
+			<h3>Select a Fund</h3>
+			<table>
+				<tr>
+					<td><label>Select the fund you want to search:</label>
+						<div class="form-group">
+							<!-- Add the account stocks below -->
+							<select class="form-control" name="fundName">
+								<option></option>
+
+								<c:choose>
+									<c:when test="${ (empty funds) }"></c:when>
+									<c:otherwise>
+										<c:forEach var="u" items="${ funds }">
+											<option>${ u.getName() }</option>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+							</select> <label>OR Search It Here:</label> <input name="fund2"
+								type="text" class="form-control" value="${form.fund2}">
+						</div>
+<!-- onClick="setValues()"  -->
+						
+				</tr>
+				<tr>
+					<td align="right"><input type="submit" name="button"
+						class="button" value="Fund History" /></td>
+				</tr>
+
+			</table>
+		</c:if>
+		<c:if test="${empty  funds}">
+			<h4 align="center">No Funds to Display</h4>
+		</c:if>
 		<div id="chart">
+			<!-- <table>
+				<tr>
+					<td class="line"></td>
+				</tr>
+			</table> -->
 			<br />
 			<table class="tableWidthPadding">
 				<tr>
