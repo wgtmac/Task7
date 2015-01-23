@@ -23,6 +23,8 @@
 					</c:otherwise>
 				</c:choose>
             </select>
+             <label>OR Search It Here:</label>
+            <input name="userName2" type="text"  class="form-control" value="${form.userName2}">
           <br>
           <button type="submit" name="action" value="select" class="btn btn-primary">Select Account</button>
         </form>
