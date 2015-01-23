@@ -130,8 +130,6 @@ public class TransitionDayAction extends Action {
 				try {
 					Transaction.begin();
 					
-					System.out.println("1");
-					
 					// update prices
 					for (FundBean fb : fundList) {			
 						FundPriceHistoryBean fphb = new FundPriceHistoryBean();
@@ -140,8 +138,6 @@ public class TransitionDayAction extends Action {
 						fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
 						fundPriceHistoryDAO.create(fphb);
 					}
-					
-					System.out.println("2");
 					
 					// process pending transactions
 					for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
@@ -167,17 +163,11 @@ public class TransitionDayAction extends Action {
 									tb.setAmount(amount);
 								}
 								break;
-							case TransactionBean.BUY_FUND:
-								
-								System.out.println("3");
+							case TransactionBean.BUY_FUND:						
 								long shares = 0;
 								if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
 									double amount = tb.getAmount() / 100.00;
-									System.out.println("4");
-									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice();
-									
-									System.out.println("7");
-									
+									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice()  / 100.0 ;
 									shares = (long) (amount / price * 1000);
 									
 									PositionBean pb = new PositionBean();
@@ -188,7 +178,7 @@ public class TransitionDayAction extends Action {
 									
 								} else {
 									double amount = tb.getAmount() / 100.00;
-									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice();
+									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice()  / 100.0 ;
 									shares = (long) (amount / price * 1000);
 									
 									PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
