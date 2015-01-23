@@ -149,7 +149,7 @@ public class TransitionDayAction extends Action {
 									PositionBean pb = positionDAO.read(tb.getUserName(), tb.getFundId());
 
 									if (pb.getShares() - tb.getShares()== 0) {
-										positionDAO.delete(pb);
+										positionDAO.delete(tb.getUserName(), tb.getFundId());
 									} else {
 										pb.setShares(pb.getShares() - tb.getShares());
 										positionDAO.update(pb);

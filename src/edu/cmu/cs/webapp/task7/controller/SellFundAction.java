@@ -79,12 +79,9 @@ public class SellFundAction  extends Action {
 			      
 		        if (errors.size() > 0) return "sellFund.jsp";
 	        
-		        Double sharesToSell = Double.parseDouble(form.getShares());
-		        Double sharesHeld =  transactionDAO.getValidShares(customer.getUserName() , 
-		        		positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0, Integer.parseInt(form.getFundId()));
-		        			
+		        Double sharesToSell = Double.parseDouble(form.getShares()); 			
 		        
-		       if (! transactionDAO.sellShares(customer.getUserName(), sharesHeld, Integer.parseInt(form.getFundId()), sharesToSell) ){
+		       if (! transactionDAO.sellShares(customer.getUserName(), positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0, Integer.parseInt(form.getFundId()), sharesToSell) ){
 		    	   errors.add("The shares to sell exceeds the shares held!");
 		    	   return "sellFund.jsp";	
 		       }

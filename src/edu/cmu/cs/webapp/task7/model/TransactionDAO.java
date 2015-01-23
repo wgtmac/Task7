@@ -135,9 +135,13 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 			
 			if (tbs != null) {
 				for (TransactionBean t : tbs) {
+					System.out.println(shares + " " + t.getShares() / 1000.0 );
 					shares -= t.getShares() / 1000.0;
+					System.out.println(shares);
 				}
 			}
+			
+			System.out.println(shares + " " + shares_sell);
 			
 			if (shares >= shares_sell) {
 				
