@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
+import org.genericdao.Transaction;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
@@ -127,87 +128,92 @@ public class TransitionDayAction extends Action {
 		
 				String today = dateFormat.format(date);
 				
-				// update prices
-				for (FundBean fb : fundList) {			
-					FundPriceHistoryBean fphb = new FundPriceHistoryBean();
-					fphb.setFundId(fb.getFundId());
-					fphb.setPriceDate(today);
-					fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
-										
-					if (fundPriceHistoryDAO.read(fb.getFundId(), today) != null) {
-					errors.add("The price of fund was already set today!");
-					return "transitionDay.jsp";
-				}
-					
-					fundPriceHistoryDAO.create(fphb);
-				}
-								
-				// process pending transactions
-				for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
-					CustomerBean cb = customerDAO.read(tb.getUserName());
-					
-					switch(tb.getTransactionType()) {
-						case TransactionBean.SELL_FUND:
-							if (positionDAO.read(tb.getUserName(), tb.getFundId()) != null) {
-								PositionBean pb = positionDAO.read(tb.getUserName(), tb.getFundId());
 
-								if (pb.getShares() - tb.getShares()== 0) {
-									positionDAO.delete(pb);
+				try {
+					Transaction.begin();
+					
+					// update prices
+					for (FundBean fb : fundList) {			
+						FundPriceHistoryBean fphb = new FundPriceHistoryBean();
+						fphb.setFundId(fb.getFundId());
+						fphb.setPriceDate(today);
+						fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
+						fundPriceHistoryDAO.create(fphb);
+					}
+					
+					// process pending transactions
+					for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
+						CustomerBean cb = customerDAO.read(tb.getUserName());
+						
+						switch(tb.getTransactionType()) {
+							case TransactionBean.SELL_FUND:
+								if (positionDAO.read(tb.getUserName(), tb.getFundId()) != null) {
+									PositionBean pb = positionDAO.read(tb.getUserName(), tb.getFundId());
+
+									if (pb.getShares() - tb.getShares()== 0) {
+										positionDAO.delete(pb);
+									} else {
+										pb.setShares(pb.getShares() - tb.getShares());
+										positionDAO.update(pb);
+									}
+									
+									double price = fundPriceHistoryDAO.read(tb.getFundId() ,  today).getPrice() / 100.0;
+									long amount = (long) (price * tb.getShares() / 1000 * 100);
+									cb.setCash(cb.getCash() +  amount);
+									customerDAO.update(cb);
+									
+									tb.setAmount(amount);
+								}
+								break;
+							case TransactionBean.BUY_FUND:
+								long shares = 0;
+								if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
+									double amount = tb.getAmount() / 100.00;
+									double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.0;
+									shares = (long) (amount / price * 1000);
+									
+									PositionBean pb = new PositionBean();
+									pb.setUserName(tb.getUserName());
+									pb.setFundId(tb.getFundId());
+									pb.setShares(shares);
+									positionDAO.create(pb);
+									
 								} else {
-									pb.setShares(pb.getShares() - tb.getShares());
+									double amount = tb.getAmount() / 100.00;
+									double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.00;
+									shares = (long) (amount / price * 1000);
+									
+									PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
+									pb.setShares(shares + pb.getShares());
 									positionDAO.update(pb);
 								}
 								
-								double price = fundPriceHistoryDAO.read(tb.getFundId() ,  today).getPrice() / 100.0;
-								long amount = (long) (price * tb.getShares() / 1000 * 100);
-								cb.setCash(cb.getCash() +  amount);
+								tb.setShares(shares);
+										
+								cb.setCash(cb.getCash() -  tb.getAmount());
 								customerDAO.update(cb);
-								
-								tb.setAmount(amount);
-							}
-							break;
-						case TransactionBean.BUY_FUND:
-							long shares = 0;
-							if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
-								double amount = tb.getAmount() / 100.00;
-								double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.0;
-								shares = (long) (amount / price * 1000);
-								
-								PositionBean pb = new PositionBean();
-								pb.setUserName(tb.getUserName());
-								pb.setFundId(tb.getFundId());
-								pb.setShares(shares);
-								positionDAO.create(pb);
-								
-							} else {
-								double amount = tb.getAmount() / 100.00;
-								double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.00;
-								shares = (long) (amount / price * 1000);
-								
-								PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
-								pb.setShares(shares + pb.getShares());
-								positionDAO.update(pb);
-							}
-							
-							tb.setShares(shares);
-									
-							cb.setCash(cb.getCash() -  tb.getAmount());
-							customerDAO.update(cb);
-							break;
-						case TransactionBean.REQ_CHECK:
-							cb.setCash(cb.getCash() -  tb.getAmount());
-							customerDAO.update(cb);
-							break;
-						case TransactionBean.DPT_CHECK:
-							cb.setCash(cb.getCash() +  tb.getAmount());
-							customerDAO.update(cb);
-							break;	
-						default:
-							break;
+								break;
+							case TransactionBean.REQ_CHECK:
+								cb.setCash(cb.getCash() -  tb.getAmount());
+								customerDAO.update(cb);
+								break;
+							case TransactionBean.DPT_CHECK:
+								cb.setCash(cb.getCash() +  tb.getAmount());
+								customerDAO.update(cb);
+								break;	
+							default:
+								break;
+						}
+						
+						tb.setExecuteDate(today);
+						transactionDAO.update(tb);
 					}
 					
-					tb.setExecuteDate(today);
-					transactionDAO.update(tb);
+					Transaction.commit();
+				} finally {
+					if (Transaction.isActive()) {
+						Transaction.rollback();
+					}
 				}
 				
 				price_map = new HashMap<Integer, String>();

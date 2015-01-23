@@ -64,7 +64,7 @@
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr class="success">
-						<th>Trading Day: (mm/dd/yyyy)</th>
+						<th>Trading Day: (yyyy-mm-dd)</th>
 					</tr>
 				</thead>
 				<tbody>
