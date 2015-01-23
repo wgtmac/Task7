@@ -200,7 +200,7 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return date;
 	}
 
-	public boolean buyFund (String userName, double balance, double amount) throws RollbackException {
+	public boolean buyFund (String userName, double balance, double amount, int fundid) throws RollbackException {
 		boolean isSucceeded = false;
 		try {
 			Transaction.begin();
@@ -228,6 +228,7 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 			if (balance >= amount) {
 				TransactionBean tb = new TransactionBean();
 				tb.setUserName(userName);
+				tb.setFundId(fundid);
 				tb.setExecuteDate(null);
 				tb.setTransactionType(TransactionBean.BUY_FUND);
 				tb.setAmount((long)(amount * 100));

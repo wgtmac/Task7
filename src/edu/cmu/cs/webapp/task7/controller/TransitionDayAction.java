@@ -125,12 +125,12 @@ public class TransitionDayAction extends Action {
 					return "transitionDay.jsp";
 				}
 				
-		
 				String today = dateFormat.format(date);
 				
-
 				try {
 					Transaction.begin();
+					
+					System.out.println("1");
 					
 					// update prices
 					for (FundBean fb : fundList) {			
@@ -140,6 +140,8 @@ public class TransitionDayAction extends Action {
 						fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
 						fundPriceHistoryDAO.create(fphb);
 					}
+					
+					System.out.println("2");
 					
 					// process pending transactions
 					for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
@@ -166,10 +168,16 @@ public class TransitionDayAction extends Action {
 								}
 								break;
 							case TransactionBean.BUY_FUND:
+								
+								System.out.println("3");
 								long shares = 0;
 								if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
 									double amount = tb.getAmount() / 100.00;
-									double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.0;
+									System.out.println("4");
+									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice();
+									
+									System.out.println("7");
+									
 									shares = (long) (amount / price * 1000);
 									
 									PositionBean pb = new PositionBean();
@@ -180,7 +188,7 @@ public class TransitionDayAction extends Action {
 									
 								} else {
 									double amount = tb.getAmount() / 100.00;
-									double price = fundPriceHistoryDAO.read(tb.getFundId() , today).getPrice() / 100.00;
+									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice();
 									shares = (long) (amount / price * 1000);
 									
 									PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
@@ -215,6 +223,7 @@ public class TransitionDayAction extends Action {
 						Transaction.rollback();
 					}
 				}
+				
 				
 				price_map = new HashMap<Integer, String>();
 				lastTradingDay = fundPriceHistoryDAO.getLatestTradingDayDateString ();
