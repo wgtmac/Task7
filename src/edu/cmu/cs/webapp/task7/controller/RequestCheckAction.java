@@ -49,7 +49,7 @@ public class RequestCheckAction extends Action {
 				CustomerBean customer = (CustomerBean) session.getAttribute("user");
 				double availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );
 				
-				NumberFormat formatter = new DecimalFormat("#0.00"); 
+				NumberFormat formatter = new DecimalFormat("#,##0.00"); 
 				
 				String balance = formatter.format(availableBalance);
 				session.setAttribute("balance", balance);

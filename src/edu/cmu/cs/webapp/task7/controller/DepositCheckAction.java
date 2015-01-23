@@ -1,5 +1,7 @@
 package edu.cmu.cs.webapp.task7.controller;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,8 @@ public class DepositCheckAction extends Action {
 
 				transactionDAO.createAutoIncrement(tb);
 				
-				request.setAttribute("msg", "Customer check is deposited successfully!");
+				NumberFormat formatter = new DecimalFormat("#,##0.00");
+				request.setAttribute("msg", "A deposit of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " was made into <font color=\"black\">" +form.getUserName()+ "'s</font> account.");
 				request.removeAttribute("form");
 
 				return "depositCheck.jsp";

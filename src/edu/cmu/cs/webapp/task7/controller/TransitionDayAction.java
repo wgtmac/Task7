@@ -134,7 +134,7 @@ public class TransitionDayAction extends Action {
 					fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
 										
 					if (fundPriceHistoryDAO.read(fb.getFundId(), today) != null) {
-					errors.add("The price of fund has already been set today!");
+					errors.add("The price of fund was already set today!");
 					return "transitionDay.jsp";
 				}
 					
@@ -235,7 +235,7 @@ public class TransitionDayAction extends Action {
 	        	}
 				
 	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
-				request.setAttribute("msg", "Transition day is set successfully!");
+				request.setAttribute("msg", "Transition day was successfully set.");
 
 				return "transitionDay.jsp";
 			} else {

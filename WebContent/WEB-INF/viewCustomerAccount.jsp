@@ -15,51 +15,59 @@
 </div>
 <p>
 <div class="col-lg-6">
-	<h2>Customer information:</h2>
+	<h3>Customer information:</h3>
 	<div class="table-responsive">
 		<table class="table table-hover table-striped">
 			<thead>
 				<tr>
 					<td>Account User Name:</td>
-					<td>${userName}</td>
+					<td colspan="2">${userName}</td>
+					
 				</tr>
 				<tr>
-					<td>Customer Name:</td>
-					<td>${customerName}</td>
+					<td width="40%">Customer Name:</td>
+					<td colspan="2">${customerName}</td>
+					
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>Address:</td>
-					<td>${address1 }<br>${address2 }</td>
+					<td colspan="2">${address1 } ${address2 }</td>
+					
 				</tr>
 				<tr>
 					<td>City, State:</td>
-					<td>${city }, ${state}.</td>
+					<td colspan="2">${city }, ${state}.</td>
+					
 				</tr>
 				<tr>
 					<td>Last trading date:</td>
-					<td>${lastDay}</td>
+					<td colspan="2">${lastDay}</td>
+					
 				</tr>
 				<tr>
 					<td>Last Posted Balance:</td>
 					<td align="right"><b>$ ${cash}</b></td>
+					<td width="30%">&nbsp;</td>
 				</tr>
 				<tr>
 					<td>Available Cash:</td>
 					<td align="right"><b>$ ${avai_cash}</b></td>
+					<td>&nbsp;</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<h2>Funds owned:</h2>
+	
+	<h3>Funds owned:</h3>
 	<div class="table-responsive">
 		<table class="table table-hover table-striped">
 			<thead>
 				<tr>
-					<th>Fund Name</th>
-					<th align="center">Shares</th>
-					<th align="center">Value</th>
+					<td width="40%"><b>Fund Name</b></td>
+					<td align="right"><b>Shares</b></td>
+					<td align="right"><b>Value</b></td>
 				</tr>
 			</thead>
 			<tbody>

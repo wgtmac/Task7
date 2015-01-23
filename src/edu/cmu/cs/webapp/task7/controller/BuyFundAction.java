@@ -114,7 +114,7 @@ public class BuyFundAction extends Action {
 			// Update favoriteList (there's now one more on the list)
 			// TransactionBean[] newTransactionList =
 			// transactionDAO.getTransactions(user.getUserName());
-			request.setAttribute("msg", "Funds Purchased successfully!");
+			request.setAttribute("msg", "$"+form.getAmount()+ " of fund purchased successfully.");
 			return "buyFund.jsp";
 		} catch (RollbackException e) {
 			e.printStackTrace();

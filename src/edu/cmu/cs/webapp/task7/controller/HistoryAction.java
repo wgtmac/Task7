@@ -38,12 +38,14 @@ public class HistoryAction extends Action {
 
 		try {
 			// If user is already logged in, redirect to todolist.do
-			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof CustomerBean) {
+			if (session.getAttribute("user") != null
+					&& session.getAttribute("user") instanceof CustomerBean) {
 
 				CustomerBean customer = (CustomerBean) session
 						.getAttribute("user");
 
-				TransactionBean[] tb = transactionDAO.getTransactions(customer.getUserName());
+				TransactionBean[] tb = transactionDAO.getTransactions(customer
+						.getUserName());
 
 				// List of History Beans
 				HistoryBean[] hb = null;
@@ -106,9 +108,17 @@ public class HistoryAction extends Action {
 						NumberFormat formatter = new DecimalFormat("#,###.00");
 						if (amount == 0) {
 							total = "";
-						} else
-							total = "$" + formatter.format(amount);
-						hb[i].setTotal(total);
+							hb[i].setTotal(total);
+						}
+						else if (transaction.equals("Credit")) {
+							total = "$" + formatter.format(amount)+"&nbsp;";
+							hb[i].setTotal(total);
+						} else if (transaction.equals("Debit")) {
+							total = "<font color=\"red\">($" + formatter.format(amount)+")";
+							hb[i].setTotal(total);
+						}
+
+						
 
 						// Get Shares and Calculate Share Price
 						double shares = tb[i].getShares() / 1000.0;
@@ -131,9 +141,10 @@ public class HistoryAction extends Action {
 					}
 					request.setAttribute("transactionList", hb);
 					return "history.jsp";
-					
+
 				} else {
-					request.setAttribute("msg", "You have not made any transactions yet.");
+					request.setAttribute("msg",
+							"You have not made any transactions yet.");
 					return "history.jsp";
 				}
 

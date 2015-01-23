@@ -71,7 +71,7 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("customerList", customerDAO.getAllUserName());
 				
 				DecimalFormat df3 = new DecimalFormat("#,##0.000");
-				DecimalFormat df2 = new DecimalFormat(	"###,###.00");
+				DecimalFormat df2 = new DecimalFormat(	"###,##0.00");
 				
 				// If no params were passed, return with no errors so that the
 				// form

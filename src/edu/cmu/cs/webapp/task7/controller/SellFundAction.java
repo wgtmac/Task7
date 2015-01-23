@@ -105,7 +105,7 @@ public class SellFundAction  extends Action {
 		        
 		        request.removeAttribute("form");
 		        
-		        request.setAttribute("msg", "Funds Sold successfully!");
+		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");
 		        
 		        positionList = positionDAO.getFunds(customer.getUserName());
 				
