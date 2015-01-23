@@ -5,7 +5,7 @@
 <jsp:include page="template-customer-top.jsp" />
 
 <div class="row">
-	<div class="col-lg-12">
+	<div class="col-lg-9">
 		<h2 class="page-header">Transaction History</h2>
 	</div>
 </div>
@@ -43,7 +43,7 @@
 							<td>${ u.fund }</td>
 							<td align="right">${ u.totShares }</td>
 							<td align="right">${ u.price }</td>
-							<td align="right">${ u.total }</td>
+							<td align="right">$${ u.total }</td>
 							</tr>
 					</c:forEach>
 				</c:otherwise>
