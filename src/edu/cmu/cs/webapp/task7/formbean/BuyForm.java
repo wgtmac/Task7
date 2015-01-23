@@ -14,9 +14,14 @@ public class BuyForm extends FormBean {
 	private String amount;
 	private String fund;
 	private String fund2;
+	private String action;
 
 	public String getAmount() {
 		return amount;
+	}
+	
+	public String getAction () {
+		return action;
 	}
 
 	public void setAmount(String amount) {
@@ -37,6 +42,10 @@ public class BuyForm extends FormBean {
 		else
 			return fund2;
 	}
+	
+	public void setAction (String v) {
+		action = v;
+	}
 
 	public List<String> getValidationErrors() {
 		List<String> errors = new ArrayList<String>();
@@ -51,6 +60,10 @@ public class BuyForm extends FormBean {
 		if ((fund == null || fund.length() == 0)
 				&& (fund2 == null || fund2.length() == 0)) {
 			errors.add("Please choose a fund");
+		}
+		
+		if (action == null) {
+			errors.add("Button is required");
 		}
 
 		if (errors.size() > 0)
@@ -68,6 +81,10 @@ public class BuyForm extends FormBean {
 			}
 		} catch (NumberFormatException nfe) {
 			errors.add("Please enter amount in digits. Do not use letters");
+		}
+		
+		if (!action.equals("buy")) {
+			errors.add("Invalid button");
 		}
 
 		return errors;

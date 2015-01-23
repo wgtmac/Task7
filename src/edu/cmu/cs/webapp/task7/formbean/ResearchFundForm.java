@@ -11,8 +11,18 @@ public class ResearchFundForm extends FormBean {
 	private String button; // can be Search or Research Fund
 	private String fromTime; // will not implement in first version
 	private String toTime; // will not implement in first version
-	private String fund2;
+	private String fund2;	
+	private String action;
 
+	public String getAction () {
+		return action;
+	}
+
+
+	public void setAction (String v) {
+		action = v;
+	}
+	
 	public String getFundName() {
 		return fundName;
 	}

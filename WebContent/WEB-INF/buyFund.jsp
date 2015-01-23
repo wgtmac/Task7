@@ -58,7 +58,7 @@
 	<!-- 				placeholder="Type only numbers in format 1000.00"> -->
 	<!-- 		</div> -->
 	<br>
-	<button type="submit" class="btn btn-primary">Buy Fund</button>
+	<button type="submit" name="action" value="buy" class="btn btn-primary">Buy Fund</button>
 </form>
 
 <jsp:include page="template-buttom.jsp" />

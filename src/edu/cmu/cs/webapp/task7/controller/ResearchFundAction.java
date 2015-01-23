@@ -50,6 +50,12 @@ public class ResearchFundAction extends Action {
 			}
 			
 			ResearchFundForm form = formBean.create(request);
+			
+			
+			if (!form.isPresent()) {
+				return "researchFunds.jsp";
+			}
+			
 			request.setAttribute("form", form);
 			request.setAttribute("description", "");
 			
