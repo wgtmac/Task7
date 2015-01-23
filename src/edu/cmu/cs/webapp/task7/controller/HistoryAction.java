@@ -67,7 +67,6 @@ public class HistoryAction extends Action {
 						if (date == null || date.length() == 0) {
 							date = "Pending";
 						}
-
 						hb[i].setDate(date);
 
 						// Operation
@@ -124,10 +123,10 @@ public class HistoryAction extends Action {
 
 						// Get Shares
 						String totShares;
-						if (transaction.equals("Deposit Check")
-								|| transaction.equals("Request Check")) {
+						if (operation.equals("Deposit Check")
+								|| operation.equals("Request Check")) {
 							totShares = "";
-						} else if (transaction.equals("Buy Fund")
+						} else if (operation.equals("Buy Fund")
 								&& date.equals("Pending")) {
 							totShares = "";
 						} else {
@@ -137,25 +136,28 @@ public class HistoryAction extends Action {
 							totShares = formatShare.format(shares);
 						}
 						hb[i].setTotShares(totShares);
-
+						
 						// Get Price
 						String price;
-						if (transaction.equals("Deposit Check")
-								|| transaction.equals("Request Check")) {
+						if (operation.equals("Deposit Check")
+								|| operation.equals("Request Check")) {
 							price = "";
-						} else if (transaction.equals("Sell Fund")
+							hb[i].setPrice(price);
+						} else if (operation.equals("Sell Fund")
 								&& date.equals("Pending")) {
 							price = "";
+							hb[i].setPrice(price);
+						} else if (operation.equals("Buy Fund")
+								&& date.equals("Pending")) {
+							price = "";
+							hb[i].setPrice(price);
 						} else {
-							long sharePrice = fundPriceHistoryDAO.read(
-									tb[i].getFundId(), tb[i].getExecuteDate())
-									.getPrice();
+							long sharePrice = fundPriceHistoryDAO.read(tb[i].getFundId(), date).getPrice();
 							NumberFormat sharePricer = new DecimalFormat(
 									"#,##0.00");
 							price = sharePricer.format(sharePrice / 100.0);
+							hb[i].setPrice("$"+price);
 						}
-
-						hb[i].setPrice(price);
 
 					}
 					request.setAttribute("transactionList", hb);
