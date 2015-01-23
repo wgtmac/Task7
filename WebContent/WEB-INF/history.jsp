@@ -24,7 +24,6 @@
 			<tr>
 				<th>Transaction Date (mm/dd/yyyy)</th>
 				<th>Operation</th>
-				<th>Type</th>
 				<th>Fund Name</th>
 				<th>Shares</th>
 				<th>Share Price</th>
@@ -41,7 +40,6 @@
 						<tr>
 							<td>${ u.date }</td>
 							<td>${ u.operation }</td>
-							<td>${ u.type }</td>
 							<td>${ u.fund }</td>
 							<td align="right">${ u.totShares }</td>
 							<td align="right">${ u.price }</td>

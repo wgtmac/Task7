@@ -14,6 +14,7 @@ import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.HistoryBean;
 import edu.cmu.cs.webapp.task7.databean.TransactionBean;
 import edu.cmu.cs.webapp.task7.model.FundDAO;
+import edu.cmu.cs.webapp.task7.model.FundPriceHistoryDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
 import edu.cmu.cs.webapp.task7.model.TransactionDAO;
 
@@ -21,10 +22,12 @@ public class HistoryAction extends Action {
 
 	private TransactionDAO transactionDAO;
 	private FundDAO fundDAO;
+	private FundPriceHistoryDAO fundPriceHistoryDAO;
 
 	public HistoryAction(Model model) {
 		transactionDAO = model.getTransactionDAO();
 		fundDAO = model.getFundDAO();
+		fundPriceHistoryDAO = model.getFundPriceHistoryDAO();
 	}
 
 	public String getName() {
@@ -45,7 +48,8 @@ public class HistoryAction extends Action {
 				CustomerBean customer = (CustomerBean) session
 						.getAttribute("user");
 
-				TransactionBean[] tb = transactionDAO.match(MatchArg.equals("userName", customer.getUserName()));
+				TransactionBean[] tb = transactionDAO.match(MatchArg.equals(
+						"userName", customer.getUserName()));
 
 				// List of History Beans
 				HistoryBean[] hb = null;
@@ -109,35 +113,50 @@ public class HistoryAction extends Action {
 						if (amount == 0) {
 							total = "";
 							hb[i].setTotal(total);
-						}
-						else if (transaction.equals("Credit")) {
-							total = "$" + formatter.format(amount)+"&nbsp;";
+						} else if (transaction.equals("Credit")) {
+							total = "$" + formatter.format(amount) + "&nbsp;";
 							hb[i].setTotal(total);
 						} else if (transaction.equals("Debit")) {
-							total = "<font color=\"red\">($" + formatter.format(amount)+")";
+							total = "<font color=\"red\">($"
+									+ formatter.format(amount) + ")";
 							hb[i].setTotal(total);
 						}
 
-						
-
-						// Get Shares and Calculate Share Price
-						double shares = tb[i].getShares() / 1000.0;
+						// Get Shares
 						String totShares;
-						NumberFormat formatShare = new DecimalFormat(
-								"#,##0.000");
-						if (shares == 0) {
+						if (transaction.equals("Deposit Check")
+								|| transaction.equals("Request Check")) {
 							totShares = "";
-						} else
+						} else if (transaction.equals("Buy Fund")
+								&& date.equals("Pending")) {
+							totShares = "";
+						} else {
+							double shares = tb[i].getShares() / 1000.0;
+							NumberFormat formatShare = new DecimalFormat(
+									"#,##0.000");
 							totShares = formatShare.format(shares);
+						}
 						hb[i].setTotShares(totShares);
 
+						// Get Price
 						String price;
-						if (shares != 0) {
-							double sharePrice = amount / shares;
-							price = "$" + formatter.format(sharePrice);
-						} else
+						if (transaction.equals("Deposit Check")
+								|| transaction.equals("Request Check")) {
 							price = "";
+						} else if (transaction.equals("Sell Fund")
+								&& date.equals("Pending")) {
+							price = "";
+						} else {
+							long sharePrice = fundPriceHistoryDAO.read(
+									tb[i].getFundId(), tb[i].getExecuteDate())
+									.getPrice();
+							NumberFormat sharePricer = new DecimalFormat(
+									"#,##0.00");
+							price = sharePricer.format(sharePrice / 100.0);
+						}
+
 						hb[i].setPrice(price);
+
 					}
 					request.setAttribute("transactionList", hb);
 					return "history.jsp";
