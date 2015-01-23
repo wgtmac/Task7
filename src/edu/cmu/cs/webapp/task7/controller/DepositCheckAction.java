@@ -1,5 +1,7 @@
 package edu.cmu.cs.webapp.task7.controller;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class DepositCheckAction extends Action {
 				request.setAttribute("form", form);
 				
 				// read all customers into list
-				request.setAttribute("customerList", customerDAO.getAllUserName());
+				request.setAttribute("customerList", customerDAO.match());
 				
 				// If no params were passed, return with no errors so that the
 				// form
@@ -62,7 +64,6 @@ public class DepositCheckAction extends Action {
 					return "depositCheck.jsp";
 				}
 
-				CustomerBean customer;
 				if (customerDAO.read(form.getUserName()) == null) {
 					errors.add("Customer does not exist");
 					return "depositCheck.jsp";
@@ -78,7 +79,8 @@ public class DepositCheckAction extends Action {
 
 				transactionDAO.createAutoIncrement(tb);
 				
-				request.setAttribute("msg", "Customer check is deposited successfully!");
+				NumberFormat formatter = new DecimalFormat("#,##0.00");
+				request.setAttribute("msg", "A deposit of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " was made into <font color=\"black\">" +form.getUserName()+ "'s</font> account.");
 				request.removeAttribute("form");
 
 				return "depositCheck.jsp";
@@ -91,10 +93,10 @@ public class DepositCheckAction extends Action {
 			}
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "depositCheck.jsp";
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "depositCheck.jsp";
 		}
 
 	}

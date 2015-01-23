@@ -75,10 +75,10 @@ public class ResetPwdAction extends Action {
 
         } catch (RollbackException e) {
         	errors.add(e.getMessage());
-        	return "error.jsp";
+        	return "resetPwd.jsp";
         } catch (FormBeanException e) {
         	errors.add(e.getMessage());
-        	return "error.jsp";
+        	return "resetPwd.jsp";
         }
 
 	}

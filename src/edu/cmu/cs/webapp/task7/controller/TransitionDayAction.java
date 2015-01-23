@@ -11,6 +11,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
@@ -60,7 +61,7 @@ public class TransitionDayAction extends Action {
 				request.setAttribute("form", form);
 				
 				// read all customers into list
-				FundBean[] fundList =  fundDAO.getAllFunds();
+				FundBean[] fundList =  fundDAO.match();
 				request.setAttribute("fundList", fundList);
 				
 				NumberFormat formatter = new DecimalFormat("#0.00");     		
@@ -134,7 +135,7 @@ public class TransitionDayAction extends Action {
 					fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
 										
 					if (fundPriceHistoryDAO.read(fb.getFundId(), today) != null) {
-					errors.add("The price of fund has already been set today!");
+					errors.add("The price of fund was already set today!");
 					return "transitionDay.jsp";
 				}
 					
@@ -142,7 +143,7 @@ public class TransitionDayAction extends Action {
 				}
 								
 				// process pending transactions
-				for (TransactionBean tb : transactionDAO.getAllPendingTrans()){
+				for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
 					CustomerBean cb = customerDAO.read(tb.getUserName());
 					
 					switch(tb.getTransactionType()) {
@@ -235,7 +236,7 @@ public class TransitionDayAction extends Action {
 	        	}
 				
 	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
-				request.setAttribute("msg", "Transition day is set successfully!");
+				request.setAttribute("msg", "Transition day was successfully set.");
 
 				return "transitionDay.jsp";
 			} else {
@@ -247,10 +248,10 @@ public class TransitionDayAction extends Action {
 			}
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "transitionDay.jsp";
 		} catch (Exception e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "transitionDay.jsp";
 		}
 
 	}

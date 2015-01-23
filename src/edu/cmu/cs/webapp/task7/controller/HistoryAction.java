@@ -6,8 +6,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.text.DateFormat;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.genericdao.MatchArg;
 
 import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.HistoryBean;
@@ -38,12 +41,13 @@ public class HistoryAction extends Action {
 
 		try {
 			// If user is already logged in, redirect to todolist.do
-			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof CustomerBean) {
+			if (session.getAttribute("user") != null
+					&& session.getAttribute("user") instanceof CustomerBean) {
 
 				CustomerBean customer = (CustomerBean) session
 						.getAttribute("user");
 
-				TransactionBean[] tb = transactionDAO.getTransactions(customer.getUserName());
+				TransactionBean[] tb = transactionDAO.match(MatchArg.equals("userName", customer.getUserName()));
 
 				// List of History Beans
 				HistoryBean[] hb = null;
@@ -103,18 +107,26 @@ public class HistoryAction extends Action {
 						// Total Amount
 						double amount = tb[i].getAmount() / 100.0;
 						String total;
-						NumberFormat formatter = new DecimalFormat("#,###.00");
+						NumberFormat formatter = new DecimalFormat("#,##0.00");
 						if (amount == 0) {
 							total = "";
-						} else
-							total = "$" + formatter.format(amount);
-						hb[i].setTotal(total);
+							hb[i].setTotal(total);
+						}
+						else if (transaction.equals("Credit")) {
+							total = "$" + formatter.format(amount)+"&nbsp;";
+							hb[i].setTotal(total);
+						} else if (transaction.equals("Debit")) {
+							total = "<font color=\"red\">($" + formatter.format(amount)+")";
+							hb[i].setTotal(total);
+						}
+
+						
 
 						// Get Shares and Calculate Share Price
 						double shares = tb[i].getShares() / 1000.0;
 						String totShares;
 						NumberFormat formatShare = new DecimalFormat(
-								"#,###.000");
+								"#,##0.000");
 						if (shares == 0) {
 							totShares = "";
 						} else
@@ -131,9 +143,10 @@ public class HistoryAction extends Action {
 					}
 					request.setAttribute("transactionList", hb);
 					return "history.jsp";
-					
+
 				} else {
-					request.setAttribute("msg", "You have not made any transactions yet.");
+					request.setAttribute("msg",
+							"You have not made any transactions yet.");
 					return "history.jsp";
 				}
 
@@ -145,7 +158,7 @@ public class HistoryAction extends Action {
 			}
 		} catch (Exception e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "history.jsp";
 		}
 	}
 }

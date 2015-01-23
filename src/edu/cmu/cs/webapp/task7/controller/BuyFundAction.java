@@ -46,18 +46,19 @@ public class BuyFundAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			if (request.getSession().getAttribute("user") == null) {
+			if (request.getSession().getAttribute("user") == null || 
+					request.getSession().getAttribute("user") instanceof EmployeeBean) {
 				errors.add("Please log in as a customer");
 				return "login.jsp";
 			}
 
 			// Set up user list for nav barS
-			request.setAttribute("customerList", customerDAO.getUsers());
+			request.setAttribute("customerList", customerDAO.match());
 
 			CustomerBean user = (CustomerBean) request.getSession(false)
 					.getAttribute("user");
 
-			FundBean[] fundList = fundDAO.getAllFunds();
+			FundBean[] fundList = fundDAO.match();
 			request.setAttribute("fundList", fundList);
 
 			BuyForm form = formBeanFactory.create(request);
@@ -72,16 +73,17 @@ public class BuyFundAction extends Action {
 			// System.out.println(errors);
 
 			if (errors.size() > 0)
-				return "error.jsp";
+				return "buyFund.jsp";
 
 			String fund = form.getFund1();
-			// System.out.println("fund name 1st"+fund);
+			
 
-			long amount = Long.parseLong(form.getAmount());
-			// System.out.println("amount on action is"+amount);
+			//long amount = Long.parseLong(form.getAmount());
+			double amount = Double.parseDouble(form.getAmount());
+			
 			int id = fundDAO.getFundIdByName(fund);
 
-			long availableBalance = (long) transactionDAO.getValidBalance(
+			double availableBalance = transactionDAO.getValidBalance(
 					user.getUserName(), user.getCash() / 100.0);
 			DecimalFormat df2 = new DecimalFormat("#,##0.00");
 			String availableBalanceString = df2.format(availableBalance)
@@ -112,16 +114,16 @@ public class BuyFundAction extends Action {
 			// Update favoriteList (there's now one more on the list)
 			// TransactionBean[] newTransactionList =
 			// transactionDAO.getTransactions(user.getUserName());
-			request.setAttribute("msg", "Funds Purchased successfully!");
+			request.setAttribute("msg", "$"+form.getAmount()+ " of fund purchased successfully.");
 			return "buyFund.jsp";
 		} catch (RollbackException e) {
 			e.printStackTrace();
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "buyFund.jsp";
 		} catch (FormBeanException e) {
 			e.printStackTrace();
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "buyFund.jsp";
 		}
 	}
 

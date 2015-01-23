@@ -80,7 +80,7 @@ public class CreateFundAction extends Action {
 				
 				fundDAO.createAutoIncrement(newFund);
 				
-				request.setAttribute("msg", "Create fund successfully!");
+				request.setAttribute("msg", "'Fund <font color=\"black\">" +form.getTicker()+ "</font> has been created.");
 
 				return "createFund.jsp";
 			} else {
@@ -93,10 +93,10 @@ public class CreateFundAction extends Action {
 			}
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "createFund.jsp";
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "createFund.jsp";
 		}
 
 	}

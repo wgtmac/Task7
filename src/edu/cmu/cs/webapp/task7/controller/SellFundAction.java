@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanFactory;
 
@@ -57,7 +58,7 @@ public class SellFundAction  extends Action {
 				DecimalFormat df3 = new DecimalFormat("#,##0.000");
 
 				FundDisplay[] fundList = null;
-				PositionBean[] positionList = positionDAO.getFunds(customer.getUserName());
+				PositionBean[] positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 				
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
@@ -70,7 +71,7 @@ public class SellFundAction  extends Action {
 						fundList[i].setFundId(positionList[i].getFundId());
 						fundList[i].setFundName(fund.getName());
 						fundList[i].setTicker(fund.getSymbol());
-						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0)));
+						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId())));
 					}
 				}
 				
@@ -86,7 +87,7 @@ public class SellFundAction  extends Action {
 	        
 		        Double sharesToSell = Double.parseDouble(form.getShares());
 		        Double sharesHeld =  transactionDAO.getValidShares(customer.getUserName() , 
-		        		positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0);
+		        		positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0, Integer.parseInt(form.getFundId()));
 		        		
 			
 		        if (sharesToSell > sharesHeld) {
@@ -105,22 +106,22 @@ public class SellFundAction  extends Action {
 		        
 		        request.removeAttribute("form");
 		        
-		        request.setAttribute("msg", "Funds Sold successfully!");
+		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");
 		        
-		        positionList = positionDAO.getFunds(customer.getUserName());
+		        positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 				
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
 					
-					fundList = new FundDisplay[positionList.length];
-
 					for (int i = 0; i < positionList.length; i++) {
 						fundList[i] = new FundDisplay();
+						
+						FundBean fund = fundDAO.read(positionList[i].getFundId());
 						
 						fundList[i].setFundId(positionList[i].getFundId());
 						fundList[i].setFundName(fundDAO.read(positionList[i].getFundId()).getName());
 						fundList[i].setTicker(fundDAO.read(positionList[i].getFundId()).getSymbol());
-						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0)));
+						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId())));
 					}
 				}
 				
@@ -137,10 +138,10 @@ public class SellFundAction  extends Action {
 
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "sellFund.jsp";
 		} catch (Exception e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "sellFund.jsp";
 		}
     }
     

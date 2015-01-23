@@ -45,8 +45,7 @@ transaction day.
 					</tr>
 					<tr>
 						<td><b>Available Cash:</b></td>
-						<td><fmt:setLocale value="en_US" /> <fmt:formatNumber
-								value="${ balance }" type="CURRENCY"></fmt:formatNumber></td>
+						<td>$${ balance }</td>
 					</tr>
 				</tbody>
 			</table>
@@ -55,13 +54,13 @@ transaction day.
 			<div class="form-group input-group">
 				<span class="input-group-addon">$</span> <input name="amount"
 					type="text" required class="form-control"
-					placeholder="Enter amount with two decimals. Equal or lesser than available cash.">
+					placeholder="Enter amount equal or lesser than available cash.">
 			</div>
 			<label>Confirm Amount:</label>
 			<div class="form-group input-group">
 				<span class="input-group-addon">$</span> <input name="confAmount"
 					type="text" required class="form-control"
-					placeholder="Enter amount with two decimals. Equal or lesser than available cash.">
+					placeholder="Enter amount equal or lesser than available cash.">
 			</div>
 			<br>
 			<div class="form-group">

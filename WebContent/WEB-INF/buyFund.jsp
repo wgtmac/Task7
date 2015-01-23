@@ -36,15 +36,17 @@
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
-		</select> <label>OR Search It Here:</label> <input name="fund2" type="text"
+		</select>
+		<br>
+		<label>Or search by fund name here:</label> <input name="fund2" type="text"
 			class="form-control" value="${form.fund2}">
 	</div>
-	<label>Amount you want to Buy:</label>
+	<label>Amount you want to buy:</label>
 	<div class="form-group input-group">
 		<span class="input-group-addon">$</span>
 		<!-- Add the account amount below -->
 		<input type="text" class="form-control" name="amount"
-			placeholder="Type only numbers in format 1000.00">
+			placeholder="Enter amount above $10.00">
 	</div>
 	<!-- 		<label>Confirm Amount:</label> -->
 	<!-- 		<div class="form-group input-group"> -->

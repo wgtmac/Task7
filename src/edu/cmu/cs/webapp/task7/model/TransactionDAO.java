@@ -32,8 +32,6 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 			if (tbs != null) {
 				for (TransactionBean t : tbs) {
 					switch(t.getTransactionType()) {
-					case TransactionBean.SELL_FUND:
-						break;
 					case TransactionBean.BUY_FUND:
 						amount -= t.getAmount() / 100.00;
 						break;
@@ -58,23 +56,17 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 	}
 	
 	
-	public double getValidShares (String userName, double shares) throws RollbackException {
+	public double getValidShares (String userName, double shares, int fundId) throws RollbackException {
 		TransactionBean[] tbs = null;
 		try {
 			Transaction.begin();
 			
-			// How to execute select * from table where transactionType IS NULL
-			tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
+			tbs =  match(MatchArg.equals("fundId", fundId), MatchArg.equals("transactionType", TransactionBean.SELL_FUND), 
+					MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
 			
 			if (tbs != null) {
 				for (TransactionBean t : tbs) {
-					switch(t.getTransactionType()) {
-					case TransactionBean.SELL_FUND:
-						shares -= t.getShares() / 1000.0;
-						break;
-					default:
-						break;
-					}
+					shares -= t.getShares() / 1000.0;
 				}
 			}
 			
@@ -86,27 +78,23 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return shares;
 	}
 	
-	public TransactionBean[] getAllPendingTrans () throws RollbackException {
-		TransactionBean[] tbs = null;
+	
+	public String getLastDate(CustomerBean c) throws RollbackException{
+		String date = null;
 		try {
 			Transaction.begin();
-			
-			// How to execute select * from table where transactionType IS NULL
-			tbs =  match(MatchArg.equals("executeDate", null));
+		
+			TransactionBean[] transaction  = match(MatchArg.notEquals("executeDate", null), MatchArg.equals("userName", c.getUserName()));
+			if( transaction == null || transaction.length == 0) date = null;
+			Arrays.sort(transaction);
+			date = transaction[transaction.length-1].getExecuteDate();
 			
 			Transaction.commit();
 		} finally {
 			if (Transaction.isActive()) Transaction.rollback();
 		}
 		
-		return tbs;
-	}
-	
-	public String getLastDate(CustomerBean c) throws RollbackException{
-		TransactionBean[] transaction = match(MatchArg.notEquals("executeDate", null), MatchArg.equals("userName", c.getUserName()));
-		if(transaction.length == 0) return null;
-		Arrays.sort(transaction);
-		return transaction[transaction.length-1].getExecuteDate();
+		return date;
 	}
 	
 	public Date getLatestDate () throws RollbackException, ParseException {
@@ -130,10 +118,4 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return date;
 	}
 
-	public TransactionBean[] getTransactions(String userName) throws RollbackException {
-		TransactionBean[] list = match(MatchArg.equals("userName", userName));
-		// Arrays.sort(list);
-		return list;
-		
-	}
 }

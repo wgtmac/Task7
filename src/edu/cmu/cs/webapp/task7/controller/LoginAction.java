@@ -41,7 +41,7 @@ public class LoginAction extends Action {
 		// If user is already logged in, redirect to favorite.do
 		if (session.getAttribute("user") != null) {
 			if (session.getAttribute("user") instanceof CustomerBean) {
-				return "customerMain.do";
+				return "viewAccount.do";
 			}
 			else {
 				return "employeeMain.do";
@@ -82,7 +82,7 @@ public class LoginAction extends Action {
 				session.setAttribute("user", user);
 				return "employeeMain.do";
 			} else {
-				CustomerBean user = customerDAO.readByUserName(form.getUserName());
+				CustomerBean user = customerDAO.read(form.getUserName());
 				
 				if (user == null) {
 					errors.add("User Name not found");
@@ -95,14 +95,14 @@ public class LoginAction extends Action {
 				}
 				
 				session.setAttribute("user", user);
-				return "customerMain.do";
+				return "viewAccount.do";
 			}
         } catch (RollbackException e) {
         	errors.add(e.getMessage());
-        	return "error.jsp";
+        	return "login.jsp";
         } catch (FormBeanException e) {
         	errors.add(e.getMessage());
-        	return "error.jsp";
+        	return "login.jsp";
         }
 	}
 }

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
 import org.genericdao.GenericDAO;
@@ -20,6 +21,7 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 		super(FundPriceHistoryBean.class, tableName, cp);
 	}
 	
+
 	public FundPriceHistoryBean getLatestFundPrice(int fundId) throws RollbackException{
 		FundPriceHistoryBean[] fundPriceHistory = match(MatchArg.equals("fundId", fundId));
 		if(fundPriceHistory.length == 0) return null;
@@ -79,7 +81,6 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 			FundPriceHistoryBean[] fb = match();
 			if (fb != null && fb.length != 0) {
 				Arrays.sort(fb);
-				
 				date = fb[fb.length - 1].getPriceDate();
 			}
 			
@@ -112,26 +113,4 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 		}
 		return date;
 	}
-	
-	/*public String getCurrentDate() throws RollbackException, ParseException {
-		Date date = null;
-		String currentDate=null;
-		try {
-			Transaction.begin();
-
-			FundPriceHistoryBean[] fb = match();
-			Arrays.sort(fb);
-
-			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-			dateFormat.setLenient(false);
-			date = dateFormat.parse(fb[fb.length].getPriceDate());
-			currentDate= dateFormat.format(date);
-
-			Transaction.commit();
-		} finally {
-			if (Transaction.isActive())
-				Transaction.rollback();
-		}
-		return currentDate;
-	}*/
 }

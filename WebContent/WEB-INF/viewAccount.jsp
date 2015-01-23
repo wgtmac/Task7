@@ -6,29 +6,62 @@
 <div class="row">
 	<div class="col-lg-12">
 		<h2 class="page-header">${customer.getFirstName()}  ${customer.getLastName()}</h2>
-		<h4>Registered Address:<br>${customer.getAddress1()} ${customer.getAddress2()}<br>
-		 ${customer.getCity()}, ${customer.getState()} ${customer.getZipcode()}</h4>
 	</div>
 </div>
 
-<div class="form-group">
-	<label>Last Transaction Day:</label> <input class="form-control" 	name="date" value="${lastTradingDay}" disabled>
-	<p class="help-block">This is the date when you last performed any transaction</p>
-</div>
+<div class="col-lg-6">
 
-<div class="form-group">
-	<label>Last Posted Balance:</label> <input class="form-control" name="cash"   value="${cash}"	disabled>
-	<p class="help-block">Accountable balance at the beginning of the day.</p>
-</div>
+<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<td><b>Account User Name:</b></td>
+					<td>${customer.getUserName()}</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><b>Registered Address:</b></td>
+					<td>${customer.getAddress1()} ${customer.getAddress2()}</td>
+				</tr>
+				<tr>
+					<td><b>City, State and Zip:</b></td>
+					<td>${customer.getCity()}, ${customer.getState()}. ${customer.getZipcode()}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<h4>Financial Information</h4>
+	
+	<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			<thead>
+				<tr>
+					<td><b>Last Transaction Day:</b> (mm/dd/yyy)</td>
+					<td align="right">${lastTradingDay}</td>
+					<td width="30%">&nbsp;</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><b>Last Posted Balance:* </b></td>
+					<td align="right">$${cash}</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><b>Available Cash:**</b></td>
+					<td align="right">$${balance}</td>
+					<td>&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<h5>* &nbsp; Accountable balance at the beginning of the day.<br>
+	** Available cash considering checks requested and funds bough still pending.</h5>
+<br>
 
-<div class="form-group">
-	<label>Available Cash:</label> <input class="form-control" name="balance"   value="${balance}"	disabled>
-	<p class="help-block">Available cash considering checks requested and funds bough still pending.</p>
-</div>
-
-<div class="form-group">
-	<label>Your Funds</label>
-</div>
+<h4>Your Funds</h4>
 <table class="table table-bordered table-hover">
 	<thead>
 		<tr>
@@ -44,15 +77,13 @@
 						 <tr>
                     		<td>${ fund.getFundName() }</td>
                     		<td> ${ fund.getTicker() } </td>
-                    		<td> ${ fund.getShares() } </td>
-                    		<td> ${ fund.getTotal() } </td>
+                    		<td align="right"> ${ fund.getShares() } </td>
+                    		<td align="right"> ${ fund.getTotal() } </td>
                   			</tr>
 					</c:forEach>
 	</tbody>
 </table>
-
-<p>
-	<br>
-</p>
+<br>
+</div>
 
 <jsp:include page="template-buttom.jsp" />

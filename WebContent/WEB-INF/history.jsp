@@ -22,7 +22,7 @@
 	<table class="table table-bordered table-hover table-striped">
 		<thead>
 			<tr>
-				<th>Transaction Date</th>
+				<th>Transaction Date (mm/dd/yyyy)</th>
 				<th>Operation</th>
 				<th>Type</th>
 				<th>Fund Name</th>
