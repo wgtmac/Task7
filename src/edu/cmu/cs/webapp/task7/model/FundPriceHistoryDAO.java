@@ -2,8 +2,10 @@ package edu.cmu.cs.webapp.task7.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.genericdao.ConnectionPool;
 import org.genericdao.DAOException;
@@ -18,6 +20,16 @@ public class FundPriceHistoryDAO extends GenericDAO<FundPriceHistoryBean> {
 	public FundPriceHistoryDAO(ConnectionPool cp, String tableName)
 			throws DAOException {
 		super(FundPriceHistoryBean.class, tableName, cp);
+	}
+	
+	public List<FundPriceHistoryBean> getFundPriceHistoryList(int fundId) throws RollbackException{
+		FundPriceHistoryBean[] fundPriceHistory = match(MatchArg.equals("fundId", fundId));
+		if(fundPriceHistory.length == 0) return null;
+		List<FundPriceHistoryBean> historyList = new ArrayList<FundPriceHistoryBean>();
+		for(Object o : fundPriceHistory) {
+			historyList.add((FundPriceHistoryBean) o);
+		}
+		return historyList;
 	}
 	
 	public FundPriceHistoryBean getLatestFundPrice(int fundId) throws RollbackException{

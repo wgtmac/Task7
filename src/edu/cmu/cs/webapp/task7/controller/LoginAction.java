@@ -41,7 +41,7 @@ public class LoginAction extends Action {
 		// If user is already logged in, redirect to favorite.do
 		if (session.getAttribute("user") != null) {
 			if (session.getAttribute("user") instanceof CustomerBean) {
-				return "customerMain.do";
+				return "viewAccount.do";
 			}
 			else {
 				return "employeeMain.do";
@@ -95,7 +95,7 @@ public class LoginAction extends Action {
 				}
 				
 				session.setAttribute("user", user);
-				return "customerMain.do";
+				return "viewAccount.do";
 			}
         } catch (RollbackException e) {
         	errors.add(e.getMessage());

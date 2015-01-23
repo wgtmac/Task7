@@ -119,11 +119,11 @@ public class BuyFundAction extends Action {
 		} catch (RollbackException e) {
 			e.printStackTrace();
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "buyFund.jsp";
 		} catch (FormBeanException e) {
 			e.printStackTrace();
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "buyFund.jsp";
 		}
 	}
 
