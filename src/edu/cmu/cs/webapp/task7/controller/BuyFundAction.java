@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 //import model.PhotoDAO;
 
+
+
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
@@ -46,8 +49,7 @@ public class BuyFundAction extends Action {
 		request.setAttribute("errors", errors);
 
 		try {
-			if (request.getSession().getAttribute("user") == null || 
-					request.getSession().getAttribute("user") instanceof EmployeeBean) {
+			if (request.getSession().getAttribute("user") == null || request.getSession().getAttribute("user") instanceof EmployeeBean) {
 				errors.add("Please log in as a customer");
 				return "login.jsp";
 			}
@@ -55,73 +57,54 @@ public class BuyFundAction extends Action {
 			// Set up user list for nav barS
 			request.setAttribute("customerList", customerDAO.match());
 
-			CustomerBean user = (CustomerBean) request.getSession(false)
-					.getAttribute("user");
+			CustomerBean user = (CustomerBean) request.getSession(false).getAttribute("user");
 
 			FundBean[] fundList = fundDAO.match();
 			request.setAttribute("fundList", fundList);
+			
+			double availableBalance = transactionDAO.getValidBalance(user.getUserName(), user.getCash() / 100.0);
+			DecimalFormat df2 = new DecimalFormat("#,##0.00");
+			String availableBalanceString = "$" + df2.format(availableBalance);
+			
+			request.setAttribute("balance", availableBalanceString);
 
 			BuyForm form = formBeanFactory.create(request);
 
 			if (!form.isPresent()) {
-
 				return "buyFund.jsp";
 			}
 			errors.addAll(form.getValidationErrors());
 			request.setAttribute("errors", errors);
 
-			// System.out.println(errors);
-
 			if (errors.size() > 0)
 				return "buyFund.jsp";
 
-			String fund = form.getFund1();
+			String fundName = form.getFundName();
 			
-
-			//long amount = Long.parseLong(form.getAmount());
 			double amount = Double.parseDouble(form.getAmount());
 			
-			int id = fundDAO.getFundIdByName(fund);
-
-			double availableBalance = transactionDAO.getValidBalance(
-					user.getUserName(), user.getCash() / 100.0);
-			DecimalFormat df2 = new DecimalFormat("#,##0.00");
-			String availableBalanceString = df2.format(availableBalance)
-					.toString();
-			// System.out.println("balance string is"+availableBalanceString);
-
-			if ((availableBalance - amount) < 0.0) {
-				errors.add("You do not have enough cash balance in your account. You have only $"
-						+ availableBalanceString + " left");
-				request.setAttribute("errors", errors);
+			FundBean[] fb = fundDAO.match(MatchArg.equalsIgnoreCase("name", fundName));
+			if (fb == null || fb.length == 0) {
+				errors.add("Fund name does not exist");
 				return "buyFund.jsp";
-			} else {
-				// write a method in posDAO to increase the number of shares.
-				// posDAO.increaseShares(id, shares,user.getUserName());
 			}
-			amount = Math.round(amount * 100);
+			
+			if (! transactionDAO.buyFund(user.getUserName(), user.getCash(), amount) ){
+				errors.add("You do not have enough cash balance in your account.");
+				return "buyFund.jsp";	
+			}
 
-			// ALSO ADD TO THE TRANSACTIONS TABLE
-			TransactionBean transbean = new TransactionBean();
-			transbean.setUserName(user.getUserName());
-			transbean.setFundId(id);
-			// transbean.setShares(shares);
-			transbean.setTransactionType(transbean.BUY_FUND);
-			transbean.setAmount((long) (amount));
-			transbean.setExecuteDate(null);
-			transactionDAO.create(transbean);
+			availableBalance = transactionDAO.getValidBalance(user.getUserName(), user.getCash() / 100.0);
+			availableBalanceString = "$" + df2.format(availableBalance);
+			
+			request.setAttribute("balance", availableBalanceString);
 
-			// Update favoriteList (there's now one more on the list)
-			// TransactionBean[] newTransactionList =
-			// transactionDAO.getTransactions(user.getUserName());
 			request.setAttribute("msg", "$"+form.getAmount()+ " of fund purchased successfully.");
 			return "buyFund.jsp";
 		} catch (RollbackException e) {
-			e.printStackTrace();
 			errors.add(e.getMessage());
 			return "buyFund.jsp";
 		} catch (FormBeanException e) {
-			e.printStackTrace();
 			errors.add(e.getMessage());
 			return "buyFund.jsp";
 		}

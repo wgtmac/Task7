@@ -31,7 +31,7 @@ public class BuyForm extends FormBean {
 		this.fund = fund;
 	}
 
-	public String getFund1() {
+	public String getFundName() {
 		if (fund != null && fund.length() > 0)
 			return fund;
 		else
@@ -77,12 +77,6 @@ public class BuyForm extends FormBean {
 		Pattern p = Pattern.compile("[+-]?[0-9]+.{0,1}[0-9]{0,2}");
 		return p.matcher(input).matches();
 	}
-
-	/*
-	 * public String getCamount() { return camount; }
-	 * 
-	 * public void setCamount(String camount) { this.camount = camount; }
-	 */
 
 	public String getFund2() {
 		return fund2;

@@ -200,4 +200,46 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 		return date;
 	}
 
+	public boolean buyFund (String userName, double balance, double amount) throws RollbackException {
+		boolean isSucceeded = false;
+		try {
+			Transaction.begin();
+			
+			TransactionBean[] tbs =  match(MatchArg.equals("executeDate", null), MatchArg.equals("userName", userName));
+			
+			if (tbs != null) {
+				for (TransactionBean t : tbs) {
+					switch(t.getTransactionType()) {
+					case TransactionBean.BUY_FUND:
+						balance -= t.getAmount() / 100.00;
+						break;
+					case TransactionBean.REQ_CHECK:
+						balance -= t.getAmount() / 100.00;
+						break;
+					case TransactionBean.DPT_CHECK:
+						balance += t.getAmount() / 100.00;
+						break;	
+					default:
+						break;
+					}
+				}
+			}
+			
+			if (balance >= amount) {
+				TransactionBean tb = new TransactionBean();
+				tb.setUserName(userName);
+				tb.setExecuteDate(null);
+				tb.setTransactionType(TransactionBean.BUY_FUND);
+				tb.setAmount((long)(amount * 100));
+				createAutoIncrement(tb);							
+				isSucceeded = true;
+			}
+			
+			Transaction.commit();
+		} finally {
+			if (Transaction.isActive()) Transaction.rollback();
+		}
+		
+		return isSucceeded;
+	}
 }

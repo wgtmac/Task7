@@ -2,10 +2,8 @@ package edu.cmu.cs.webapp.task7.controller;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.text.DateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -100,7 +98,7 @@ public class HistoryAction extends Action {
 							fund = "";
 						} else {
 							fundId = tb[i].getFundId();
-							fund = fundDAO.getFundNameById(fundId);
+							fund = fundDAO.read(fundId).getName();
 						}
 						hb[i].setFund(fund);
 

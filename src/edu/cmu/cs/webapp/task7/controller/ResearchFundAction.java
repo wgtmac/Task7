@@ -65,9 +65,13 @@ public class ResearchFundAction extends Action {
 			String fund = form.getFund1();
 			
 			
-			int fndId=fundDAO.getFundIdByName(fund);
+			FundBean[] tmp_fb = fundDAO.match(MatchArg.equalsIgnoreCase("name", fund));
+			if (tmp_fb == null || tmp_fb.length == 0) {
+				errors.add("Fund name does not exist");
+				return "researchFunds.jsp";
+			}
 			
-			
+			int fndId = tmp_fb[0].getFundId();
 			
 			if (form.getButton()!=null &&form.getButton().equals("Fund History")) {
 				
@@ -75,10 +79,10 @@ public class ResearchFundAction extends Action {
 				
 				List<Map<String,String>> fundPriceHistory = getFundPriceHistory(fndId); 
 				if (fundPriceHistory.isEmpty()) 
-					errors.add("There is no history for the " + fundDAO.getFundNameById(fndId) + " fund");
+					errors.add("There is no history for the " + fundDAO.read(fndId).getName() + " fund");
 				request.setAttribute("fundPriceHistory", fundPriceHistory);
 				request.setAttribute("description", "Lorem Ipsum");
-				request.setAttribute("fundTitle", fundDAO.getFundNameById(fndId));
+				request.setAttribute("fundTitle", fundDAO.read(fndId).getName());
 				request.setAttribute("chartData", chartData(fndId));
 			}
 		} catch (FormBeanException e) {
@@ -111,7 +115,7 @@ public class ResearchFundAction extends Action {
 				tmp.put("fundId",id);
 				tmp.put("price",Long.toString(hBean.getPrice()));
 				tmp.put("date",hBean.getPriceDate());
-				tmp.put("fundName", fundDAO.getFundNameById(hBean.getFundId()));
+				tmp.put("fundName", fundDAO.read(hBean.getFundId()).getName());
 				
 				fundPriceHistory.add(tmp);
 			}

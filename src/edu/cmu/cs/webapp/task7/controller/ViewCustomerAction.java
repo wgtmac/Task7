@@ -3,7 +3,6 @@ package edu.cmu.cs.webapp.task7.controller;
 
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +18,8 @@ import edu.cmu.cs.webapp.task7.databean.CustomerBean;
 import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
 import edu.cmu.cs.webapp.task7.databean.PositionBean;
 import edu.cmu.cs.webapp.task7.databean.PositionInfo;
-import edu.cmu.cs.webapp.task7.databean.TransactionBean;
-import edu.cmu.cs.webapp.task7.formbean.CreateFundForm;
-import edu.cmu.cs.webapp.task7.formbean.DepositCheckForm;
 import edu.cmu.cs.webapp.task7.formbean.ViewCustomerForm;
 import edu.cmu.cs.webapp.task7.model.CustomerDAO;
-import edu.cmu.cs.webapp.task7.model.EmployeeDAO;
 import edu.cmu.cs.webapp.task7.model.FundDAO;
 import edu.cmu.cs.webapp.task7.model.FundPriceHistoryDAO;
 import edu.cmu.cs.webapp.task7.model.Model;
@@ -118,13 +113,13 @@ public class ViewCustomerAction extends Action {
 						
 						double price = ((double)(historyDAO.getLatestFundPrice(a.getFundId()).getPrice() / 100.0));
 						double value = shares * price;
-						String ticker=fundDAO.getFundNameById(a.getFundId());
+						String name=fundDAO.read(a.getFundId()).getName();
 					
 						String sharesString = df3.format(shares);
 						String priceString = df2.format(price);
 						String valueString = df2.format(value);
 					
-						PositionInfo aInfo = new PositionInfo(ticker,sharesString,priceString,"$" + valueString);
+						PositionInfo aInfo = new PositionInfo(name,sharesString,priceString,"$" + valueString);
 						positionInfoList.add(aInfo);
 					}
 					request.setAttribute("positionInfoList",positionInfoList);

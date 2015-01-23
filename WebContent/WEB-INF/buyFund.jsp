@@ -22,6 +22,8 @@
 	</c:forEach>
 
 <form method="POST">
+	<label>Available Balance: ${ balance }</label>
+	<br/>
 	<label>Select the fund you want to buy:</label>
 	<div class="form-group">
 		<!-- Add the account stocks below -->
