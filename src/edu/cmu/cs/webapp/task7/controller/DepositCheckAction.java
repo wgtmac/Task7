@@ -49,7 +49,7 @@ public class DepositCheckAction extends Action {
 				request.setAttribute("form", form);
 				
 				// read all customers into list
-				request.setAttribute("customerList", customerDAO.getAllUserName());
+				request.setAttribute("customerList", customerDAO.match());
 				
 				// If no params were passed, return with no errors so that the
 				// form
@@ -64,7 +64,6 @@ public class DepositCheckAction extends Action {
 					return "depositCheck.jsp";
 				}
 
-				CustomerBean customer;
 				if (customerDAO.read(form.getUserName()) == null) {
 					errors.add("Customer does not exist");
 					return "depositCheck.jsp";
@@ -94,10 +93,10 @@ public class DepositCheckAction extends Action {
 			}
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "depositCheck.jsp";
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "depositCheck.jsp";
 		}
 
 	}

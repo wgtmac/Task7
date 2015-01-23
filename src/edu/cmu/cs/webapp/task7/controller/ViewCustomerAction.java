@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
@@ -68,7 +69,7 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("form", form);
 				
 				// read all customers into list
-				request.setAttribute("customerList", customerDAO.getAllUserName());
+				request.setAttribute("customerList", customerDAO.match());
 				
 				DecimalFormat df3 = new DecimalFormat("#,##0.000");
 				DecimalFormat df2 = new DecimalFormat(	"###,##0.00");
@@ -106,10 +107,10 @@ public class ViewCustomerAction extends Action {
 				request.setAttribute("cash",df2.format(customer.getCash() / 100.0));
 				request.setAttribute("avai_cash",df2.format(transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0)));
 				
-				PositionBean[] fundList = positionDAO.getFunds(form.getUserName1());
+				PositionBean[] fundList = positionDAO.match(MatchArg.equals("userName",form.getUserName1()));
 		        request.setAttribute("fundList",fundList);
 		        
-		    	List<PositionBean> positionList = positionDAO.getAllPositionByCustomer(customer);
+		    	PositionBean[] positionList = positionDAO.match(MatchArg.equals("userName", customer.getUserName()));
 				if(positionList != null) {
 					List<PositionInfo> positionInfoList = new ArrayList<PositionInfo>();
 					for(PositionBean a: positionList) {
@@ -141,10 +142,10 @@ public class ViewCustomerAction extends Action {
 			}
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "viewCustomer.jsp";
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "viewCustomer.jsp";
 		}
 
 	}

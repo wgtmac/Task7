@@ -59,7 +59,7 @@ public class ViewCustomerAccountAction extends Action {
 			}
 		} catch (Exception e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "viewCustomerAccount.jsp";
 		}
 	}
 }

@@ -82,7 +82,7 @@ public class LoginAction extends Action {
 				session.setAttribute("user", user);
 				return "employeeMain.do";
 			} else {
-				CustomerBean user = customerDAO.readByUserName(form.getUserName());
+				CustomerBean user = customerDAO.read(form.getUserName());
 				
 				if (user == null) {
 					errors.add("User Name not found");
@@ -99,10 +99,10 @@ public class LoginAction extends Action {
 			}
         } catch (RollbackException e) {
         	errors.add(e.getMessage());
-        	return "error.jsp";
+        	return "login.jsp";
         } catch (FormBeanException e) {
         	errors.add(e.getMessage());
-        	return "error.jsp";
+        	return "login.jsp";
         }
 	}
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanFactory;
 
@@ -57,7 +58,7 @@ public class SellFundAction  extends Action {
 				DecimalFormat df3 = new DecimalFormat("#,##0.000");
 
 				FundDisplay[] fundList = null;
-				PositionBean[] positionList = positionDAO.getFunds(customer.getUserName());
+				PositionBean[] positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 				
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
@@ -107,7 +108,7 @@ public class SellFundAction  extends Action {
 		        
 		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");
 		        
-		        positionList = positionDAO.getFunds(customer.getUserName());
+		        positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 				
 				if (positionList != null && positionList.length > 0) {
 					fundList = new FundDisplay[positionList.length];
@@ -137,10 +138,10 @@ public class SellFundAction  extends Action {
 
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "sellFund.jsp";
 		} catch (Exception e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "sellFund.jsp";
 		}
     }
     

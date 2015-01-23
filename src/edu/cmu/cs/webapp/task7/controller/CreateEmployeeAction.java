@@ -81,10 +81,10 @@ public class CreateEmployeeAction extends Action {
 			}
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "createEmployee.jsp";
 		} catch (FormBeanException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "createEmployee.jsp";
 		}
 
 	}

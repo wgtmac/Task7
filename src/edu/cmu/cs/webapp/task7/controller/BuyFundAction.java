@@ -53,12 +53,12 @@ public class BuyFundAction extends Action {
 			}
 
 			// Set up user list for nav barS
-			request.setAttribute("customerList", customerDAO.getUsers());
+			request.setAttribute("customerList", customerDAO.match());
 
 			CustomerBean user = (CustomerBean) request.getSession(false)
 					.getAttribute("user");
 
-			FundBean[] fundList = fundDAO.getAllFunds();
+			FundBean[] fundList = fundDAO.match();
 			request.setAttribute("fundList", fundList);
 
 			BuyForm form = formBeanFactory.create(request);

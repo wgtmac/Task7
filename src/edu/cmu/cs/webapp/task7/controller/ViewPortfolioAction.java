@@ -7,8 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
-
 import org.mybeans.form.FormBeanException;
 
 import edu.cmu.cs.webapp.task7.databean.*;
@@ -51,7 +51,7 @@ public class ViewPortfolioAction extends Action {
 				request.setAttribute("cash", cash);
 				request.setAttribute("balance", balance);
 				
-				PositionBean[] positionList = positionDAO.getFunds(customer.getUserName());
+				PositionBean[] positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 
 				FundDisplay[] fundList = null;
 				if (positionList != null && positionList.length > 0) {
@@ -90,10 +90,10 @@ public class ViewPortfolioAction extends Action {
 
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "viewAccount.jsp";
 		} catch (Exception e) {
 			errors.add(e.getMessage());
-			return "error.jsp";
+			return "viewAccount.jsp";
 		}
 
 	}

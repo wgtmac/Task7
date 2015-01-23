@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
@@ -23,16 +23,10 @@ public class ResearchFundAction extends Action {
 			.getInstance(ResearchFundForm.class);
 	
 	private FundDAO fundDAO;
-	private TransactionDAO transactionDAO;
-	private PositionDAO positionDAO;
-	private CustomerDAO customerDAO;
 	private FundPriceHistoryDAO fundPriceHistoryDAO;
 	
 	public ResearchFundAction(Model model) {
 		this.fundDAO = model.getFundDAO();
-		this.transactionDAO= model.getTransactionDAO();
-		this.customerDAO = model.getCustomerDAO();
-		this.positionDAO = model.getPositionDAO();
 		this.fundPriceHistoryDAO =model.getFundPriceHistoryDAO();
 
 	}
@@ -44,7 +38,6 @@ public class ResearchFundAction extends Action {
 
 	@Override
 	public String perform(HttpServletRequest request) {
-		HttpSession session = request.getSession();
 		List<String> errors = new ArrayList<String>();
 		request.setAttribute("errors", errors);
 		 
@@ -60,7 +53,7 @@ public class ResearchFundAction extends Action {
 			request.setAttribute("form", form);
 			request.setAttribute("description", "");
 			
-			List<FundBean> funds = fundDAO.getAllFundsList();
+			FundBean[] funds = fundDAO.match();
 			
 			request.setAttribute("funds", funds);
 			errors.addAll(form.getValidationErrors());
@@ -105,12 +98,11 @@ public class ResearchFundAction extends Action {
 	
 	
 	private List<Map<String, String>> getFundPriceHistory(
-			int fundId) {
-		try {
+			int fundId) throws RollbackException {
 		List<Map<String,String>> fundPriceHistory = new ArrayList<Map<String,String>>();
-		List<FundPriceHistoryBean> fundPriceHistoryBean;
+		FundPriceHistoryBean[] fundPriceHistoryBean;
 		
-			fundPriceHistoryBean = fundPriceHistoryDAO.getFundPriceHistoryList(fundId);
+			fundPriceHistoryBean = fundPriceHistoryDAO. match(MatchArg.equals("fundId", fundId));
 		if(fundPriceHistoryBean != null){
 			for(FundPriceHistoryBean hBean: fundPriceHistoryBean){
 				
@@ -128,17 +120,12 @@ public class ResearchFundAction extends Action {
 		else{
 			return fundPriceHistory;
 		}
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+
 	}
 	
 	private String chartData(
-			int fundId) {
-		try {
-		List<FundPriceHistoryBean> fundPriceHistoryBean = fundPriceHistoryDAO.getFundPriceHistoryList(fundId);
+			int fundId) throws RollbackException {
+		FundPriceHistoryBean[] fundPriceHistoryBean = fundPriceHistoryDAO. match(MatchArg.equals("fundId",fundId));
 		StringBuilder data = new StringBuilder();
 		if(fundPriceHistoryBean != null){
 			for(FundPriceHistoryBean hBean: fundPriceHistoryBean){
@@ -151,10 +138,6 @@ public class ResearchFundAction extends Action {
 			
 		/*System.out.println(data.toString());*/
 		return data.toString();
-		} catch (RollbackException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
+
 	}
 }
