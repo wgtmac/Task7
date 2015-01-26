@@ -2,6 +2,7 @@ package edu.cmu.cs.webapp.task7.formbean;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.mybeans.form.FormBean;
 
 public class DepositCheckForm extends FormBean {
@@ -16,7 +17,8 @@ public class DepositCheckForm extends FormBean {
 	}
 
 	public void setUserName2(String s) {
-		userName2 = s.trim();
+		String source = s.trim();
+		userName2 = source.toLowerCase();
 	}
 
 	public void setAmount(String s) {

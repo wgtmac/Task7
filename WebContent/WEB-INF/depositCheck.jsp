@@ -24,7 +24,7 @@
       <form action="depositCheck.do" method="post">
         <div class="col-lg-6">
           <div class="form-group">
-            <label>Choose Customer User Name:</label>
+            <label>Choose customer UserName:</label>
             <select  class="form-control" name="userName1">
               <option></option>            
               <c:choose>
@@ -36,7 +36,7 @@
 					</c:otherwise>
 				</c:choose>
             </select>
-            <label>OR Search It Here:</label>
+            <label>Or search it here:</label>
             <input name="userName2" type="text"  class="form-control" value="${form.userName2}">
             </div>
             <div class="form-group">

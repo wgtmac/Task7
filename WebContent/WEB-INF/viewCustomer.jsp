@@ -11,7 +11,7 @@
       <div class="col-lg-6">
         <form action="viewCustomer.do" method="POST">
           <div class="form-group">
-          <label>Choose an account by username:</label>
+          <label>Choose an account by UserName:</label>
           <select  class="form-control" name="userName1">
               <option></option>            
               <c:choose>
@@ -23,7 +23,7 @@
 					</c:otherwise>
 				</c:choose>
             </select>
-             <label>OR Search It Here:</label>
+             <label>Or search it here:</label>
             <input name="userName2" type="text"  class="form-control" value="${form.userName2}">
           <br>
           <button type="submit" name="action" value="select" class="btn btn-primary">Select Account</button>

@@ -26,7 +26,7 @@
       <form role="form" method="post">
         <div class="form-group">
           <label>User name:*</label>
-          <input name="userName" required class="form-control" value="${form.userName}">
+          <input name="userName" required class="form-control" value="${form.userName}" placeholder="Not case sensitive">
         </div>
         <div class="form-group">
           <label>Customer's First Name:*</label>

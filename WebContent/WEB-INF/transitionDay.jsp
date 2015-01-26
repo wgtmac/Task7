@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <jsp:include page="template-employee-top.jsp" />
 
@@ -25,7 +26,7 @@
 	<div class="row">
 		<div class="col-lg-6">
 			<h3>Funds to Update</h3>
-			Please set today's closing prices for the listed funds. The prices
+			Please set the closing prices for each fund. The prices
 			displayed by default correspond to the last trading day. <br>
 			<br>
 			<div class="table-responsive">
@@ -56,15 +57,13 @@
 			</div>
 		</div>
 	</div>
-	Please select the new trading day. The date
-	displayed by default corresponds to the last trading day, <br>
-	the new date must be after.<br><br>
+	Select the new trading day, it must be a date <b>after</b> the last transition indicated below: <br><br>
 	<div class="row">
 		<div class="col-lg-3">
 			<table class="table table-bordered table-hover table-striped">
 				<thead>
 					<tr class="success">
-						<th>Trading Day: (yyyy-mm-dd)</th>
+						<th>Trading Day: (mm/dd/yyyy)</th>
 					</tr>
 				</thead>
 				<tbody>

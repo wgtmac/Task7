@@ -43,7 +43,7 @@
 							<td>${ u.fund }</td>
 							<td align="right">${ u.totShares }</td>
 							<td align="right">${ u.price }</td>
-							<td align="right">$${ u.total }</td>
+							<td align="right">${ u.total }</td>
 							</tr>
 					</c:forEach>
 				</c:otherwise>

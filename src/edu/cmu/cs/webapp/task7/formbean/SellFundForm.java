@@ -31,11 +31,11 @@ public class SellFundForm extends FormBean {
         
     	try {
         	double d = Double.parseDouble(shares);
-        	if (d <= 0 || d > Integer.MAX_VALUE) {
+        	if (d < 0.001 || d > Integer.MAX_VALUE) {
         		throw new Exception();
         	}
         } catch (Exception e) {
-        	 errors.add("Shares should be a non-negative number");
+        	 errors.add("Shares should be a positive number. Minimum stocks to sell is 0.001");
         }
     
 		return errors;

@@ -56,11 +56,11 @@ public class RequestCheckForm extends FormBean {
 		
 		try {
 			double amt = Double.parseDouble(amount);
-			if (amt <= 0) {
+			if (amt < 1.00) {
 				throw new NumberFormatException();
 			}
 		} catch (Exception e) {
-			errors.add("The amount entered is not valid.");
+			errors.add("The amount entered is not valid. Minimum valid amount is $1.00");
 		}
 		if (errors.size() > 0)
 			return errors;

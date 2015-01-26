@@ -31,7 +31,7 @@
                     
                     <div class="form-group">
                     	<label>Ticker:</label>
-                        <input name="ticker" required class="form-control" placeholder="Capital letters ex. GOOG">
+                        <input name="ticker" required class="form-control" placeholder="Capital letters ex. GOOG" maxlength="6">
                     </div>
                     
                     
