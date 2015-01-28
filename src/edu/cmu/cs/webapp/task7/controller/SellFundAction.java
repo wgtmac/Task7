@@ -74,7 +74,7 @@ public class SellFundAction  extends Action {
 					}
 				}
 				
-				request.setAttribute("fundList",(FundDisplay[]) fundList.toArray());
+				request.setAttribute("fundList", fundList);
 				
 				if (!form.isPresent()) {
 					return "sellFund.jsp";
@@ -85,11 +85,8 @@ public class SellFundAction  extends Action {
 		        if (errors.size() > 0) return "sellFund.jsp";
 	        
 		        Double sharesToSell = Double.parseDouble(form.getShares());
-		        Double sharesHeld =  transactionDAO.getValidShares(customer.getUserName() , 
-		        		positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0, Integer.parseInt(form.getFundId()));
-		        			
-		        
-		       if (! transactionDAO.sellShares(customer.getUserName(), sharesHeld, Integer.parseInt(form.getFundId()), sharesToSell) ){
+
+		       if (! transactionDAO.sellShares(customer.getUserName(), positionDAO.read(customer.getUserName(), Integer.parseInt(form.getFundId())).getShares() / 1000.0, Integer.parseInt(form.getFundId()), sharesToSell) ){
 		    	   errors.add("The shares to sell exceed the shares held");
 		    	   return "sellFund.jsp";	
 		       }
@@ -118,7 +115,7 @@ public class SellFundAction  extends Action {
 					}
 				}
 				
-				request.setAttribute("fundList",(FundDisplay[]) fundList.toArray());
+				request.setAttribute("fundList", fundList);
 
 		        return "sellFund.jsp";	
 			} else {

@@ -139,6 +139,8 @@ public class TransactionDAO extends GenericDAO<TransactionBean> {
 				}
 			}
 			
+			System.out.println(shares + " " +shares_sell);
+			
 			if (shares >= shares_sell) {
 				
 		        TransactionBean transbean= new TransactionBean();

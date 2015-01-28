@@ -77,7 +77,7 @@ public class BuyForm extends FormBean {
 			if (amt < 10) {
 				errors.add("Please enter an amount that is greater than $10");
 			} else if (amt > 1000000000) {
-				errors.add("Please enter an amount that is lesser than $1000000000");
+				errors.add("Please enter an amount that is lesser than $1,000,000,000.00");
 			}
 		} catch (NumberFormatException nfe) {
 			errors.add("Please enter amount in digits. Do not use letters");

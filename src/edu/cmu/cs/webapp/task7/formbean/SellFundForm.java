@@ -37,6 +37,26 @@ public class SellFundForm extends FormBean {
         } catch (Exception e) {
         	 errors.add("Shares should be a positive number. Minimum stocks to sell is 0.001");
         }
+    	
+    	
+    	
+		try {
+			double d = Double.parseDouble(shares);
+	    	//3 digit allowed!
+	    	int lastDotIndex = shares.lastIndexOf(".");
+	    	if (lastDotIndex != -1 && 
+	    			shares.substring( lastDotIndex + 1 ).length() > 3  && 
+	    			Integer.parseInt(shares.substring( lastDotIndex + 1 )) != 0){
+				errors.add("Shares format error!");
+			}
+	    	if (d < 0.001 || d > 1000000000){
+		    	errors.add("Shares must no smaller than 0.001 and no greater than 1,000,000,000.00!");
+		    } 
+		} catch (Exception e) {
+			errors.add("Shares format error!");
+		}
+    	
+    	
     
 		return errors;
 	}

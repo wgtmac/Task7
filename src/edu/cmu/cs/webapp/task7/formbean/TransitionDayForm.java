@@ -46,17 +46,22 @@ public class TransitionDayForm /* extends FormBean*/ {
         }
         
         for (String price : map.values()) {
-        	try {
-        		if (price == null || price.length() == 0)
-        			throw new Exception();
-            	double d = Double.parseDouble(price);
-            	if (d <= 0 || d > Integer.MAX_VALUE) {
-            		throw new Exception();
-            	}
-            } catch (Exception e) {
-            	 errors.add("Price should be a positive number");
-            	 break;
-            }
+        	
+			try {
+				double d = Double.parseDouble(price);
+		    	//2 digit allowed!
+		    	int lastDotIndex = price.lastIndexOf(".");
+		    	if (lastDotIndex != -1 && 
+		    			price.substring( lastDotIndex + 1 ).length() > 2  && 
+		    			Integer.parseInt(price.substring( lastDotIndex + 1 )) != 0){
+					errors.add("Price format error!");
+				}
+		    	if (d < 0.01 || d > 10000){
+			    	errors.add("Price must greater equal than 0.01 and less equal than 10,000.00!");
+			    } 
+			} catch (Exception e) {
+				errors.add("Price format error!");
+			}        
         }
     
 		return errors;

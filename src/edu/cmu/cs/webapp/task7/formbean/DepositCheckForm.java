@@ -80,16 +80,23 @@ public class DepositCheckForm extends FormBean {
 			errors.add("Invalid button");
 		if (userName1.matches(".*[<>\"].*") && userName2.matches(".*[<>\"].*"))
 			errors.add("User Name may not contain angle brackets or quotes");
-		{
+		{	
 			try {
 				double d = Double.parseDouble(amount);
-				if (d <= 0 || d > Integer.MAX_VALUE) {
-					throw new NumberFormatException();
+		    	//2 digit allowed!
+		    	int lastDotIndex = amount.lastIndexOf(".");
+		    	if (lastDotIndex != -1 && 
+		    			amount.substring( lastDotIndex + 1 ).length() > 2  && 
+		    			Integer.parseInt(amount.substring( lastDotIndex + 1 )) != 0){
+					errors.add("Check amount format error!");
 				}
+		    	if (d < 0.01 || d > 1000000000){
+			    	errors.add("Amount must greater equal than 0.01 and less equal than 1,000,000,000.00!");
+			    } 
 			} catch (Exception e) {
-				errors.add("Amount should be a positive number");
-				return errors;
+				errors.add("The amount entered is not valid. Minimum valid amount is $1.00");
 			}
+			
 		}
 		if (Double.parseDouble(amount) != Double.parseDouble(confAmount))
 			// if (!amount.equals(confAmount))

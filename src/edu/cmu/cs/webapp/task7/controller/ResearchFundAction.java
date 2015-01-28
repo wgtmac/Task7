@@ -81,7 +81,7 @@ public class ResearchFundAction extends Action {
 			
 			if (form.getAction()!=null &&form.getAction().equals("Fund History")) {
 				
-				//System.out.println("id inside button is"+fndId);
+				System.out.println("id inside button is"+fndId);
 				
 				List<Map<String,String>> fundPriceHistory = getFundPriceHistory(fndId); 
 				if (fundPriceHistory.isEmpty()) 

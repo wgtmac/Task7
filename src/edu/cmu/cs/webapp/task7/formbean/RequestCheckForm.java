@@ -54,14 +54,23 @@ public class RequestCheckForm extends FormBean {
 			return errors;
 
 		
+		
 		try {
-			double amt = Double.parseDouble(amount);
-			if (amt < 1.00) {
-				throw new NumberFormatException();
+			double d = Double.parseDouble(amount);
+	    	//2 digit allowed!
+	    	int lastDotIndex = amount.lastIndexOf(".");
+	    	if (lastDotIndex != -1 && 
+	    			amount.substring( lastDotIndex + 1 ).length() > 2  && 
+	    			Integer.parseInt(amount.substring( lastDotIndex + 1 )) != 0){
+				errors.add("Check amount format error!");
 			}
+	    	if (d < 0.01 || d > 1000000000){
+		    	errors.add("Amount must greater equal than 0.01 and less equal than 1,000,000,000.00!");
+		    } 
 		} catch (Exception e) {
-			errors.add("The amount entered is not valid. Minimum valid amount is $1.00");
+			errors.add("Check amount format error!");
 		}
+		
 		if (errors.size() > 0)
 			return errors;
 		
