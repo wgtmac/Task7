@@ -7,58 +7,23 @@
 		<h2 class="page-header">Research Funds</h2>
 	</div>
 </div>
-	<c:choose>
-		<c:when test="${ (empty msg) }">
-		</c:when>
-		<c:otherwise>
-			<h3 style="color: blue">${msg}</h3>
-		</c:otherwise>
-	</c:choose>
 
-	<c:forEach var="error" items="${errors}">
-		<h3 style="color: red">${error}</h3>
-	</c:forEach>
-	<form name="researchFundForm" id="researchFundForm" method="post"
-		action="researchFund.do">
-		<input type="hidden" name="fundId" id="fundId" />
-
-			<h3>Select a Fund</h3>
-			<table>
-				<tr>
-					<td><label>Select the fund you want to search:</label>
-						<div class="form-group">
-							<!-- Add the account stocks below -->
-							<select class="form-control" name="fundName">
-								<option></option>
-
-								<c:choose>
-									<c:when test="${ (empty funds) }"></c:when>
-									<c:otherwise>
-										<c:forEach var="u" items="${ funds }">
-											<option>${ u.getName() }</option>
-										</c:forEach>
-									</c:otherwise>
-								</c:choose>
-							</select> <br><label>Or Search it here:</label> <input name="fund2"
-								type="text" class="form-control" value="${form.fund2}">
-						</div>
-<!-- onClick="setValues()"  -->
-						
-				</tr>
-				<tr>
-					<td align="right"><input type="submit" name="action"
-						 class="btn btn-primary" value="Fund History" /></td>
-				</tr>
-
-			</table>
 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+
+
 <!-- IE Fix for HTML5 Tags -->
+
 <!--[if lt IE 9]>
+
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+
 <![endif]-->
 
-	<script type="text/javascript">
+
+
+ 		<script type="text/javascript">
 	google.load("visualization", "1", {
 		packages : [ "corechart" ]
 	});
@@ -104,7 +69,7 @@
 	}
 </script>
 
-<script type="text/javascript" ></script>
+<!-- <script type="text/javascript" ></script>
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
@@ -126,10 +91,7 @@
 
         chart.draw(data, options);
       }
-    </script>
-<<<<<<< HEAD
-	
-=======
+    </script> -->
  
     
  
@@ -177,14 +139,13 @@
 						
 				</tr>
 				<tr>
-					<td align="right"><input type="submit" name="action"
+					<td align="right"><input type="submit" name="button"
 						 class="btn btn-primary" value="Fund History" /></td>
 				</tr>
 
 			</table>
 
 		
->>>>>>> 5b6ebebd0d2f413aee24d77c58757c05d5320bac
 		<div id="chart">
 			<!-- <table>
 				<tr>
@@ -204,10 +165,46 @@
 				value="${chartData}" />
 			<div id="chart_div"></div>
 			<br>
-			<h3>Cumulative Fund Performance</h3>
+			<!-- <h3>Cumulative Fund Performance</h3>
 			<br>
-			<div id="piechart_div" align="center"></div>
+			<div id="piechart_div" align="center"></div> -->
 		</div>
+		
+		<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped">
+		<thead>
+			<tr>
+				
+				<th>Fund Name</th>
+				<!-- <th>Ticker</th> -->
+				<th> Price</th>
+				<th> Date </th>
+				
+
+			</tr>
+		</thead>
+		<!-- Create for each loop to fill table -->
+		<tbody>
+			<c:choose>
+				<c:when test="${ (empty fundPriceHistory) }"></c:when>
+				<c:otherwise>
+					<c:forEach var="u" items="${ fundPriceHistory }">
+						<tr>
+							
+							<td>${ fundName }</td>
+							<%-- <td>${ u.getTicker() }</td> --%>
+							
+							<td align="right">${ u.getPrice }</td>
+							<td >${ u.getPriceDate }</td>
+							</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
+	</table>
+	<p align="center">*** End of Registry ***</p>
+</div>
+		
 	</form>
 </div>
 
