@@ -1,5 +1,7 @@
 package edu.cmu.cs.webapp.task7.controller;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,9 +81,9 @@ public class ResearchFundAction extends Action {
 			
 			int fndId = tmp_fb[0].getFundId();
 			
+			
 			if (form.getAction()!=null &&form.getAction().equals("Fund History")) {
 				
-				System.out.println("id inside button is"+fndId);
 				
 				List<Map<String,String>> fundPriceHistory = getFundPriceHistory(fndId); 
 				if (fundPriceHistory.isEmpty()) 
@@ -119,7 +121,9 @@ public class ResearchFundAction extends Action {
 				String id=Integer.toString(hBean.getFundId());
 				Map<String,String> tmp = new HashMap<String,String>();
 				tmp.put("fundId",id);
-				tmp.put("price",Long.toString(hBean.getPrice()));
+				NumberFormat formatter = new DecimalFormat("#,##0.00");
+				String newPrice=formatter.format(hBean.getPrice()/100);
+				tmp.put("price",newPrice);
 				tmp.put("date",hBean.getPriceDate());
 				tmp.put("fundName", fundDAO.read(hBean.getFundId()).getName());
 				

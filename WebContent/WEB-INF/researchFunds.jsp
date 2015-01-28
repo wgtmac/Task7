@@ -157,28 +157,30 @@
 				<tr>
 					<td>Fund:&nbsp;&nbsp;&nbsp;${fundTitle}</td>
 				</tr>
-				<tr>
+				<%-- <tr>
 					<td>Description:&nbsp;&nbsp;&nbsp;${description}</td>
-				</tr>
+				</tr> --%>
 			</table>
 			<input type="hidden" name="chartData" id="chartData"
 				value="${chartData}" />
 			<div id="chart_div"></div>
 			<br>
-			<h3>Cumulative Fund Performance</h3>
-			<br>
-			<div id="piechart_div" align="center"></div> 
-		</div>
+			
 		
-		<div class="table-responsive">
-	<table class="table table-bordered table-hover table-striped">
+		<div class="col-lg-6" align="center">
+		
+	<table class="table table-bordered table-hover table-striped" >
+	<colgroup>
+       <col span="1" style="width: 25%;">
+       <col span="1" style="width: 25%;">
+       
+    </colgroup>
 		<thead>
 			<tr>
 				
-				<th>Fund Name</th>
-				<th>Ticker</th>
-				<th> Price</th>
 				<th> Date </th>
+				<th> Price</th>
+				
 				
 
 			</tr>
@@ -191,11 +193,10 @@
 					<c:forEach var="u" items="${ fundPriceHistory }">
 						<tr>
 							
-							<td>${ fundName }</td>
-							<%-- <td>${ u.getTicker() }</td> --%>
 							
-							<td align="right">${ u.getPrice }</td>
-							<td >${ u.getPriceDate }</td>
+							<td >${ u.get("date") }</td>
+							<td align="right">${ u.get("price") }</td>
+							
 							</tr>
 					</c:forEach>
 				</c:otherwise>

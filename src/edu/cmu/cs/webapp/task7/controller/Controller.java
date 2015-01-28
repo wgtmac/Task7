@@ -38,6 +38,8 @@ public class Controller extends HttpServlet {
         Action.add(new ViewPortfolioAction(model));
         Action.add(new BuyFundAction(model));
         Action.add(new ResearchFundAction(model));
+        Action.add(new AccountManageC(model));
+        Action.add(new AccountManageE(model));
 }
 
 
