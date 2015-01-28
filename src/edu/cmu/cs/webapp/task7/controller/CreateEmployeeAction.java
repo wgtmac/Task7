@@ -67,10 +67,13 @@ public class CreateEmployeeAction extends Action {
 
 				employeeDAO.create(newUser);
 				
-				request.setAttribute("msg", "Employee account " +form.getUserName()+ " was created successfully.");
+				request.getSession().setAttribute("msg", "Employee account " +form.getUserName()+ " was created successfully.");
 				request.removeAttribute("form");
 				
-				return "confirmationPage.jsp";
+				if (errors.size() > 0) 
+					return "createEmployee.jsp";	
+				
+				return "success.do";
 			} else {
 				
 				// logout and re-login

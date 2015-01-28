@@ -126,8 +126,9 @@ public class ViewCustomerAction extends Action {
 					
 				}
 				
+			
+					return "viewCustomerAccount.jsp";	
 				
-				return "viewCustomerAccount.jsp";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

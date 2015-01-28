@@ -74,13 +74,16 @@ public class RequestCheckAction extends Action {
 					return "requestCheck.jsp";
 				} 
 				
-				request.setAttribute("msg", "A check in the amount of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " has been requested.");
+				request.getSession().setAttribute("msg", "A check in the amount of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " has been requested.");
 
-				availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );
-				balance = formatter.format(availableBalance);
-				session.setAttribute("balance", balance);
+//				availableBalance = transactionDAO.getValidBalance(customer.getUserName(), customer.getCash() / 100.0 );
+//				balance = formatter.format(availableBalance);
+//				session.setAttribute("balance", balance);
+//				
+//				if (errors.size() > 0) 
+//					return "requestCheck.jsp";	
 				
-				return "confirmationPage.jsp";
+				return "success.do";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

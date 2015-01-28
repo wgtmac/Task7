@@ -59,9 +59,12 @@ public class ResetPwdAction extends Action {
 				
 				user.setPassword(form.getNewPwd());
 				customerDAO.update(user);
-				request.setAttribute("msg", "Password is reset successfully!");
+				request.getSession().setAttribute("msg", "Password is reset successfully!");
 
-				return "confirmationPage.jsp";
+				if (errors.size() > 0) 
+					return "resetPwd.jsp";	
+				
+				return "success.do";
 			}
 			else {
 				if (request.getSession().getAttribute("user") != null)

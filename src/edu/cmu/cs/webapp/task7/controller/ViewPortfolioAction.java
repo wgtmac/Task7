@@ -83,7 +83,8 @@ public class ViewPortfolioAction extends Action {
 				
 				request.setAttribute("customer", customer);
 
-				return "viewAccount.jsp";
+				return "viewAccount.jsp";	
+
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

@@ -81,12 +81,15 @@ public class CreateFundAction extends Action {
 				
 				fundDAO.createAutoIncrement(newFund);
 				
-				request.setAttribute("msg", "Fund <font color=\"black\">" +form.getTicker()+ "</font> has been created.");
+				request.getSession().setAttribute("msg", "Fund <font color=\"black\">" +form.getTicker()+ "</font> has been created.");
 				Transaction.commit();
 				} finally {
 					if (Transaction.isActive()) Transaction.rollback();
 				}
-				return "confirmationPage.jsp";
+				if (errors.size() > 0) 
+					return "createFund.jsp";	
+				
+				return "success.do";
 			} else {
 				
 				// logout and re-login

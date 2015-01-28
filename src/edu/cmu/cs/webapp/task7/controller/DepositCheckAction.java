@@ -80,10 +80,13 @@ public class DepositCheckAction extends Action {
 				transactionDAO.createAutoIncrement(tb);
 				
 				NumberFormat formatter = new DecimalFormat("#,##0.00");
-				request.setAttribute("msg", "A deposit of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " was made into <font color=\"black\">" +form.getUserName()+ "'s</font> account.");
+				request.getSession().setAttribute("msg", "A deposit of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " was made into <font color=\"black\">" +form.getUserName()+ "'s</font> account.");
 				request.removeAttribute("form");
 
-				return "confirmationPage.jsp";
+				if (errors.size() > 0) 
+					return "depositeCheck.jsp";	
+				
+				return "success.do";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

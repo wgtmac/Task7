@@ -92,32 +92,35 @@ public class SellFundAction  extends Action {
 		       }
 		        
 		        request.removeAttribute("form");
-		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");		        
-		        positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
+		        request.getSession().setAttribute("msg", form.getShares()+" shares sold successfully.");		        
+//		        positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
+//
+//				if (positionList != null && positionList.length > 0) {
+//					fundList = new ArrayList<FundDisplay>();
+//					
+//					for (int i = 0; i < positionList.length; i++) {
+//						FundDisplay fd = new FundDisplay();
+//						
+//						FundBean fund = fundDAO.read(positionList[i].getFundId());
+//						
+//						fd.setFundId(positionList[i].getFundId());
+//						fd.setFundName(fund.getName());
+//						fd.setTicker(fund.getSymbol());
+//						double validShare = transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId());
+//						fd.setShares(df3.format(validShare));
+//						
+//						if (validShare >= 0.001) {
+//							fundList.add(fd);
+//						}
+//					}
+//				}
+//				
+//				request.setAttribute("fundList", fundList);
 
-				if (positionList != null && positionList.length > 0) {
-					fundList = new ArrayList<FundDisplay>();
-					
-					for (int i = 0; i < positionList.length; i++) {
-						FundDisplay fd = new FundDisplay();
-						
-						FundBean fund = fundDAO.read(positionList[i].getFundId());
-						
-						fd.setFundId(positionList[i].getFundId());
-						fd.setFundName(fund.getName());
-						fd.setTicker(fund.getSymbol());
-						double validShare = transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId());
-						fd.setShares(df3.format(validShare));
-						
-						if (validShare >= 0.001) {
-							fundList.add(fd);
-						}
-					}
-				}
+//				if (errors.size() > 0) 
+//					return "sellFund.jsp";	
 				
-				request.setAttribute("fundList", fundList);
-
-		        return "confirmationPage.jsp";	
+				return "success.do";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)	session.removeAttribute("user");

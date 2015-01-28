@@ -161,7 +161,9 @@ public class HistoryAction extends Action {
 
 					}
 					request.setAttribute("transactionList", hb);
-					return "history.jsp";
+
+					
+					return "history.jsp";	
 
 				} else {
 					request.setAttribute("msg",

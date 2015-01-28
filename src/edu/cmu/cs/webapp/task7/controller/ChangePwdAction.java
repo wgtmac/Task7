@@ -99,9 +99,12 @@ public class ChangePwdAction extends Action {
 				user.setPassword(form.getNewPwd());
 				employeeDAO.update(user);
 				
-				request.setAttribute("msg", "Password was changed successfully.");
+				request.getSession().setAttribute("msg", "Password was changed successfully.");
 
-				return "employeePSW.jsp";
+				if (errors.size() > 0) 
+					return "employeePSW.jsp";	
+				
+				return "success.do";
 			}
 			else {
 				if (request.getSession().getAttribute("user") != null)

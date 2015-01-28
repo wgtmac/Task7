@@ -75,9 +75,12 @@ public class CreateCustomerAction extends Action {
 				customerDAO.create(newUser);
 				
 				request.removeAttribute("form");;
-				request.setAttribute("msg", "Customer account created successfully");
+				request.getSession().setAttribute("msg", "Customer account created successfully");
 
-				return "confirmationPage.jsp";
+				if (errors.size() > 0) 
+					return "createCustomer.jsp";	
+				
+				return "success.do";
 			} else {
 				
 				// logout and re-login

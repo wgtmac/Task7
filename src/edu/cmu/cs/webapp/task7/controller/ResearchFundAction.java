@@ -104,7 +104,9 @@ public class ResearchFundAction extends Action {
 			//logger.error(e.getMessage());
 			return "researchFunds.jsp";
 		}
-		return "researchFunds.jsp";
+		
+			return "researchFunds.jsp";	
+		
 	}
 
 	

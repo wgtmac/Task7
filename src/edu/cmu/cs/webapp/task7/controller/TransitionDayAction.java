@@ -138,8 +138,7 @@ public class TransitionDayAction extends Action {
 						fphb.setPrice( (long)(Double.parseDouble(request.getParameter("fund_" + fb.getFundId())) * 100) );
 						fundPriceHistoryDAO.create(fphb);
 					}
-					
-					System.out.println("1");
+	
 					
 					// process pending transactions
 					for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
@@ -217,35 +216,40 @@ public class TransitionDayAction extends Action {
 				}
 				
 				
-				price_map = new HashMap<Integer, String>();
-				lastTradingDay = fundPriceHistoryDAO.getLatestTradingDayDateString ();
-				for (FundBean fb : fundList) {
-					if (lastTradingDay == null) {
-						price_map.put(fb.getFundId(),"N/A");
-						continue;
-					}
-					FundPriceHistoryBean tmp = fundPriceHistoryDAO.read(fb.getFundId() ,lastTradingDay);
-					if (tmp == null) {
-						price_map.put(fb.getFundId(),"N/A");
-					} else {
-						price_map.put(fb.getFundId(),  formatter.format(tmp.getPrice() / 100.0 ));
-					}
-				}
-				request.setAttribute("price_map", price_map);
-				
-				lastFundDay = fundPriceHistoryDAO.getLatestTradingDayDate();
-	        	lastTranDay = transactionDAO.getLatestDate();
-	        	lastDay = null;
-	        	if (lastFundDay != null && lastTranDay != null) {
-	        		lastDay = lastFundDay.compareTo(lastTranDay) <= 0 ? lastTranDay : lastFundDay;
-	        	} else {
-	        		lastDay = lastFundDay == null ? lastTranDay : lastFundDay;
-	        	}
-				
-	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
-				request.setAttribute("msg", "Transition day was successfully set.");
+//				price_map = new HashMap<Integer, String>();
+//				lastTradingDay = fundPriceHistoryDAO.getLatestTradingDayDateString ();
+//				for (FundBean fb : fundList) {
+//					if (lastTradingDay == null) {
+//						price_map.put(fb.getFundId(),"N/A");
+//						continue;
+//					}
+//					FundPriceHistoryBean tmp = fundPriceHistoryDAO.read(fb.getFundId() ,lastTradingDay);
+//					if (tmp == null) {
+//						price_map.put(fb.getFundId(),"N/A");
+//					} else {
+//						price_map.put(fb.getFundId(),  formatter.format(tmp.getPrice() / 100.0 ));
+//					}
+//				}
+//				request.setAttribute("price_map", price_map);
+//				
+//				lastFundDay = fundPriceHistoryDAO.getLatestTradingDayDate();
+//	        	lastTranDay = transactionDAO.getLatestDate();
+//	        	lastDay = null;
+//	        	if (lastFundDay != null && lastTranDay != null) {
+//	        		lastDay = lastFundDay.compareTo(lastTranDay) <= 0 ? lastTranDay : lastFundDay;
+//	        	} else {
+//	        		lastDay = lastFundDay == null ? lastTranDay : lastFundDay;
+//	        	}
+//				
+//	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
+	   
 
-				return "confirmationPage.jsp";
+				if (errors.size() > 0) 
+					return "transitionDay.jsp";	
+				
+				request.getSession().setAttribute("msg", "Transition day was successfully set.");
+				
+				return "success.do";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)
