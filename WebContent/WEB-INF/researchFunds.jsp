@@ -139,7 +139,7 @@
 						
 				</tr>
 				<tr>
-					<td align="right"><input type="submit" name="button"
+					<td align="right"><input type="submit" name="action"
 						 class="btn btn-primary" value="Fund History" /></td>
 				</tr>
 
