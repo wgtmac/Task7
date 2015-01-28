@@ -166,9 +166,9 @@ public class TransitionDayAction extends Action {
 								break;
 							case TransactionBean.BUY_FUND:						
 								long shares = 0;
+								double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice()  / 100.0 ;
 								if (positionDAO.read(tb.getUserName() , tb.getFundId()) == null) {
 									double amount = tb.getAmount() / 100.00;
-									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice()  / 100.0 ;
 									shares = (long) (amount / price * 1000);
 									
 									PositionBean pb = new PositionBean();
@@ -179,14 +179,15 @@ public class TransitionDayAction extends Action {
 									
 								} else {
 									double amount = tb.getAmount() / 100.00;
-									double price = fundPriceHistoryDAO.read(tb.getFundId(), today).getPrice()  / 100.0 ;
+									
 									shares = (long) (amount / price * 1000);
 									
 									PositionBean pb = positionDAO.read(tb.getUserName(),  tb.getFundId());
 									pb.setShares(shares + pb.getShares());
 									positionDAO.update(pb);
 								}
-								
+							
+								tb.setAmount((long)(shares / 1000.0 * price * 100));
 								tb.setShares(shares);
 										
 								cb.setCash(cb.getCash() -  tb.getAmount());
