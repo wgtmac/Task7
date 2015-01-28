@@ -64,12 +64,13 @@ public class RequestCheckAction extends Action {
 
 				// Any validation errors?
 				errors.addAll(form.getValidationErrors());
+				
 				if (errors.size() != 0) {
 					return "requestCheck.jsp";
 				}
 				
 				customer = customerDAO.read(customer.getUserName());
-				if (!transactionDAO.requestCheck(customer.getUserName(), customer.getCash(), Double.parseDouble(form.getAmount()))) {
+				if (!transactionDAO.requestCheck(customer.getUserName(), customer.getCash() / 100.0, Double.parseDouble(form.getAmount()))) {
 					errors.add("Amount requested is higher than cash available");
 					return "requestCheck.jsp";
 				} 
