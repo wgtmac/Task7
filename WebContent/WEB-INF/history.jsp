@@ -50,6 +50,9 @@
 			</c:choose>
 		</tbody>
 	</table>
+	
+	* Pending deposits are available for you to use, but will be reflected on your posted balance at the end of the transaction day.
+	<br><br>
 	<p align="center">*** End of Registry ***</p>
 </div>
 
