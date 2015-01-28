@@ -69,7 +69,7 @@
 	}
 </script>
 
-<script type="text/javascript" ></script>
+<!-- <script type="text/javascript" ></script>
     <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
@@ -91,7 +91,7 @@
 
         chart.draw(data, options);
       }
-    </script>
+    </script> -->
  
     
  
@@ -165,10 +165,46 @@
 				value="${chartData}" />
 			<div id="chart_div"></div>
 			<br>
-			<h3>Cumulative Fund Performance</h3>
+			<!-- <h3>Cumulative Fund Performance</h3>
 			<br>
-			<div id="piechart_div" align="center"></div>
+			<div id="piechart_div" align="center"></div> -->
 		</div>
+		
+		<div class="table-responsive">
+	<table class="table table-bordered table-hover table-striped">
+		<thead>
+			<tr>
+				
+				<th>Fund Name</th>
+				<!-- <th>Ticker</th> -->
+				<th> Price</th>
+				<th> Date </th>
+				
+
+			</tr>
+		</thead>
+		<!-- Create for each loop to fill table -->
+		<tbody>
+			<c:choose>
+				<c:when test="${ (empty fundPriceHistory) }"></c:when>
+				<c:otherwise>
+					<c:forEach var="u" items="${ fundPriceHistory }">
+						<tr>
+							
+							<td>${ fundName }</td>
+							<%-- <td>${ u.getTicker() }</td> --%>
+							
+							<td align="right">${ u.getPrice }</td>
+							<td >${ u.getPriceDate }</td>
+							</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
+	</table>
+	<p align="center">*** End of Registry ***</p>
+</div>
+		
 	</form>
 </div>
 
