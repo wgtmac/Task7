@@ -9,9 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import org.genericdao.MatchArg;
 import org.genericdao.RollbackException;
+import org.genericdao.Transaction;
 import org.mybeans.form.FormBeanException;
 import org.mybeans.form.FormBeanFactory;
-
 
 import edu.cmu.cs.webapp.task7.databean.EmployeeBean;
 import edu.cmu.cs.webapp.task7.databean.FundBean;
@@ -57,6 +57,8 @@ public class CreateFundAction extends Action {
 				if (errors.size() != 0) {
 					return "createFund.jsp";
 				}
+				try{
+				Transaction.begin();
 				
 				FundBean[] funds1 = fundDAO.match(MatchArg.equals("name",
 						form.getFundName()));
@@ -64,31 +66,32 @@ public class CreateFundAction extends Action {
 						form.getTicker()));
 		        
 		        if(funds1.length!=0){
-		        	errors.add("Fund Name: "+"'"+form.getFundName()+"'"+" already exists");
+		        	errors.add("Fund Name: <font color=\"black\">"+"'"+form.getFundName()+"'"+"</font> already exists");
 					return "createFund.jsp";
 		        }
 		        
 		        if(funds2.length!=0){
-		        	errors.add("Ticker: "+"'"+form.getTicker()+"'"+" already exists");
+		        	errors.add("Ticker: <font color=\"black\">"+"'"+form.getTicker()+"'"+"</font> already exists");
 					return "createFund.jsp";
 		        }
 
 				FundBean newFund = new FundBean();
-				
 				newFund.setName(form.getFundName());
 				newFund.setSymbol(form.getTicker());
 				
 				fundDAO.createAutoIncrement(newFund);
 				
-				request.setAttribute("msg", "'Fund <font color=\"black\">" +form.getTicker()+ "</font> has been created.");
-
+				request.setAttribute("msg", "Fund <font color=\"black\">" +form.getTicker()+ "</font> has been created.");
+				Transaction.commit();
+				} finally {
+					if (Transaction.isActive()) Transaction.rollback();
+				}
 				return "createFund.jsp";
 			} else {
 				
 				// logout and re-login
 				if (session.getAttribute("user") != null)
 					session.removeAttribute("user");
-
 				return "login.do";
 			}
 		} catch (RollbackException e) {

@@ -75,6 +75,10 @@ public class DepositCheckForm extends FormBean {
 
 		if (errors.size() > 0)
 			return errors;
+		
+		if ((userName1 !=  null && userName2 != null && userName1.trim().length() != 0 && userName2.trim().length() != 0 && !userName1.trim().equals(userName2.trim()))) {
+			errors.add("Please make sure user names are the same");
+		}
 
 		if (!action.equals("deposit"))
 			errors.add("Invalid button");

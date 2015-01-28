@@ -62,6 +62,10 @@ public class BuyForm extends FormBean {
 			errors.add("Please choose a fund");
 		}
 		
+		if ((fund !=  null && fund2 != null && fund.trim().length() != 0 && fund2.trim().length() != 0  && !fund.trim().equals(fund2.trim()))) {
+			errors.add("Please make sure fund names are the same");
+		}
+		
 		if (action == null) {
 			errors.add("Button is required");
 		}

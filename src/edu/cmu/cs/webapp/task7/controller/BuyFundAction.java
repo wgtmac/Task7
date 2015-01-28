@@ -62,6 +62,7 @@ public class BuyFundAction extends Action {
 			FundBean[] fundList = fundDAO.match();
 			request.setAttribute("fundList", fundList);
 			
+			user = customerDAO.read(user.getUserName());
 			double availableBalance = transactionDAO.getValidBalance(user.getUserName(), user.getCash() / 100.0);
 			DecimalFormat df2 = new DecimalFormat("#,##0.00");
 			String availableBalanceString = "$" + df2.format(availableBalance);
@@ -89,11 +90,13 @@ public class BuyFundAction extends Action {
 				return "buyFund.jsp";
 			}
 			
+			user = customerDAO.read(user.getUserName());
 			if (! transactionDAO.buyFund(user.getUserName(), user.getCash(), amount, fb[0].getFundId()) ){
 				errors.add("You do not have enough cash balance in your account.");
 				return "buyFund.jsp";	
 			}
 
+			user = customerDAO.read(user.getUserName());
 			availableBalance = transactionDAO.getValidBalance(user.getUserName(), user.getCash() / 100.0);
 			availableBalanceString = "$" + df2.format(availableBalance);
 			

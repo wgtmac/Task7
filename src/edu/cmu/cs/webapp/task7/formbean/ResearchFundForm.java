@@ -56,10 +56,15 @@ public class ResearchFundForm extends FormBean {
 				return errors;
 			}
 			
+			if ((fundName !=  null && fund2 != null && fundName.trim().length() != 0 && fund2.trim().length() != 0 && !fundName.trim().equals(fund2.trim()))) {
+				errors.add("Please make sure fund names are the same");
+			}
+			
 		} else {
 			errors.add("This operation(" + action + ") is not allowed.");
 
 		}
+		
 		return errors;
 	}
 
