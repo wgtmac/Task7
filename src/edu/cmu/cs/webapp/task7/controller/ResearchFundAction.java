@@ -51,6 +51,9 @@ public class ResearchFundAction extends Action {
 			
 			ResearchFundForm form = formBean.create(request);
 			
+			FundBean[] funds = fundDAO.match();
+			
+			request.setAttribute("funds", funds);
 			
 			if (!form.isPresent()) {
 				return "researchFunds.jsp";
@@ -59,9 +62,6 @@ public class ResearchFundAction extends Action {
 			request.setAttribute("form", form);
 			request.setAttribute("description", "");
 			
-			FundBean[] funds = fundDAO.match();
-			
-			request.setAttribute("funds", funds);
 			errors.addAll(form.getValidationErrors());
 			
 			if (errors.size() != 0) {
@@ -79,7 +79,7 @@ public class ResearchFundAction extends Action {
 			
 			int fndId = tmp_fb[0].getFundId();
 			
-			if (form.getButton()!=null &&form.getButton().equals("Fund History")) {
+			if (form.getAction()!=null &&form.getAction().equals("Fund History")) {
 				
 				//System.out.println("id inside button is"+fndId);
 				

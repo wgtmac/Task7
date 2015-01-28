@@ -8,20 +8,10 @@ import org.mybeans.form.FormBean;
 public class ResearchFundForm extends FormBean {
 	private String fundName;
 	
-	private String button; // can be Search or Research Fund
+	private String action; // can be Search or Research Fund
 	private String fromTime; // will not implement in first version
 	private String toTime; // will not implement in first version
 	private String fund2;	
-	private String action;
-
-	public String getAction () {
-		return action;
-	}
-
-
-	public void setAction (String v) {
-		action = v;
-	}
 	
 	public String getFundName() {
 		return fundName;
@@ -58,28 +48,28 @@ public class ResearchFundForm extends FormBean {
 	public List<String> getValidationErrors() {
 		List<String> errors = new ArrayList<String>();
 		// this is the first time entering this page
-		if (button == null) {
+		if (action == null) {
 			return errors;
-		} else if (button.equals("Fund History")) {
+		} else if (action.equals("Fund History")) {
 			if (fundName == null || fundName.length() == 0 ) {
 				errors.add("Fund has not been specified.");
 				return errors;
 			}
 			
 		} else {
-			errors.add("This operation(" + button + ") is not allowed.");
+			errors.add("This operation(" + action + ") is not allowed.");
 
 		}
 		return errors;
 	}
 
-	public String getButton() {
+	public String getAction() {
 		
-		return button;
+		return action;
 	}
 
-	public void setButton(String button) {
-		this.button = button;
+	public void setAction(String button) {
+		this.action = button;
 		
 	}
 

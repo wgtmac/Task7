@@ -51,25 +51,30 @@ public class SellFundAction  extends Action {
 
 				DecimalFormat df3 = new DecimalFormat("#,##0.000");
 
-				FundDisplay[] fundList = null;
+				ArrayList<FundDisplay> fundList = null;
 				PositionBean[] positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
 				
 				if (positionList != null && positionList.length > 0) {
-					fundList = new FundDisplay[positionList.length];
+					fundList = new ArrayList<FundDisplay>();
 					
 					for (int i = 0; i < positionList.length; i++) {
-						fundList[i] = new FundDisplay();
+						FundDisplay fd = new FundDisplay();
 						
 						FundBean fund = fundDAO.read(positionList[i].getFundId());
 						
-						fundList[i].setFundId(positionList[i].getFundId());
-						fundList[i].setFundName(fund.getName());
-						fundList[i].setTicker(fund.getSymbol());
-						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId())));
+						fd.setFundId(positionList[i].getFundId());
+						fd.setFundName(fund.getName());
+						fd.setTicker(fund.getSymbol());
+						double validShare = transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId());
+						fd.setShares(df3.format(validShare));
+						
+						if (validShare >= 0.001) {
+							fundList.add(fd);
+						}
 					}
 				}
 				
-				request.setAttribute("fundList",fundList);
+				request.setAttribute("fundList",(FundDisplay[]) fundList.toArray());
 				
 				if (!form.isPresent()) {
 					return "sellFund.jsp";
@@ -92,21 +97,28 @@ public class SellFundAction  extends Action {
 		        request.removeAttribute("form");
 		        request.setAttribute("msg", form.getShares()+" shares sold successfully.");		        
 		        positionList = positionDAO.match(MatchArg.equals("userName",customer.getUserName()));
-				
+
 				if (positionList != null && positionList.length > 0) {
-					fundList = new FundDisplay[positionList.length];
+					fundList = new ArrayList<FundDisplay>();
 					
 					for (int i = 0; i < positionList.length; i++) {
-						fundList[i] = new FundDisplay();						
-						FundBean fund = fundDAO.read(positionList[i].getFundId());						
-						fundList[i].setFundId(positionList[i].getFundId());
-						fundList[i].setFundName(fundDAO.read(positionList[i].getFundId()).getName());
-						fundList[i].setTicker(fundDAO.read(positionList[i].getFundId()).getSymbol());
-						fundList[i].setShares(df3.format(transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId())));
+						FundDisplay fd = new FundDisplay();
+						
+						FundBean fund = fundDAO.read(positionList[i].getFundId());
+						
+						fd.setFundId(positionList[i].getFundId());
+						fd.setFundName(fund.getName());
+						fd.setTicker(fund.getSymbol());
+						double validShare = transactionDAO.getValidShares(customer.getUserName() , positionList[i].getShares() / 1000.0, fund.getFundId());
+						fd.setShares(df3.format(validShare));
+						
+						if (validShare >= 0.001) {
+							fundList.add(fd);
+						}
 					}
 				}
 				
-				request.setAttribute("fundList",fundList);
+				request.setAttribute("fundList",(FundDisplay[]) fundList.toArray());
 
 		        return "sellFund.jsp";	
 			} else {
