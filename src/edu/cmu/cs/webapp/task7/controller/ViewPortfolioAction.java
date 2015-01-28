@@ -20,6 +20,7 @@ public class ViewPortfolioAction extends Action {
 	private PositionDAO positionDAO;
 	private TransactionDAO transactionDAO;
 	private FundDAO fundDAO;
+	private CustomerDAO customerDAO;
 
 	public ViewPortfolioAction(Model model) {
 		// TODO Auto-generated constructor stub
@@ -27,6 +28,7 @@ public class ViewPortfolioAction extends Action {
 		positionDAO = model.getPositionDAO();
 		transactionDAO = model.getTransactionDAO();
 		fundDAO = model.getFundDAO();
+		customerDAO = model.getCustomerDAO();
 	}
 
 	public String getName() {
@@ -42,6 +44,8 @@ public class ViewPortfolioAction extends Action {
 			if (session.getAttribute("user") != null && session.getAttribute("user") instanceof CustomerBean) {
 
 				CustomerBean customer = (CustomerBean) request	.getSession(false).getAttribute("user");
+				
+				customer = customerDAO.read(customer.getUserName());
 
 				DecimalFormat df2 = new DecimalFormat("#,##0.00");
 				DecimalFormat df3 = new DecimalFormat("#,##0.000");

@@ -8,6 +8,20 @@
           <h2 class="page-header"> View Customer Account</h2>
         </div>
       </div>
+      
+      
+      <c:choose>
+	<c:when test="${ (empty msg) }">
+	</c:when>
+	<c:otherwise>
+		<h3 style="color: blue">${msg}</h3>
+	</c:otherwise>
+</c:choose>
+
+<c:forEach var="error" items="${errors}">
+	<h3 style="color: red">${error}</h3>
+</c:forEach>
+      
       <div class="col-lg-6">
         <form action="viewCustomer.do" method="POST">
           <div class="form-group">

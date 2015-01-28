@@ -54,6 +54,10 @@ public class ViewCustomerForm extends FormBean {
 
 		if (errors.size() > 0)
 			return errors;
+		
+		if ((userName1 !=  null && userName2 != null && !userName1.trim().equals(userName2.trim()))) {
+			errors.add("Please make sure user names are the same");
+		}
 
 		if (!action.equals("select"))
 			errors.add("Invalid button");
