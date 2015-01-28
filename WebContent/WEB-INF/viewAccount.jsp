@@ -78,7 +78,7 @@
                     		<td>${ fund.getFundName() }</td>
                     		<td> ${ fund.getTicker() } </td>
                     		<td align="right"> ${ fund.getShares() } </td>
-                    		<td align="right"> $${ fund.getTotal() } </td>
+                    		<td align="right"> ${ fund.getTotal() } </td>
                   			</tr>
 					</c:forEach>
 	</tbody>
