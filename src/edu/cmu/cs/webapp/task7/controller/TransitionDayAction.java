@@ -139,6 +139,8 @@ public class TransitionDayAction extends Action {
 						fundPriceHistoryDAO.create(fphb);
 					}
 					
+					System.out.println("1");
+					
 					// process pending transactions
 					for (TransactionBean tb : transactionDAO.match(MatchArg.equals("executeDate", null))){
 						CustomerBean cb = customerDAO.read(tb.getUserName());
@@ -149,7 +151,7 @@ public class TransitionDayAction extends Action {
 									PositionBean pb = positionDAO.read(tb.getUserName(), tb.getFundId());
 
 									if (pb.getShares() - tb.getShares()== 0) {
-										positionDAO.delete(pb);
+										positionDAO.delete(tb.getUserName(), tb.getFundId());
 									} else {
 										pb.setShares(pb.getShares() - tb.getShares());
 										positionDAO.update(pb);
@@ -159,7 +161,6 @@ public class TransitionDayAction extends Action {
 									long amount = (long) (price * tb.getShares() / 1000 * 100);
 									cb.setCash(cb.getCash() +  amount);
 									customerDAO.update(cb);
-									
 									tb.setAmount(amount);
 								}
 								break;

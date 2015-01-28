@@ -56,8 +56,8 @@ public class TransitionDayForm /* extends FormBean*/ {
 		    			Integer.parseInt(price.substring( lastDotIndex + 1 )) != 0){
 					errors.add("Price format error!");
 				}
-		    	if (d < 0.01 || d > 10000){
-			    	errors.add("Price must greater equal than 0.01 and less equal than 10,000.00!");
+		    	else if (d < 0.01 || d > 10000){
+			    	errors.add("Price must no smaller than 0.01 and no greater than 10,000.00!");
 			    } 
 			} catch (Exception e) {
 				errors.add("Price format error!");

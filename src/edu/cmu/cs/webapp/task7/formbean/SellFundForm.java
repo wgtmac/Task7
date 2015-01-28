@@ -49,7 +49,7 @@ public class SellFundForm extends FormBean {
 	    			Integer.parseInt(shares.substring( lastDotIndex + 1 )) != 0){
 				errors.add("Shares format error!");
 			}
-	    	if (d < 0.001 || d > 1000000000){
+	    	else if (d < 0.001 || d > 1000000000){
 		    	errors.add("Shares must no smaller than 0.001 and no greater than 1,000,000,000.00!");
 		    } 
 		} catch (Exception e) {
