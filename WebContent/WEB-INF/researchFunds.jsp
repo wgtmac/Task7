@@ -139,7 +139,7 @@
 						
 				</tr>
 				<tr>
-					<td align="right"><input type="submit" name="button"
+					<td align="right"><input type="submit" name="action"
 						 class="btn btn-primary" value="Fund History" /></td>
 				</tr>
 
@@ -165,9 +165,9 @@
 				value="${chartData}" />
 			<div id="chart_div"></div>
 			<br>
-			<!-- <h3>Cumulative Fund Performance</h3>
+			<h3>Cumulative Fund Performance</h3>
 			<br>
-			<div id="piechart_div" align="center"></div> -->
+			<div id="piechart_div" align="center"></div> 
 		</div>
 		
 		<div class="table-responsive">
@@ -176,7 +176,7 @@
 			<tr>
 				
 				<th>Fund Name</th>
-				<!-- <th>Ticker</th> -->
+				<th>Ticker</th>
 				<th> Price</th>
 				<th> Date </th>
 				
