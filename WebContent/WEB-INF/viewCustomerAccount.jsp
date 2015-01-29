@@ -88,5 +88,39 @@
 			</tbody>
 		</table>
 	</div>
+	
+	<h3>Transaction history</h3>
+	<table class="table table-bordered table-hover table-striped">
+		<thead>
+			<tr>
+				<th>Transaction Date (mm/dd/yyyy)</th>
+				<th>Operation</th>
+				<th>Fund Name</th>
+				<th>Shares</th>
+				<th>Share Price</th>
+				<th>Total Amount</th>
+
+			</tr>
+		</thead>
+		<!-- Create for each loop to fill table -->
+		<tbody>
+			<c:choose>
+				<c:when test="${ (empty transactionList) }"></c:when>
+				<c:otherwise>
+					<c:forEach var="u" items="${ transactionList }">
+						<tr>
+							<td>${ u.date }</td>
+							<td>${ u.operation }</td>
+							<td>${ u.fund }</td>
+							<td align="right">${ u.totShares }</td>
+							<td align="right">${ u.price }</td>
+							<td align="right">${ u.total }</td>
+							</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
+	</table>
+	
 
 <jsp:include page="template-buttom.jsp" />
