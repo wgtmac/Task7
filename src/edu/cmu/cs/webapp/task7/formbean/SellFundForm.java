@@ -23,7 +23,7 @@ public class SellFundForm extends FormBean {
 		List<String> errors = new ArrayList<String>();
 
 		if (shares == null || shares.length() == 0)
-			errors.add("Shares to sell is required");
+			errors.add("Numer of shares to sell is required");
 		if (action == null) errors.add("Button is required");
 
 		if (errors.size() > 0) 	return errors;
@@ -50,10 +50,10 @@ public class SellFundForm extends FormBean {
 				errors.add("Shares format error!");
 			}
 	    	else if (d < 0.001 || d > 1000000000){
-		    	errors.add("Shares must no smaller than 0.001 and no greater than 1,000,000,000.00!");
+		    	errors.add("Number of shares must be between 0.001 and a billion (1,000,000,000.00)");
 		    } 
 		} catch (Exception e) {
-			errors.add("Shares format error!");
+			errors.add("Number of Shares format error!");
 		}
     	
     	

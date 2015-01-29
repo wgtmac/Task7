@@ -56,7 +56,7 @@ public class CreateCustomerAction extends Action {
 				}
 
 				if (customerDAO.read(form.getUserName()) != null) {
-					errors.add("A user with this name already exists");
+					errors.add("This username already exists");
 					return "createCustomer.jsp";
 				}
 

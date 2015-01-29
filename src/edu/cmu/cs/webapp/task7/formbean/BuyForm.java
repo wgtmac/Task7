@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 
 public class BuyForm extends FormBean {
-	// private String camount;
+	// private String amount;
 	private String amount;
 	private String fund;
 	private String fund2;
@@ -52,10 +52,10 @@ public class BuyForm extends FormBean {
 		if (amount == null || amount.length() == 0) {
 			errors.add("Please enter an amount.");
 		} else if (!checkDecimal(amount)) {
-			errors.add("Only numbers with a maximum of 2 decimals places are allowed for amount.");
+			errors.add("A maximum of 2 decimal places are allowed");
 		}
 		if (amount != null && amount.matches(".*[<>\"].*"))
-			errors.add("Buy amount format error!");
+			errors.add("Buy amount format error");
 		
 		if ((fund == null || fund.length() == 0)
 				&& (fund2 == null || fund2.length() == 0)) {
@@ -63,7 +63,7 @@ public class BuyForm extends FormBean {
 		}
 		
 		if ((fund !=  null && fund2 != null && fund.trim().length() != 0 && fund2.trim().length() != 0  && !fund.trim().equals(fund2.trim()))) {
-			errors.add("Please make sure fund names are the same");
+			errors.add("Fund names are inconsistent");
 		}
 		
 		if (action == null) {
@@ -79,12 +79,12 @@ public class BuyForm extends FormBean {
 			amt = amt / 100;
 
 			if (amt < 10) {
-				errors.add("Please enter an amount that is greater than $10");
+				errors.add("Please enter an amount greater than $10");
 			} else if (amt > 1000000000) {
-				errors.add("Please enter an amount that is lesser than $1,000,000,000.00");
+				errors.add("Please enter an amount lesser than one billion ($1,000,000,000.00)");
 			}
 		} catch (NumberFormatException nfe) {
-			errors.add("Please enter amount in digits. Do not use letters");
+			errors.add("Please enter amount in digits only.");
 		}
 		
 		if (!action.equals("buy")) {

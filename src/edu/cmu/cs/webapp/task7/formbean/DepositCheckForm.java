@@ -77,13 +77,13 @@ public class DepositCheckForm extends FormBean {
 			return errors;
 		
 		if ((userName1 !=  null && userName2 != null && userName1.trim().length() != 0 && userName2.trim().length() != 0 && !userName1.trim().equals(userName2.trim()))) {
-			errors.add("Please make sure user names are the same");
+			errors.add("User names are inconsistent");
 		}
 
 		if (!action.equals("deposit"))
 			errors.add("Invalid button");
 		if (userName1.matches(".*[<>\"].*") && userName2.matches(".*[<>\"].*"))
-			errors.add("User Name may not contain angle brackets or quotes");
+			errors.add("User Name contains invalid characters: *[<. ");
 		{	
 			try {
 				double d = Double.parseDouble(amount);
@@ -92,13 +92,13 @@ public class DepositCheckForm extends FormBean {
 		    	if (lastDotIndex != -1 && 
 		    			amount.substring( lastDotIndex + 1 ).length() > 2  && 
 		    			Integer.parseInt(amount.substring( lastDotIndex + 1 )) != 0){
-					errors.add("Check amount format error!");
+					errors.add("Check amount error. Maximum 2 decimals are allowed.");
 				}
 		    	else if (d < 0.01 || d > 1000000000){
-			    	errors.add("Amount must greater equal than 0.01 and less equal than 1,000,000,000.00!");
+			    	errors.add("Amount must be between one cent (0.01) and a billion (1,000,000,000.00).");
 			    } 
 			} catch (Exception e) {
-				errors.add("The amount entered is not valid. Minimum valid amount is $1.00");
+				errors.add("The amount entered is not valid.");
 			}
 			
 		}

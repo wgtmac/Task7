@@ -118,7 +118,7 @@ public class TransitionDayAction extends Action {
 				Date date = inputDate.parse(form.getDate());
 	        	
 	        	if (lastDay != null && date.compareTo(lastDay) <= 0) {
-	        		errors.add("The input date is not greater than the date of previously ended trading day");
+	        		errors.add("The input date has to be greater than the last trading day");
 	        	}
 	        		        	
 				if (errors.size() != 0) {
@@ -247,7 +247,7 @@ public class TransitionDayAction extends Action {
 				if (errors.size() > 0) 
 					return "transitionDay.jsp";	
 				
-				request.getSession().setAttribute("msg", "Transition day was successfully set.");
+				request.getSession().setAttribute("msg", "Transition day for "+ form.getDate() + " was set.");
 				
 				return "success.do";
 			} else {

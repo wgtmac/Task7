@@ -87,9 +87,9 @@ public class ResearchFundAction extends Action {
 				
 				List<Map<String,String>> fundPriceHistory = getFundPriceHistory(fndId); 
 				if (fundPriceHistory.isEmpty()) 
-					errors.add("There is no history for the " + fundDAO.read(fndId).getName() + " fund");
+					errors.add("There is no history for " + fundDAO.read(fndId).getName() + " fund");
 				request.setAttribute("fundPriceHistory", fundPriceHistory);
-				request.setAttribute("description", "Lorem Ipsum");
+				request.setAttribute("ticker", fundDAO.read(fndId).getSymbol());
 				request.setAttribute("fundTitle", fundDAO.read(fndId).getName());
 				request.setAttribute("chartData", chartData(fndId));
 			}

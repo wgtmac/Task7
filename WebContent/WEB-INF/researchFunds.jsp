@@ -8,95 +8,7 @@
 	</div>
 </div>
 
-
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-
-
-
-<!-- IE Fix for HTML5 Tags -->
-
-<!--[if lt IE 9]>
-
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-
-<![endif]-->
-
-
-
- 		<script type="text/javascript">
-	google.load("visualization", "1", {
-		packages : [ "corechart" ]
-	});
-	google.setOnLoadCallback(drawChart);
-	function drawChart() {
-		document.getElementById("chart").style.visibility = 'hidden';
-		var source = document.getElementById("chartData").value;
-		var dataTable = source.split(",");
-		if (source) {
-			document.getElementById("chart").style.visibility = 'visible';
-			var data = new google.visualization.DataTable();
-			data.addColumn('string', 'Date');
-			data.addColumn('number', 'Price $');
-			data.addRows(parseInt(dataTable.length / 2));
-			var num = 0;
-			for ( var i = 0; i < dataTable.length - 1; i = i + 2) {
-				data.setCell(parseInt(num), 0, String(dataTable[i]));
-				num = num + 1;
-			}
-			num = 0;
-			for ( var i = 1; i < dataTable.length - 1; i = i + 2) {
-				data.setCell(parseInt(num), 1, parseFloat(dataTable[i]));
-				num = num + 1;
-			}
-
-			var options = {
-				title : ''
-			};
-
-			var chart = new google.visualization.LineChart(document
-					.getElementById('chart_div'));
-			chart.draw(data, options);
-		}
-	}
-
-	function setValues() {
-		var radios = document.getElementsByName("radio");
-		for ( var i = 0; i < radios.length; i++) {
-			if (radios[i].checked) {
-				document.researchFundForm.fundId.value = radios[i].id;
-			}
-		}
-	}
-</script>
-
-<!-- <script type="text/javascript" ></script>
-    <script type="text/javascript">
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Date', 'Google', 'Apple' , 'Facebook'],
-          ['1/18/2014',  100,      200,  150],
-          ['1/19/2014',  117,      220,  100],
-          ['1/20/2014',  111,      210,  130],
-          ['1/21/2014',  103,      240,  160]
-        ]);
-
-        var options = {
-          title: 'Fund Performance',
-          vAxis: {title: 'Date',  titleTextStyle: {color: 'red'}}
-        };
-
-        var chart = new google.visualization.BarChart(document.getElementById('piechart_div'));
-
-        chart.draw(data, options);
-      }
-    </script> -->
- 
-    
- 
-     
-
 
 <div class="container1">
 	<c:choose>
@@ -113,102 +25,135 @@
 	<form name="researchFundForm" id="researchFundForm" method="post"
 		action="researchFund.do">
 		<input type="hidden" name="fundId" id="fundId" />
-			<br>
-			<br>
-			<h3>Select a Fund</h3>
-			<table>
-				<tr>
-					<td><label>Select the fund you want to search:</label>
-						<div class="form-group">
-							<!-- Add the account stocks below -->
-							<select class="form-control" name="fundName">
-								<option></option>
+		<h3>Select a Fund</h3>
+		<table>
+			<tr>
+				<td><label>Select the fund you want to search:</label>
+					<div class="form-group">
+						<!-- Add the account stocks below -->
+						<select class="form-control" name="fundName">
+							<option></option>
+							<c:choose>
+								<c:when test="${ (empty funds) }"></c:when>
+								<c:otherwise>
+									<c:forEach var="u" items="${ funds }">
+										<option>${ u.getName() }</option>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+						</select><br> <label>Or search it by name:</label> <input name="fund2"
+							type="text" class="form-control"
+							placeholder="Case sensitive field" value="${form.fund2}">
+					</div>
+			</tr>
+			<tr>
+				<td align="right"><input type="submit" name="action"
+					class="btn btn-primary" value="Fund History" /></td>
+			</tr>
+		</table>
+		<br>
+		<script type="text/javascript">
+			google.load("visualization", "1", {
+				packages : [ "corechart" ]
+			});
+			google.setOnLoadCallback(drawChart);
+			function drawChart() {
+				document.getElementById("chart").style.visibility = 'hidden';
+				var source = document.getElementById("chartData").value;
+				var dataTable = source.split(",");
+				if (source) {
+					document.getElementById("chart").style.visibility = 'visible';
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Date');
+					data.addColumn('number', 'Price $');
+					data.addRows(parseInt(dataTable.length / 2));
+					var num = 0;
+					for (var i = 0; i < dataTable.length - 1; i = i + 2) {
+						data.setCell(parseInt(num), 0, String(dataTable[i]));
+						num = num + 1;
+					}
+					num = 0;
+					for (var i = 1; i < dataTable.length - 1; i = i + 2) {
+						data
+								.setCell(parseInt(num), 1,
+										parseFloat(dataTable[i]));
+						num = num + 1;
+					}
 
-								<c:choose>
-									<c:when test="${ (empty funds) }"></c:when>
-									<c:otherwise>
-										<c:forEach var="u" items="${ funds }">
-											<option>${ u.getName() }</option>
-										</c:forEach>
-									</c:otherwise>
-								</c:choose>
-							</select> <label>OR Search It Here:</label> <input name="fund2"
-								type="text" class="form-control" value="${form.fund2}">
-						</div>
-<!-- onClick="setValues()"  -->
-						
-				</tr>
-				<tr>
-					<td align="right"><input type="submit" name="action"
-						 class="btn btn-primary" value="Fund History" /></td>
-				</tr>
+					var options = {
+						title : ''
+					};
 
-			</table>
+					var chart = new google.visualization.LineChart(document
+							.getElementById('chart_div'));
+					chart.draw(data, options);
+				}
+			}
 
-		
-		<div id="chart">
-			<!-- <table>
-				<tr>
-					<td class="line"></td>
-				</tr>
-			</table> -->
-			<br />
-			<table class="tableWidthPadding">
-				<tr>
-					<td>Fund:&nbsp;&nbsp;&nbsp;${fundTitle}</td>
-				</tr>
-				<%-- <tr>
-					<td>Description:&nbsp;&nbsp;&nbsp;${description}</td>
-				</tr> --%>
-			</table>
+			function setValues() {
+				var radios = document.getElementsByName("radio");
+				for (var i = 0; i < radios.length; i++) {
+					if (radios[i].checked) {
+						document.researchFundForm.fundId.value = radios[i].id;
+					}
+				}
+			}
+		</script>
+		<br>
+		<div class="col-lg-6">
+			<div id="chart">
+				<b>Displaying results for:</b><br>
+				<br>
+				<table class="table table-bordered table-hover table-striped">
+					<tr>
+						<td witdh="30%"><b>Fund Name:</b></td>
+						<td>${fundTitle}</td>
+					</tr>
+					<tr>
+						<td><b>Ticker:</b></td>
+						<td>${ticker}</td>
+					</tr>
+				</table>
+				<b>Price fluctuation:</b><br>
+			</div>
 			<input type="hidden" name="chartData" id="chartData"
 				value="${chartData}" />
 			<div id="chart_div"></div>
 			<br>
-			
-		
-		<div class="col-lg-6" align="center">
-		
-	<table class="table table-bordered table-hover table-striped" >
-	<colgroup>
-       <col span="1" style="width: 25%;">
-       <col span="1" style="width: 25%;">
-       
-    </colgroup>
-		<thead>
-			<tr>
-				
-				<th> Date </th>
-				<th> Price</th>
-				
-				
 
-			</tr>
-		</thead>
-		<!-- Create for each loop to fill table -->
-		<tbody>
-			<c:choose>
-				<c:when test="${ (empty fundPriceHistory) }"></c:when>
-				<c:otherwise>
-					<c:forEach var="u" items="${ fundPriceHistory }">
-						<tr>
-							
-							
-							<td >${ u.get("date") }</td>
-							<td align="right">${ u.get("price") }</td>
-							
-							</tr>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-		</tbody>
-	</table>
-	<p align="center">*** End of Registry ***</p>
-</div>
-		
+			<div class="col-lg-6" align="center">
+
+				<table class="table table-bordered table-hover table-striped">
+					<colgroup>
+						<col span="1" style="width: 25%;">
+						<col span="1" style="width: 25%;">
+
+					</colgroup>
+
+					<!-- Create for each loop to fill table -->
+					<tbody>
+						<c:choose>
+							<c:when test="${ (empty fundPriceHistory) }"></c:when>
+							<c:otherwise>
+								<thead>
+									<tr>
+										<th>Date:</th>
+										<th>Price:</th>
+									</tr>
+								</thead>
+								<c:forEach var="u" items="${ fundPriceHistory }">
+									<tr>
+										<td>${ u.get("date") }</td>
+										<td align="right">$${ u.get("price") }</td>
+									</tr>
+								</c:forEach>
+							</c:otherwise>	
+						</c:choose>
+					</tbody>
+				</table>
+			</div>
 	</form>
 </div>
-
 
 
 <jsp:include page="template-buttom.jsp" />

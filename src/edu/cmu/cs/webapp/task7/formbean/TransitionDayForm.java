@@ -57,7 +57,7 @@ public class TransitionDayForm /* extends FormBean*/ {
 					errors.add("Price format error!");
 				}
 		    	else if (d < 0.01 || d > 10000){
-			    	errors.add("Price must no smaller than 0.01 and no greater than 10,000.00!");
+			    	errors.add("Price of shares must be between one cent (0.01) and ten thousand (10,000.00)");
 			    } 
 			} catch (Exception e) {
 				errors.add("Price format error!");

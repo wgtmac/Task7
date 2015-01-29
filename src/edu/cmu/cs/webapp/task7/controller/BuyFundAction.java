@@ -92,7 +92,7 @@ public class BuyFundAction extends Action {
 			
 			user = customerDAO.read(user.getUserName());
 			if (! transactionDAO.buyFund(user.getUserName(), user.getCash(), amount, fb[0].getFundId()) ){
-				errors.add("You do not have enough cash balance in your account.");
+				errors.add("You do not have enough cash available.");
 				return "buyFund.jsp";	
 			}
 
