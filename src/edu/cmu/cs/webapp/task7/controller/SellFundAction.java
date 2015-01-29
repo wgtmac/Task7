@@ -117,7 +117,7 @@ public class SellFundAction  extends Action {
 				
 				request.setAttribute("fundList", fundList);
 
-		        return "sellFund.jsp";	
+		        return "confirmationPage.jsp";	
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)	session.removeAttribute("user");

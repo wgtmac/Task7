@@ -83,7 +83,7 @@ public class DepositCheckAction extends Action {
 				request.setAttribute("msg", "A deposit of $"+ formatter.format(Double.parseDouble(form.getAmount()))+ " was made into <font color=\"black\">" +form.getUserName()+ "'s</font> account.");
 				request.removeAttribute("form");
 
-				return "depositCheck.jsp";
+				return "confirmationPage.jsp";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

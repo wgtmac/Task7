@@ -70,7 +70,7 @@ public class ChangePwdAction extends Action {
 				
 				request.setAttribute("msg", "Password was changed successfully.");
 
-				return "customerPSW.jsp";
+				return "confirmationPage.jsp";
 				
 			} else if (request.getSession().getAttribute("user") instanceof EmployeeBean) {
 				EmployeeBean user = (EmployeeBean) request.getSession().getAttribute("user");

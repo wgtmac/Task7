@@ -70,7 +70,7 @@ public class CreateEmployeeAction extends Action {
 				request.setAttribute("msg", "Employee account " +form.getUserName()+ " was created successfully.");
 				request.removeAttribute("form");
 				
-				return "createEmployee.jsp";
+				return "confirmationPage.jsp";
 			} else {
 				
 				// logout and re-login

@@ -245,7 +245,7 @@ public class TransitionDayAction extends Action {
 	        	request.setAttribute("lastDay", lastDay == null ? "" : inputDate.format(lastDay));
 				request.setAttribute("msg", "Transition day was successfully set.");
 
-				return "transitionDay.jsp";
+				return "confirmationPage.jsp";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

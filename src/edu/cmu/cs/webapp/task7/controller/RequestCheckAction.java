@@ -80,7 +80,7 @@ public class RequestCheckAction extends Action {
 				balance = formatter.format(availableBalance);
 				session.setAttribute("balance", balance);
 				
-				return "requestCheck.jsp";
+				return "confirmationPage.jsp";
 			} else {
 				// logout and re-login
 				if (session.getAttribute("user") != null)

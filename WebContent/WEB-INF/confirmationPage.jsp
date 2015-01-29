@@ -2,11 +2,23 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <jsp:include page="template-customer-top.jsp" />
-                
-                <div>
+<div>
                  <h4>Successful Transaction!</h4>
                 </div>
+<c:choose>
+		<c:when test="${ (empty msg) }">
+		</c:when>
+		<c:otherwise>
+			<h3 style="color: blue">${msg}</h3>
+		</c:otherwise>
+	</c:choose>
+
+	<c:forEach var="error" items="${errors}">
+		<h3 style="color: red">${error}</h3>
+	</c:forEach>
+                
+                
                      
-                     Print message from transaction here.
+                     
                                 
 <jsp:include page="template-buttom.jsp" />

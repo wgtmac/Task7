@@ -103,7 +103,7 @@ public class BuyFundAction extends Action {
 			request.setAttribute("balance", availableBalanceString);
 
 			request.setAttribute("msg", "$"+form.getAmount()+ " in funds purchased successfully.");
-			return "buyFund.jsp";
+			return "confirmationPage.jsp";
 		} catch (RollbackException e) {
 			errors.add(e.getMessage());
 			return "buyFund.jsp";

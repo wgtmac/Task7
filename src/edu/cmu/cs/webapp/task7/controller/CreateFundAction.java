@@ -86,7 +86,7 @@ public class CreateFundAction extends Action {
 				} finally {
 					if (Transaction.isActive()) Transaction.rollback();
 				}
-				return "createFund.jsp";
+				return "confirmationPage.jsp";
 			} else {
 				
 				// logout and re-login
